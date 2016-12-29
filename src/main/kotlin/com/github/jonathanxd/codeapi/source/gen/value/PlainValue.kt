@@ -36,7 +36,7 @@ import com.github.jonathanxd.iutils.data.MapData
 /**
  * Value of plain [TARGET].
  *
- * This [Value] append the provided [.value] in [Appender].
+ * This [Value] append the provided [value] in [Appender].
  *
  * @param TARGET   Output object type.
  * @param C        Generator type.
@@ -62,7 +62,7 @@ class PlainValue<TARGET, C : AbstractGenerator<TARGET, C>>(private val value: TA
          * @return [PlainValue]
          */
         fun <TARGET, C : AbstractGenerator<TARGET, C>> create(value: TARGET): Value<TARGET, TARGET, C> {
-            return com.github.jonathanxd.codeapi.gen.value.PlainValue<TARGET, C>(value)
+            return PlainValue<TARGET, C>(value)
         }
     }
 }

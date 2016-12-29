@@ -47,7 +47,7 @@ object TryBlockSourceGenerator : ValueGenerator<TryBlock, String, PlainSourceGen
 
     override fun gen(tryBlock: TryBlock, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
 
-        val isInline = plainSourceGenerator.getOptions().getOrElse(CodeOptions.INLINE_FINALLY, java.lang.Boolean.FALSE)
+        val isInline = plainSourceGenerator.options.getOrElse(CodeOptions.INLINE_FINALLY, java.lang.Boolean.FALSE)
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
@@ -83,7 +83,7 @@ object TryBlockSourceGenerator : ValueGenerator<TryBlock, String, PlainSourceGen
 
                 val modified = TryCatchInliner.insertInlineSecure(codeSource, finallyBlockSource)
 
-                catchBlock = CatchBlockImpl(catchBlock.field, catchBlock.exceptionTypes, modified)
+                catchBlock = CatchBlockImpl(catchBlock.variable, catchBlock.exceptionTypes, modified)
             }
 
             values.add(TargetValue.create(catchBlock.javaClass, catchBlock, parents))

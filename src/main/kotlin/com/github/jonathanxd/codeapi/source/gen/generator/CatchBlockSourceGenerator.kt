@@ -82,10 +82,10 @@ object CatchBlockSourceGenerator : ValueGenerator<CatchBlock, String, PlainSourc
 
         val source2 = MutableCodeSource()
 
-        var field = catchBlock.field
+        var field = catchBlock.variable
 
         if (!field.value.isPresent) {
-            field = CodeField(field.name, field.variableType, Helper.accessLocalVariable(catchName, Throwable::class.java), field.modifiers, field.annotations)
+            field = CodeField(field.name, field.variableType, Helper.accessLocalVariable(catchName, Throwable::class.java), emptyList(), emptyList())
         }
 
         source2.add(field)
