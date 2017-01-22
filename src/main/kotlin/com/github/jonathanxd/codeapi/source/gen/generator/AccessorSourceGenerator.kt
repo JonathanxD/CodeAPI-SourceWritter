@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -48,7 +48,7 @@ object AccessorSourceGenerator : ValueGenerator<Accessor, String, PlainSourceGen
         var anySeparator = false
 
         val target = accessor.target
-        val localization = accessor.localization
+        val localization = Util.localizationResolve(accessor.localization, parents)
         val targetIsAccess = target is Access
 
         if (!targetIsAccess && target !== localization) {
@@ -58,7 +58,7 @@ object AccessorSourceGenerator : ValueGenerator<Accessor, String, PlainSourceGen
                 values.add(PlainValue.create("."))
                 anySeparator = true
             }
-        } else if ((target as Access).type != Access.Type.LOCAL) {
+        } else if (targetIsAccess && (target as Access).type != Access.Type.LOCAL) {
             values.add(TargetValue.create(CodeType::class.java, localization, parents))
             if (separator) {
                 values.add(PlainValue.create("."))
@@ -68,7 +68,7 @@ object AccessorSourceGenerator : ValueGenerator<Accessor, String, PlainSourceGen
 
         if (targetIsAccess && (target as Access).type != Access.Type.LOCAL) {
             values.add(TargetValue.create(Access::class.java, target, parents))
-            if (anySeparator || separator) values.add(PlainValue.create<String, PlainSourceGenerator>("."))
+            if (!anySeparator && separator) values.add(PlainValue.create<String, PlainSourceGenerator>("."))
         }
 
 

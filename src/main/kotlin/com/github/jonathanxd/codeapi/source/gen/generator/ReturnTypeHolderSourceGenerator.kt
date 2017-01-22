@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,6 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.ReturnTypeHolder
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
@@ -34,15 +35,12 @@ import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import com.github.jonathanxd.codeapi.type.CodeType
 
-object ReturnableSourceGenerator : ValueGenerator<Returnable, String, PlainSourceGenerator> {
+object ReturnTypeHolderSourceGenerator : ValueGenerator<ReturnTypeHolder, String, PlainSourceGenerator> {
 
-    override fun gen(returnable: Returnable, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
-
-        if (!returnable.returnType.isPresent)
-            return emptyList()
-
-        return listOf(TargetValue.create(CodeType::class.java, returnable.returnType.orElse(Helper.getJavaType(Void.TYPE)), parents))
+    override fun gen(inp: ReturnTypeHolder, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+        return listOf(TargetValue.create(CodeType::class.java, inp.returnType, parents))
     }
 
 }

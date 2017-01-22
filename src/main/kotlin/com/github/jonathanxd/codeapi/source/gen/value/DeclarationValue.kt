@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -25,32 +25,41 @@
  *      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *      THE SOFTWARE.
  */
-package com.github.jonathanxd.codeapi.source.gen.generator
+package com.github.jonathanxd.codeapi.source.gen.value
 
+import com.github.jonathanxd.codeapi.CodePart
+import com.github.jonathanxd.codeapi.base.TypeDeclaration
 import com.github.jonathanxd.codeapi.common.Data
+import com.github.jonathanxd.codeapi.gen.Appender
+import com.github.jonathanxd.codeapi.gen.value.AbstractGenerator
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
-import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
-import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
-import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
+import com.github.jonathanxd.codeapi.source.gen.ImportAppender
 
-object PackageDeclarationSourceGenerator : ValueGenerator<PackageDeclaration, String, PlainSourceGenerator> {
+/**
+ * Value of type declarations.
+ *
+ * @param C        Generator type.
+ */
+class DeclarationValue<TARGET, C : AbstractGenerator<TARGET, C>>(override val value: TypeDeclaration) : Value<TypeDeclaration, TARGET, C> {
 
-    override fun gen(packageDeclaration: PackageDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
-        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
+    override fun apply(value: CodePart, generator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: Data) {
+        if (appender is ImportAppender<*>)
+            appender.setDeclaration(this.value)
 
-
-        val aPackage = packageDeclaration.`package`
-
-        if (aPackage.isPresent) {
-
-            values.add(PlainValue.create("package"))
-            values.add(PlainValue.create(aPackage.get()))
-            values.add(PlainValue.create(";"))
-        }
-
-        return values
     }
 
+    companion object {
+
+        /**
+         * Create [PlainValue].
+         *
+         * @param value    Plain value.
+         * @param C        Generator type.
+         * @return [PlainValue]
+         */
+        fun <TARGET, C : AbstractGenerator<TARGET, C>> create(value: TypeDeclaration): Value<TypeDeclaration, TARGET, C> {
+            return DeclarationValue(value)
+        }
+    }
 }

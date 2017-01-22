@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,6 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.value
 
+import com.github.jonathanxd.codeapi.CodePart
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.Appender
 import com.github.jonathanxd.codeapi.gen.value.AbstractGenerator
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
@@ -42,17 +44,13 @@ import com.github.jonathanxd.iutils.data.MapData
  * @param TARGET   Result Object type.
  * @param C        Generator type.
  */
-class MultiValue<TARGET, C : AbstractGenerator<TARGET, C>>(private val value: List<Value<*, TARGET, C>>) : Value<List<Value<*, TARGET, C>>, TARGET, C> {
+class MultiValue<TARGET, C : AbstractGenerator<TARGET, C>>(override val value: List<Value<*, TARGET, C>>) : Value<List<Value<*, TARGET, C>>, TARGET, C> {
 
-    override fun apply(value: TARGET, generator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: MapData) {
+    override fun apply(value: CodePart, generator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: Data) {
         //println
-        for (g in this.getValue()) {
+        for (g in this.value) {
             g.apply(value, generator, appender, codeSourceData, data)
         }
-    }
-
-    override fun getValue(): List<Value<*, TARGET, C>> {
-        return value
     }
 
     companion object {

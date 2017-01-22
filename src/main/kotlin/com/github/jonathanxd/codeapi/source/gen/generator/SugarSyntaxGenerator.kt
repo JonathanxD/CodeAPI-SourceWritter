@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -34,13 +34,14 @@ import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.SourceSugarEnvironment
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 import com.github.jonathanxd.codeapi.sugar.SugarSyntax
 
-class SugarSyntaxGenerator<T : CodePart, E : CodePart>(val sugarSyntax: SugarSyntax<T, E>) : ValueGenerator<T, String, PlainSourceGenerator> {
+class SugarSyntaxGenerator<in T : CodePart, out E : CodePart>(val sugarSyntax: SugarSyntax<T, E>) : ValueGenerator<T, String, PlainSourceGenerator> {
 
-    override fun gen(part: T, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
-        val generated = this.sugarSyntax.generator.generate(part)
+    override fun gen(inp: T, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+        val generated = this.sugarSyntax.createGenerator(SourceSugarEnvironment).generate(inp, this)
 
         return listOf(TargetValue.create(generated.javaClass, generated, parents))
     }

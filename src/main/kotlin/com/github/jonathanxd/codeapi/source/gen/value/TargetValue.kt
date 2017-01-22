@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,6 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.value
 
+import com.github.jonathanxd.codeapi.CodePart
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.Appender
 import com.github.jonathanxd.codeapi.gen.value.*
@@ -45,7 +46,7 @@ import com.github.jonathanxd.iutils.data.MapData
  */
 class TargetValue<V: Any, TARGET, C : AbstractGenerator<TARGET, C>> internal constructor(override val value: Class<*>, val `val`: V, private val parents: Parent<ValueGenerator<*, TARGET, C>>) : Value<Class<*>, TARGET, C> {
 
-    override fun apply(value: TARGET, generator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: Data) {
+    override fun apply(value: CodePart, generator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: Data) {
 
         val to = generator.generateTo(this.value, this.`val`, this.parents, codeSourceData, data)
         to.forEach { d -> d.apply(value, generator, appender, codeSourceData, data) }

@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -33,6 +33,7 @@ import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.CodeTypeValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 import com.github.jonathanxd.codeapi.source.gen.value.ImportValue
@@ -46,7 +47,7 @@ object CodeTypeSourceGenerator : ValueGenerator<CodeType, String, PlainSourceGen
         if (inp is GenericType)
             return listOf(ImportValue.create(inp), TargetValue.create(GenericType::class.java, inp, parents))
 
-        return listOf(ImportValue.create(inp), PlainValue.create(inp.canonicalName))
+        return listOf(ImportValue.create(inp), CodeTypeValue.create(inp))
     }
 
 }

@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,8 +27,10 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
+import com.github.jonathanxd.codeapi.CodeAPI;
+import com.github.jonathanxd.codeapi.CodePart;
 import com.github.jonathanxd.codeapi.MutableCodeSource;
-import com.github.jonathanxd.codeapi.helper.Helper;
+import com.github.jonathanxd.codeapi.literal.Literals;
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator;
 
 import org.junit.Test;
@@ -38,16 +40,11 @@ public class Perf1 {
     @Test
     public void simpleTest() {
 
-        Level:
-        {
-            System.out.println("KL");
-        }
-
         MutableCodeSource source = new MutableCodeSource();
 
         PlainSourceGenerator generator = new PlainSourceGenerator();
 
-        source.add(Helper.invokeArrayConstructor(Helper.getJavaType(Object[].class)));
+        source.add(CodeAPI.arrayConstruct(CodeAPI.getJavaType(Object[].class), new CodePart[]{Literals.INT(10)}));
 
         String gen = generator.gen(source);
 

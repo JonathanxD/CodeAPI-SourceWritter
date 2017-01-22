@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -33,14 +33,22 @@ import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.CodeTypeValue
+import com.github.jonathanxd.codeapi.source.gen.value.ImportValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
+import com.github.jonathanxd.codeapi.source.util.toSourceString
 import com.github.jonathanxd.codeapi.type.GenericType
-import com.github.jonathanxd.codeapi.util.GenericTypeUtil
 
 object GenericTypeSourceGenerator : ValueGenerator<GenericType, String, PlainSourceGenerator> {
 
     override fun gen(inp: GenericType, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
-        return listOf(PlainValue.create(GenericTypeUtil.toSourceString(inp)))
+        return toSourceString(inp, {
+            listOf<Value<*, String, PlainSourceGenerator>>(ImportValue.create(it), CodeTypeValue.create(it))
+            //TargetValue.create(CodeType::class.java, it, parents)
+        }, {
+            PlainValue.create(it)
+        })
+        //return listOf(PlainValue.create(GenericTypeUtil.toSourceString(inp)))
     }
 
 }

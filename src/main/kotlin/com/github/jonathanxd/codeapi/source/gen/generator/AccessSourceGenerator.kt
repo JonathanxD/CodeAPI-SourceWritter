@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -41,13 +41,14 @@ object AccessSourceGenerator : ValueGenerator<Access, String, PlainSourceGenerat
 
     override fun gen(inp: Access, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
+        val key = inp.keyword
 
-        if (inp.keyword == null && inp.localization == null)
+        if (key == null || inp.localization == null)
             return emptyList()
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(TargetValue.create(Keyword::class.java, inp.keyword, parents))
+        values.add(TargetValue.create(Keyword::class.java, key, parents))
 
         return values
     }

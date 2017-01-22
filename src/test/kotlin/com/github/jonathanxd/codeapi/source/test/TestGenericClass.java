@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.test;
 
 import com.github.jonathanxd.codeapi.CodeSource;
-import com.github.jonathanxd.codeapi.impl.CodeClass;
+import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.GenericClass_;
 import com.github.jonathanxd.iutils.annotation.Named;
 import com.github.jonathanxd.iutils.object.Pair;
@@ -39,10 +39,14 @@ public class TestGenericClass {
 
     @Test
     public void genericClass() {
-        Pair<@Named("Main class") CodeClass, @Named("Source") CodeSource> $ = GenericClass_.$();
-        CommonSourceTest.test($._2()).consume(System.out::println).expect("package com ; \n" +
-                "public class Generic < T extends java.util.List<T> > implements java.util.List<T> { \n" +
-                "    public static < T extends java.util.List<T> > void test ( T val ) { \n" +
+        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = GenericClass_.$();
+        CommonSourceTest.test($._2()).consume(System.out::println).expect("package com;\n" +
+                "\n" +
+                "import java.util.List;\n" +
+                "\n" +
+                "public class Generic < T  extends  List < T > > implements List < T > { \n" +
+                "    \n" +
+                "    public static < T  extends  List < T > > void test ( T val ) { \n" +
                 "        T fieldi = null ; \n" +
                 "         \n" +
                 "    } \n" +

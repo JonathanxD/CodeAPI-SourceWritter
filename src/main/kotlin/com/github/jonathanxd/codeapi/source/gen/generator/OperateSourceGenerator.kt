@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,6 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.Operate
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
@@ -39,15 +40,15 @@ import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 
 object OperateSourceGenerator : ValueGenerator<Operate, String, PlainSourceGenerator> {
 
-    override fun gen(operate: Operate, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: Operate, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        val target = operate.target.orElse(null)
+        val target = inp.target
 
         values.add(CodePartValue.create(target, parents))
 
-        OperateSourceGenerator.addOperation(values, operate, parents, false)
+        OperateSourceGenerator.addOperation(values, inp, parents, false)
 
         if (Util.isBody(parents)) {
             values.add(PlainValue.create(";"))
@@ -57,20 +58,19 @@ object OperateSourceGenerator : ValueGenerator<Operate, String, PlainSourceGener
     }
 
     internal fun addOperation(values: MutableList<Value<*, String, PlainSourceGenerator>>, operate: Operate, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, appendEq: Boolean) {
-        operate.operation.ifPresent { operator ->
-            values.add(TargetValue.create(operator.javaClass, operator, parents))
-            operate.value.ifPresent { codePart ->
-                if (appendEq) values.add(PlainValue.create("="))
+        values.add(TargetValue.create(operate.operation.javaClass, operate.operation, parents))
+        operate.value?.let { value ->
 
-                if (codePart is Operate) {
-                    values.add(PlainValue.create("("))
-                }
+            if (appendEq) values.add(PlainValue.create("="))
 
-                values.add(TargetValue.create(codePart.javaClass, codePart, parents))
+            if (value is Operate) {
+                values.add(PlainValue.create("("))
+            }
 
-                if (codePart is Operate) {
-                    values.add(PlainValue.create(")"))
-                }
+            values.add(TargetValue.create(value.javaClass, value, parents))
+
+            if (value is Operate) {
+                values.add(PlainValue.create(")"))
             }
         }
     }

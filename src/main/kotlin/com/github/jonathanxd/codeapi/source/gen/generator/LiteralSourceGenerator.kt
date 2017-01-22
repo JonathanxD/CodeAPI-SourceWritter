@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -35,6 +35,7 @@ import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.literal.Literal
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.CodeTypeValue
 import com.github.jonathanxd.codeapi.source.gen.value.ImportValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.type.CodeType
@@ -54,8 +55,10 @@ object LiteralSourceGenerator : ValueGenerator<Literal, String, PlainSourceGener
         } else if (inp.type.`is`(Types.FLOAT)) {
             values.add(PlainValue.create(inp.name + "F"))
         } else if (inp.type.`is`(CodeType::class.codeType)) {
-            values.add(ImportValue.create(PlainCodeType(inp.name, false)))
-            values.add(PlainValue.create(inp.name + ".class"))
+            val type = PlainCodeType(inp.name, false)
+            values.add(ImportValue.create(type))
+            values.add(CodeTypeValue.create(type))
+            values.add(PlainValue.create(".class"))
         } else {
             values.add(PlainValue.create(inp.name))
         }

@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,53 +27,51 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.IfExpr
+import com.github.jonathanxd.codeapi.base.IfExpressionHolder
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
+import com.github.jonathanxd.codeapi.operator.Operators
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 import java.util.*
 
-object MethodSourceGenerator : ValueGenerator<MethodDeclaration, String, PlainSourceGenerator> {
+object IfExpressionHolderSourceGenerator : ValueGenerator<IfExpressionHolder, String, PlainSourceGenerator> {
 
-    override fun gen(codeMethod: MethodDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: IfExpressionHolder, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
+        values.add(PlainValue.create("("))
 
-        values.add(TargetValue.create(Annotable::class.java, codeMethod, parents))
-        values.add(TargetValue.create(Modifierable::class.java, codeMethod, parents))
-        values.add(TargetValue.create(Generifiable::class.java, codeMethod, parents))
+        val expressions = inp.expressions
 
-        if (codeMethod !is ConstructorDeclaration) {
-            values.add(TargetValue.create(Returnable::class.java, codeMethod, parents))
-        }
+        expressions.forEachIndexed { i, codePart ->
+            if (codePart is IfExpr) {
 
-        if (codeMethod is ConstructorDeclaration) {
+                if(i > 0)
+                    values.add(PlainValue.create("("))
 
-            var name = codeMethod.getName()
+                values.add(TargetValue.create(IfExpr::class.java, codePart, parents))
 
-            val generatorParent = parents.find(ClassDeclaration::class.java)
-
-            if (generatorParent.isPresent) {
-                val generatorParent1 = generatorParent.get()
-                val target = generatorParent1.target as ClassDeclaration
-
-                name = target.simpleName
+                if(i > 0)
+                    values.add(PlainValue.create(")"))
+            } else if (codePart === Operators.OR) {
+                values.add(PlainValue.create("||"))
+            } else if (codePart === Operators.AND) {
+                values.add(PlainValue.create("&&"))
             }
-
-            values.add(PlainValue.create(name))
-        } else {
-            values.add(TargetValue.create(Named::class.java, codeMethod, parents))
         }
 
-        values.add(TargetValue.create(Parameterizable::class.java, codeMethod, parents))
-        values.add(TargetValue.create(Bodied::class.java, codeMethod, parents))
+
+        values.add(PlainValue.create(")"))
+
 
         return values
-
     }
 
 }

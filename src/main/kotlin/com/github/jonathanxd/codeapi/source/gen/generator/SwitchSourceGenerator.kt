@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,6 +27,9 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.Types
+import com.github.jonathanxd.codeapi.base.Case
+import com.github.jonathanxd.codeapi.base.SwitchStatement
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.common.SwitchTypes
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
@@ -34,26 +37,27 @@ import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.SourceSugarEnvironment
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 import java.util.*
 
-object SwitchSourceGenerator : ValueGenerator<Switch, String, PlainSourceGenerator> {
+object SwitchSourceGenerator : ValueGenerator<SwitchStatement, String, PlainSourceGenerator> {
 
-    override fun gen(aSwitch: Switch, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: SwitchStatement, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        val switchType = aSwitch.switchType
+        val switchType = inp.switchType
 
-        val value = aSwitch.value.orElseThrow(::NullPointerException)
-        val valueType = aSwitch.type.orElseThrow(::NullPointerException)
+        val value = inp.value
+        val valueType = inp.type
 
         if (switchType !== SwitchTypes.NUMERIC
                 && switchType !== SwitchTypes.ENUM
-                && !valueType.`is`(PredefinedTypes.STRING)) {
+                && !valueType.`is`(Types.STRING)) {
 
-            values.add(TargetValue.create(switchType.generator.generate(aSwitch), parents))
+            values.add(TargetValue.create(switchType.createGenerator(SourceSugarEnvironment).generate(inp, this), parents))
         } else {
             values.add(PlainValue.create("switch"))
             values.add(PlainValue.create("("))
@@ -62,7 +66,7 @@ object SwitchSourceGenerator : ValueGenerator<Switch, String, PlainSourceGenerat
 
             values.add(PlainValue.create("{"))
 
-            for (aCase in aSwitch.cases) {
+            for (aCase in inp.cases) {
                 values.add(TargetValue.create(Case::class.java, aCase, parents))
             }
 

@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.test;
 
 import com.github.jonathanxd.codeapi.CodeSource;
-import com.github.jonathanxd.codeapi.impl.CodeClass;
+import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.ForEach_;
 import com.github.jonathanxd.iutils.annotation.Named;
 import com.github.jonathanxd.iutils.object.Pair;
@@ -39,12 +39,16 @@ public class TestForeachClass {
 
     @Test
     public void genericClass() {
-        Pair<@Named("Main class") CodeClass, @Named("Source") CodeSource> $ = ForEach_.$();
-        CommonSourceTest.test($._2()).consume(System.out::println).expect("package com ; \n" +
+        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = ForEach_.$();
+        CommonSourceTest.test($._2()).consume(System.out::println).expect("package com;\n" +
+                "\n" +
+                "import java.util.List;\n" +
+                "\n" +
                 "public class ForEach { \n" +
-                "    public ForEach ( java.util.List<java.lang.String> strList ) { \n" +
-                "        for ( java.lang.String str : strList ) { \n" +
-                "            java.lang.System . out . println ( str ) ; \n" +
+                "    \n" +
+                "    public ForEach ( List < String > strList ) { \n" +
+                "        for ( String str : strList ) { \n" +
+                "            System . out . println ( str ) ; \n" +
                 "             \n" +
                 "        } \n" +
                 "        \n" +

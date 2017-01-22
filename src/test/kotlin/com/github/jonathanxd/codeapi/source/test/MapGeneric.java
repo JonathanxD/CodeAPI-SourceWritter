@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -29,15 +29,17 @@ package com.github.jonathanxd.codeapi.source.test;
 
 import com.github.jonathanxd.codeapi.CodeAPI;
 import com.github.jonathanxd.codeapi.MutableCodeSource;
-import com.github.jonathanxd.codeapi.helper.Helper;
-import com.github.jonathanxd.codeapi.helper.PredefinedTypes;
-import com.github.jonathanxd.codeapi.literals.Literals;
+import com.github.jonathanxd.codeapi.Types;
+import com.github.jonathanxd.codeapi.common.CodeModifier;
+import com.github.jonathanxd.codeapi.factory.ClassFactory;
+import com.github.jonathanxd.codeapi.factory.FieldFactory;
+import com.github.jonathanxd.codeapi.literal.Literals;
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator;
-import com.github.jonathanxd.codeapi.types.Generic;
+import com.github.jonathanxd.codeapi.type.Generic;
 
 import org.junit.Test;
 
-import java.lang.reflect.Modifier;
+import java.util.EnumSet;
 import java.util.Map;
 
 public class MapGeneric {
@@ -46,13 +48,21 @@ public class MapGeneric {
 
         MutableCodeSource cs = new MutableCodeSource();
 
-        cs.add(CodeAPI.aClass(Modifier.PUBLIC, "com.ACS", aClass -> CodeAPI.sourceOfParts(
-                CodeAPI.field(Generic.type(Helper.getJavaType(Map.class)).of(PredefinedTypes.STRING).of(PredefinedTypes.INTEGER_TYPE), "upo", Literals.NULL)
+        cs.add(ClassFactory.aClass(EnumSet.of(CodeModifier.PUBLIC), "com.ACS", CodeAPI.sourceOfParts(
+                FieldFactory.field(Generic.type(CodeAPI.getJavaType(Map.class)).of(Types.STRING).of(Types.INTEGER_WRAPPER), "upo", Literals.NULL)
         )));
 
-        PlainSourceGenerator plainSourceGenerator = new PlainSourceGenerator();
-
-        System.out.println(plainSourceGenerator.gen(cs));
+        CommonSourceTest.test(cs)
+                .consume(System.out::println)
+                .expect("package com;\n" +
+                        "\n" +
+                        "import java.util.Map;\n" +
+                        "\n" +
+                        "public class ACS { \n" +
+                        "    Map < String ,  Integer > upo = null ; \n" +
+                        "     \n" +
+                        "} \n" +
+                        "\n");
 
     }
 }

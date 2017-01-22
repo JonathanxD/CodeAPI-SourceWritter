@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,45 +27,34 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.TryStatement
+import com.github.jonathanxd.codeapi.base.TryWithResources
+import com.github.jonathanxd.codeapi.base.VariableDeclaration
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 
-object TypeSourceGenerator : ValueGenerator<TypeDeclaration, String, PlainSourceGenerator> {
+object TryWithResourcesSourceGenerator : ValueGenerator<TryWithResources, String, PlainSourceGenerator> {
 
-    override fun gen(codeInterface: TypeDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: TryWithResources, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>(
-                TargetValue.create(Annotable::class.java, codeInterface, parents),
+        val variable = inp.variable
 
-                TargetValue.create(Modifierable::class.java, codeInterface, parents),
+        values.add(PlainValue.create("try"))
 
-                TargetValue.create(ClassType::class.java, codeInterface.classType, parents),
+        values.add(PlainValue.create("("))
 
-                TargetValue.create(Named::class.java, codeInterface, parents),
+        values.add(TargetValue.create(VariableDeclaration::class.java, variable, parents))
 
-                TargetValue.create(Generifiable::class.java, codeInterface, parents)
-        )
+        values.add(PlainValue.create(")"))
 
-        val packageName = codeInterface.packageName
-
-        if (packageName != null && !packageName.isEmpty()) {
-            values.add(0, TargetValue.create(PackageDeclaration::class.java, PackageDeclarationImpl(packageName), parents))
-        }
-
-        if (codeInterface is Extender) {
-            values.add(TargetValue.create(Extender::class.java, codeInterface, parents))
-        }
-
-        if (codeInterface is Implementer) {
-            values.add(TargetValue.create(Implementer::class.java, codeInterface, parents))
-        }
-
-        values.add(TargetValue.create(Bodied::class.java, codeInterface, parents))
+        values.add(TargetValue.create(TryStatement::class.java, inp, parents))
 
         return values
     }

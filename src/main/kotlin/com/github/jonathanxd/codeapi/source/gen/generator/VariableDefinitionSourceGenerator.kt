@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,7 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
-import com.github.jonathanxd.codeapi.common.CodeModifier
+import com.github.jonathanxd.codeapi.base.VariableDefinition
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
@@ -35,11 +35,23 @@ import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
+import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import java.util.*
 
-object ModifierSourceGenerator : ValueGenerator<Modifierable, String, PlainSourceGenerator> {
+object VariableDefinitionSourceGenerator : ValueGenerator<VariableDefinition, String, PlainSourceGenerator> {
 
-    override fun gen(modifierable: Modifierable, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
-        return listOf(PlainValue.create(CodeModifier.toString(modifierable.modifiers)))
+    override fun gen(inp: VariableDefinition, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+        val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
+
+        values.add(PlainValue.create(inp.name))
+        values.add(PlainValue.create("="))
+        values.add(TargetValue.create(inp.value, parents))
+
+
+        if (Util.isBody(parents)) {
+            values.add(PlainValue.create(";"))
+        }
+        return values
     }
 
 }

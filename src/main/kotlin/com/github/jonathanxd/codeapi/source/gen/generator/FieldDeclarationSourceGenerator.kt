@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,8 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.*
 import com.github.jonathanxd.codeapi.common.Data
-import com.github.jonathanxd.codeapi.common.MethodType
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
@@ -36,34 +36,46 @@ import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import com.github.jonathanxd.codeapi.type.CodeType
 
-object MethodSpecificationSourceGenerator : ValueGenerator<MethodSpecification, String, PlainSourceGenerator> {
+object FieldDeclarationSourceGenerator : ValueGenerator<FieldDeclaration, String, PlainSourceGenerator> {
 
-    override fun gen(methodSpecification: MethodSpecification, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: FieldDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
-        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
+        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>(
+                TargetValue.create(Annotable::class.java, inp, parents),
+                TargetValue.create(ModifiersHolder::class.java, inp, parents)
+        )
 
-        val arguments = methodSpecification.arguments
+        values.add(TargetValue.create(CodeType::class.java, inp.type, parents))
 
-        if (methodSpecification.methodType == MethodType.METHOD || methodSpecification.methodType == MethodType.DYNAMIC_METHOD) {
-            val methodName = methodSpecification.methodName
+        values.add(PlainValue.create(inp.name))
 
-            if (methodName != null && methodName != "<init>") {
-                values.add(PlainValue.create(methodSpecification.methodName))
+        inp.value?.let { value ->
+            values.add(PlainValue.create("="))
+            values.add(TargetValue.create(value.javaClass, value, parents))
+        }
+
+        val generatorParent1 = parents.find { generatorParent ->
+            if (MethodInvocation::class.java.isAssignableFrom(generatorParent.current.javaClass)) {
+                return@find true
+            }
+
+            TypeDeclaration::class.java.isAssignableFrom(generatorParent.current.javaClass)
+
+        }.orElse(null)
+
+        if (generatorParent1 != null && TypeDeclaration::class.java.isAssignableFrom(generatorParent1.current.javaClass)) {
+            values.add(PlainValue.create(";"))
+        } else {
+
+            if (Util.isBody(parents)) {
+                values.add(PlainValue.create(";"))
             }
         }
 
-
-        if (methodSpecification.methodType == MethodType.DYNAMIC_METHOD || methodSpecification.methodType == MethodType.DYNAMIC_CONSTRUCTOR) {
-            if (arguments.isEmpty()) {
-                return values
-            }
-        }
-
-        values.add(TargetValue.create(Argumenterizable::class.java, methodSpecification, parents))
 
         return values
-
     }
 
 }

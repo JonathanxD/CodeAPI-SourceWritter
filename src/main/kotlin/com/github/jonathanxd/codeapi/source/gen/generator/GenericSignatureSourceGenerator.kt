@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -36,6 +36,7 @@ import com.github.jonathanxd.codeapi.generic.GenericSignature
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import com.github.jonathanxd.codeapi.type.GenericType
 
 object GenericSignatureSourceGenerator : ValueGenerator<GenericSignature, String, PlainSourceGenerator> {
 
@@ -51,7 +52,7 @@ object GenericSignatureSourceGenerator : ValueGenerator<GenericSignature, String
 
             val genericType = types[i]
 
-            values.add(TargetValue.create(genericType.javaClass, genericType, parents))
+            values.add(TargetValue.create(GenericType::class.java, genericType, parents))
 
             if (hasNext)
                 values.add(PlainValue.create(","))

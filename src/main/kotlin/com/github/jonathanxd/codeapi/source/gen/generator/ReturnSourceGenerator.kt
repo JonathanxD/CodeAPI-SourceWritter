@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,6 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.Return
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
@@ -35,25 +36,21 @@ import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.iutils.optional.Require
 import java.util.*
 
 object ReturnSourceGenerator : ValueGenerator<Return, String, PlainSourceGenerator> {
 
-    override fun gen(aReturn: Return, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: Return, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
-        val value = aReturn.value
+        val value = inp.value
 
-        val type = Require.require(aReturn.type, "Return tyoe required!")
+        val type = inp.type
 
         if (type.type == "void" || type.javaSpecName == "V") {
             return Arrays.asList(PlainValue.create("return"), PlainValue.create(";"))
         }
 
-        if (!value.isPresent)
-            return listOf(PlainValue.create("return"))
-
-        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>(PlainValue.create("return"), TargetValue.create(value.get(), parents))
+        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>(PlainValue.create("return"), TargetValue.create(value, parents))
 
         if (Util.isBody(parents)) {
             values.add(PlainValue.create(";"))

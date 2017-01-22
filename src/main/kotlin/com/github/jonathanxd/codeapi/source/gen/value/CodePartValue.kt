@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -28,14 +28,10 @@
 package com.github.jonathanxd.codeapi.source.gen.value
 
 import com.github.jonathanxd.codeapi.CodePart
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.Appender
-import com.github.jonathanxd.codeapi.gen.value.AbstractGenerator
-import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
-import com.github.jonathanxd.codeapi.gen.value.Value
-import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.types.CodeType
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
+import com.github.jonathanxd.codeapi.gen.value.*
+import com.github.jonathanxd.codeapi.type.CodeType
 
 /**
  * A [Value] that holds a [CodePart] and generate [TARGET] from the part.
@@ -44,34 +40,30 @@ import com.github.jonathanxd.iutils.data.MapData
  * @param TARGET   Output object type.
  * @param C        Generator type.
  */
-class CodePartValue<TARGET, C : AbstractGenerator<TARGET, C>>(private val part: CodePart, val parents: Parent<ValueGenerator<*, TARGET, C>>) : Value<CodePart, TARGET, C> {
+class CodePartValue<TARGET, C : AbstractGenerator<TARGET, C>>(override val value: CodePart, val parents: Parent<ValueGenerator<*, TARGET, C>>) : Value<CodePart, TARGET, C> {
 
-    override fun apply(value: TARGET, abstractGenerator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: MapData) {
+    override fun apply(value: CodePart, generator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: Data) {
         try {
 
             val call: List<Value<*, TARGET, C>>?
 
-            if (part is CodeType) {
-                call = abstractGenerator.generateTo(CodeType::class.java, part, parents, codeSourceData, data)
+            if (this.value is CodeType) {
+                call = generator.generateTo(CodeType::class.java, this.value, parents, codeSourceData, data)
             } else {
-                call = abstractGenerator.generateTo(getValue().javaClass, part, parents, codeSourceData, data)
+                call = generator.generateTo(this.value.javaClass, this.value, parents, codeSourceData, data)
             }
 
-            if (call != null && !call.isEmpty()) {
+            if (!call.isEmpty()) {
                 for (genValue in call) {
-                    AbstractGenerator.helpApply(genValue, part, abstractGenerator, appender, codeSourceData, data)
+                    AbstractGenerator.helpApply(genValue, this.value, generator, appender, codeSourceData, data)
                 }
             } else {
-                throw IllegalStateException("Cannot find generator for '" + part.javaClass.canonicalName + "'")
+                throw IllegalStateException("Cannot find generator for '" + this.value.javaClass.canonicalName + "'")
             }
         } catch (t: Throwable) {
             throw RuntimeException("Parents: " + parents, t)
         }
 
-    }
-
-    override fun getValue(): CodePart {
-        return part
     }
 
     companion object {

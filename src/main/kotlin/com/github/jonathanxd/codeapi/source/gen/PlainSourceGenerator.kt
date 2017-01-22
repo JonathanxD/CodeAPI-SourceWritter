@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -55,23 +55,33 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
     init {
 
         register(ImplementationHolder::class.java, ImplementationHolderSourceGenerator)
-        register(ModifiersHolder::class.java, ModifierSourceGenerator)
+        register(ModifiersHolder::class.java, ModifierHolderSourceGenerator)
         register(Named::class.java, NamedSourceGenerator)
         register(Keyword::class.java, KeywordSourceGenerator)
-        register(TypeDeclaration::class.java, TypeSourceGenerator)
+        register(TypeDeclaration::class.java, TypeDeclarationSourceGenerator)
 
         // Field
-        register(FieldDeclaration::class.java, FieldSourceGenerator)
+        register(FieldDeclaration::class.java, FieldDeclarationSourceGenerator)
         register(FieldAccess::class.java, FieldAccessSourceGenerator)
+        register(FieldDefinition::class.java, FieldDefinitionSourceGenerator)
+
+        // Variable
+        register(VariableDeclaration::class.java, VariableSourceGenerator)
+        register(VariableDefinition::class.java, VariableDefinitionSourceGenerator)
+        register(VariableAccess::class.java, VariableAccessSourceGenerator)
+
+        // Method
+        register(MethodDeclaration::class.java, MethodDeclarationSourceGenerator)
+        register(ParametersHolder::class.java, ParametersHolderSourceGenerator)
+        register(CodeParameter::class.java, CodeParameterSourceGenerator)
+        register(ArgumentHolder::class.java, ArgumentHolderSourceGenerator)
+        register(MethodInvocation::class.java, MethodInvocationSourceGenerator)
 
         // ...
-        register(VariableDeclaration::class.java, VariableSourceGenerator)
-        register(MethodDeclaration::class.java, MethodSourceGenerator)
-        register(ReturnTypeHolder::class.java, ReturnableSourceGenerator)
+        register(ReturnTypeHolder::class.java, ReturnTypeHolderSourceGenerator)
         register(CodeType::class.java, CodeTypeSourceGenerator)
-        register(ParametersHolder::class.java, ParameterizableSourceGenerator)
-        register(CodeParameter::class.java, CodeParameterSourceGenerator)
-        register(TryStatement::class.java, TryBlockSourceGenerator)
+        register(TryStatement::class.java, TryStatementSourceGenerator)
+        register(TryWithResources::class.java, TryWithResourcesSourceGenerator)
         register(CatchStatement::class.java, CatchBlockSourceGenerator)
         register(Literal::class.java, LiteralSourceGenerator)
         register(BodyHolder::class.java, BodyHolderSourceGenerator)
@@ -80,14 +90,13 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
         register(CodeSource::class.java, CodeSourceSourceGenerator)
         register(StaticBlock::class.java, StaticBlockSourceGenerator)
         register(Access::class.java, AccessSourceGenerator)
-        registerSuper(ConstructorDeclaration::class.java, MethodSourceGenerator)
+        registerSuper(ConstructorDeclaration::class.java, MethodDeclarationSourceGenerator)
         register(SuperClassHolder::class.java, SuperClassHolderSourceGenerator)
         //register(PackageDeclaration::class.java, PackageDeclarationSourceGenerator)
         register(ThrowException::class.java, ThrowExceptionGenerator)
         register(Return::class.java, ReturnSourceGenerator)
-        register(IfExpressionHolder::class.java, IfExpressionableSourceGenerator)
+        register(IfExpressionHolder::class.java, IfExpressionHolderSourceGenerator)
         register(IfExpr::class.java, IfExprSourceGenerator)
-        register(VariableDeclaration::class.java, VariableStoreSourceGenerator)
         register(ArrayConstructor::class.java, ArrayConstructorSourceGenerator)
         register(ArrayLoad::class.java, ArrayLoadSourceGenerator)
         register(ArrayStore::class.java, ArrayStoreSourceGenerator)
@@ -105,12 +114,6 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
         register(ForStatement::class.java, ForStatementSourceGenerator)
         register(ForEachStatement::class.java, ForEachSourceGenerator)
 
-        // Method body
-        register(MethodSpecification::class.java, MethodSpecificationSourceGenerator)
-        register(ArgumentHolder::class.java, ArgumenterizableSourceGenerator)
-        register(VariableAccess::class.java, VariableAccessSourceGenerator)
-        register(MethodInvocation::class.java, MethodInvocationSourceGenerator)
-
         // Cast
         register(Cast::class.java, CastPartSourceGenerator)
 
@@ -123,9 +126,6 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
         register(Annotable::class.java, AnnotableSourceGenerator)
         register(Annotation::class.java, AnnotationSourceGenerator)
         register(EnumValue::class.java, EnumValueSourceGenerator)
-
-        // Try-with-resources
-        registerSuper(TryWithResources::class.java, TryBlockSourceGenerator)
 
         // Instance Of
         register(InstanceOfCheck::class.java, InstanceOfSourceGenerator)
@@ -180,16 +180,70 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
 
     override fun createAppender(): Appender<String> = MultiStringAppender(delimiter = " ")
 
-    private class MultiStringAppender internal constructor(delimiter: String) : Appender<String>() {
+    private class MultiStringAppender internal constructor(delimiter: String) : ImportAppender<String>() {
+        override val imports = mutableListOf<CodeType>()
+        private var typeDeclaration: TypeDeclaration? = null
+        private var pkg: String = ""
         private val indentation = Ident(4)
         private val multiString: MultiString
         private var isAnnotation = false
+        private var brackets = 0
+        private var first = true
+        private val isInBrackets get() = brackets > 0
 
         init {
             this.multiString = MultiString(delimiter) { s -> indentation.identString + s }
         }
 
+        override fun setDeclaration(typeDeclaration: TypeDeclaration) {
+            if(this.typeDeclaration == null)
+                this.typeDeclaration = typeDeclaration
+        }
+
+        private fun TypeDeclaration.outerIs(type: CodeType): Boolean {
+            var outer = this.outerClass
+
+            while (outer != null && outer is TypeDeclaration && outer.outerClass != null)
+                outer = outer.outerClass
+
+            return outer?.`is`(type) ?: false
+        }
+
+        override fun appendImport(codeType: CodeType) {
+            if (codeType.isPrimitive)
+                return
+
+            if (this.typeDeclaration == null)
+                return
+
+
+            val type = codeType.run {
+                if (isArray)
+                    arrayBaseComponent
+                else
+                    this
+            }
+
+            if (imports.contains(type))
+                return
+
+            val simple = codeType.simpleName
+
+            val found = imports.any { it != type && it.simpleName == simple }
+
+            if (!found)
+                imports += codeType
+        }
+
         override fun add(elem: String) {
+
+            if (first && elem.startsWith("package")) {
+                pkg = elem
+                return
+            }
+
+            first = false
+
             @Suppress("NAME_SHADOWING")
             var elem = elem
 
@@ -204,6 +258,19 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
                 elem = elem.substring(0, elem.length - 1)
             }
 
+            if (elem.startsWith("}") && elem.endsWith("{")) {
+                if (!this.isAnnotation) {
+                    this.multiString.newLine()
+                    this.indentation.removeIdent()
+                }
+            }
+
+            if (elem == "(")
+                ++brackets
+
+            if (elem == ")")
+                --brackets
+
             if (elem != "\n")
                 this.multiString.add(elem)
 
@@ -214,14 +281,25 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
                 this.isAnnotation = false
             }
 
-            if (endsWithSemi
-                    || endsWithOpenBr
-                    || endsWithCloseBr
-                    || elem == "\n") {
+            if (endsWithSemi) {
+                if (!this.isAnnotation && !this.isInBrackets) {
+                    this.multiString.newLine()
+                }
+            }
+
+            if (endsWithOpenBr
+                    || endsWithCloseBr) {
                 if (!this.isAnnotation) {
                     this.multiString.newLine()
                 }
             }
+
+            if (elem == "\n") {
+                if (!this.isAnnotation && !isInBrackets) { // Don't strip lines if element is in brackets
+                    this.multiString.newLine()
+                }
+            }
+
 
             if (endsWithOpenBr) {
                 if (!this.isAnnotation) {
@@ -241,8 +319,26 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
             }
         }
 
-        override fun get(): String {
-            return this.multiString.toString()
-        }
+        val importsStr
+            get() = imports.filter {
+                if(it.packageName == "java.lang")
+                    return@filter false
+                if(this.typeDeclaration == null)
+                    return@filter true
+                if(it.`is`(this.typeDeclaration))
+                    return@filter false
+                if(it is TypeDeclaration && it.outerIs(this.typeDeclaration!!))
+                    return@filter false
+
+                return@filter true
+
+            }.map { "import ${it.canonicalName};" }.let {
+                return@let if (it.isNotEmpty()) "${it.joinToString("\n")}\n\n" else ""
+            }
+
+        val packageStr
+            get() = if (pkg.isEmpty()) "" else "$pkg\n\n"
+
+        override fun get(): String = "$packageStr$importsStr$multiString"
     }
 }

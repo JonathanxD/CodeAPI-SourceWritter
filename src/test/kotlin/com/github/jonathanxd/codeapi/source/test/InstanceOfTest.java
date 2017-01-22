@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.test;
 
 import com.github.jonathanxd.codeapi.CodeSource;
-import com.github.jonathanxd.codeapi.impl.CodeClass;
+import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.InstanceOf_;
 import com.github.jonathanxd.iutils.annotation.Named;
 import com.github.jonathanxd.iutils.object.Pair;
@@ -39,10 +39,32 @@ public class InstanceOfTest {
 
     @Test
     public void instanceOfTest() {
-        Pair<@Named("Main class") CodeClass, @Named("Source") CodeSource> $ = InstanceOf_.$();
+        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = InstanceOf_.$();
         SourceTest test = CommonSourceTest.test($._2());
 
         System.out.println(test.result());
+
+        test.expect("package test;\n" +
+                "\n" +
+                "public class InstanceOf { \n" +
+                "    \n" +
+                "    public static void test ( Object param ) { \n" +
+                "        if ( param instanceof String ) { \n" +
+                "            System . out . println ( \"Object is String!\" ) \n" +
+                "        } else { \n" +
+                "            System . out . println ( \"Object is not String!\" )  \n" +
+                "        } \n" +
+                "        \n" +
+                "        boolean b = param instanceof String ; \n" +
+                "        boolean b2 = ! b ; \n" +
+                "        Integer ab = new Integer ( 9 ) ; \n" +
+                "        boolean b9 = ab == 9 ; \n" +
+                "         \n" +
+                "    } \n" +
+                "    \n" +
+                "     \n" +
+                "} \n" +
+                "\n");
     }
 
 }

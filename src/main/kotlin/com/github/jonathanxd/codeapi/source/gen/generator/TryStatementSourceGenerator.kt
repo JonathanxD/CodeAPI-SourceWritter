@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,7 +27,10 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
-import com.github.jonathanxd.codeapi.base.*
+import com.github.jonathanxd.codeapi.CodeSource
+import com.github.jonathanxd.codeapi.base.BodyHolder
+import com.github.jonathanxd.codeapi.base.TryStatement
+import com.github.jonathanxd.codeapi.base.TryWithResources
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
@@ -37,42 +40,27 @@ import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 
-object FieldSourceGenerator : ValueGenerator<FieldDeclaration, String, PlainSourceGenerator> {
+object TryStatementSourceGenerator : ValueGenerator<TryStatement, String, PlainSourceGenerator> {
 
-    override fun gen(inp: FieldDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: TryStatement, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
-        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>(
-                TargetValue.create(Annotable::class.java, inp, parents),
-                TargetValue.create(ModifiersHolder::class.java, inp, parents)
-        )
+        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(TargetValue.create(inp.type.javaClass, inp.type, parents))
-
-        values.add(PlainValue.create(inp.name))
-
-        inp.value?.let { value ->
-            values.add(PlainValue.create("="))
-            values.add(TargetValue.create(value.javaClass, value, parents))
+        if (inp !is TryWithResources) {
+            values.add(PlainValue.create("try"))
         }
 
-        val generatorParent1 = parents.find { generatorParent ->
-            if (MethodInvocation::class.java.isAssignableFrom(generatorParent.current.javaClass)) {
-                return@find true
-            }
+        val finallyStatement = inp.finallyStatement
+        values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
 
-            TypeDeclaration::class.java.isAssignableFrom(generatorParent.current.javaClass)
-
-        }.orElse(null)
-
-        if (generatorParent1 != null && TypeDeclaration::class.java.isAssignableFrom(generatorParent1.current.javaClass)) {
-            values.add(PlainValue.create(";"))
-        } else {
-
-            if (Util.isBody(parents)) {
-                values.add(PlainValue.create(";"))
-            }
+        inp.catchStatements.forEach {
+            values.add(TargetValue.create(it.javaClass, it, parents))
         }
 
+        if (finallyStatement.isNotEmpty) {
+            values.add(PlainValue.create("finally"))
+            values.add(TargetValue.create(CodeSource::class.java, finallyStatement, parents))
+        }
 
         return values
     }

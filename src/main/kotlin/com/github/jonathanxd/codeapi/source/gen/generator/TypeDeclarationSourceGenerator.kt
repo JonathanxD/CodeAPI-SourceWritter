@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -33,25 +33,54 @@ import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
+import com.github.jonathanxd.codeapi.generic.GenericSignature
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.DeclarationValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 
-object ClassSourceGenerator : ValueGenerator<ClassDeclaration, String, PlainSourceGenerator> {
+object TypeDeclarationSourceGenerator : ValueGenerator<TypeDeclaration, String, PlainSourceGenerator> {
 
-    override fun gen(inp: ClassDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: TypeDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
-        return listOf(
+        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>(
+                DeclarationValue.create(inp),
+                TargetValue.create(Annotable::class.java, inp, parents),
+
                 TargetValue.create(ModifiersHolder::class.java, inp, parents),
 
-                PlainValue.create("class"),
+                PlainValue.create(
+                        when (inp) {
+                            is InterfaceDeclaration -> "interface"
+                            is AnnotationDeclaration -> "@interface"
+                            is ClassDeclaration -> "class"
+                            is EnumDeclaration -> "enum"
+                            else -> ""
+                        }
+                ),
 
                 TargetValue.create(Named::class.java, inp, parents),
-                TargetValue.create(SuperClassHolder::class.java, inp, parents),
-                TargetValue.create(ImplementationHolder::class.java, inp, parents),
 
-                TargetValue.create(BodyHolder::class.java, inp, parents)
+                TargetValue.create(GenericSignatureHolder::class.java, inp, parents)
         )
+
+        val packageName = inp.packageName
+
+        if (!packageName.isEmpty() && !Util.hasTypeParent(parents)) {
+            values.add(0, PlainValue.create("package $packageName;"))
+        }
+
+        if (inp is SuperClassHolder) {
+            values.add(TargetValue.create(SuperClassHolder::class.java, inp, parents))
+        }
+
+        if (inp is ImplementationHolder) {
+            values.add(TargetValue.create(ImplementationHolder::class.java, inp, parents))
+        }
+
+        values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
+
+        return values
     }
 
 }

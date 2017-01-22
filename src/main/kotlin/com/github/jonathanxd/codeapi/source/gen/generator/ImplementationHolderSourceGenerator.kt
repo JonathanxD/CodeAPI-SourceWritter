@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -49,7 +49,7 @@ object ImplementationHolderSourceGenerator : ValueGenerator<ImplementationHolder
 
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(PlainValue.create(NamedSourceGenerator.genStr(Keywords.IMPLEMENTS)))
+        values.add(PlainValue.create(Keywords.IMPLEMENTS.name))
 
         for (codeType in inp.implementations) {
             values.add(TargetValue.create(codeType.javaClass, codeType, parents))

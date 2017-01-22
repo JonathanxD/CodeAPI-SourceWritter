@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -37,6 +37,7 @@ import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.CodeSourceValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 import java.util.*
@@ -51,12 +52,16 @@ object IfStatementSourceGenerator : ValueGenerator<IfStatement, String, PlainSou
 
         values.add(TargetValue.create(IfExpressionHolder::class.java, inp, parents))
 
-        values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
-
         val elseStatement = inp.elseStatement
 
-        if (elseStatement.isNotEmpty) {
-            values.add(TargetValue.create(CodeSource::class.java, elseStatement, parents))
+        if(elseStatement.isEmpty) { // Clean body
+            values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
+        } else {
+            values.add(PlainValue.create("{"))
+            values.add(CodeSourceValue.create(inp.body, parents))
+            values.add(PlainValue.create("} else {"))
+            values.add(CodeSourceValue.create(elseStatement, parents))
+            values.add(PlainValue.create("}"))
         }
 
         return values

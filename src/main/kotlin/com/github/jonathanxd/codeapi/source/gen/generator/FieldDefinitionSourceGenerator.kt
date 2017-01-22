@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,6 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.Accessor
+import com.github.jonathanxd.codeapi.base.FieldDefinition
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
@@ -35,19 +37,24 @@ import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import java.util.*
 
-object TagLineSourceGenerator : ValueGenerator<TagLine<*, *>, String, PlainSourceGenerator> {
+object FieldDefinitionSourceGenerator : ValueGenerator<FieldDefinition, String, PlainSourceGenerator> {
 
-    override fun gen(tagLine: TagLine<*, *>, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: FieldDefinition, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+        val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        val part = tagLine.value
+        values.add(TargetValue.create(Accessor::class.java, inp, parents))
 
-        return listOf(PlainValue.create("/*"),
-                PlainValue.create(tagLine.identifier.toString()),
-                PlainValue.create("*/"),
-                TargetValue.create(part.javaClass, part, parents)
-        )
+        values.add(PlainValue.create(inp.name))
+        values.add(PlainValue.create("="))
+        values.add(TargetValue.create(inp.value, parents))
 
+
+        if (Util.isBody(parents)) {
+            values.add(PlainValue.create(";"))
+        }
+        return values
     }
 
 }

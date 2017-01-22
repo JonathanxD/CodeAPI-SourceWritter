@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.test;
 
 import com.github.jonathanxd.codeapi.CodeSource;
-import com.github.jonathanxd.codeapi.interfaces.TypeDeclaration;
+import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.ConcatTest_;
 import com.github.jonathanxd.iutils.annotation.Named;
 import com.github.jonathanxd.iutils.object.Pair;
@@ -42,7 +42,21 @@ public class ConcatTest {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = ConcatTest_.$();
 
         SourceTest test = CommonSourceTest.test($._2());
-
+        test.expect("package com;\n" +
+                "\n" +
+                "public class ConcatTest { \n" +
+                "    \n" +
+                "    public ConcatTest ( String av ) { \n" +
+                "        System . out . println ( \"Hello\" + \" \" + av + \" :D\" ) ; \n" +
+                "        System . out . println ( \"\" ) ; \n" +
+                "        System . out . println ( \"A\" ) ; \n" +
+                "        System . out . println ( \"A\" + \"B\" ) ; \n" +
+                "         \n" +
+                "    } \n" +
+                "    \n" +
+                "     \n" +
+                "} \n" +
+                "\n");
         test.consume(System.out::println);
     }
 

@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,6 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.gen
 
+import com.github.jonathanxd.codeapi.base.TypeDeclaration
 import com.github.jonathanxd.codeapi.gen.Appender
 import com.github.jonathanxd.codeapi.type.CodeType
 
@@ -34,5 +35,9 @@ import com.github.jonathanxd.codeapi.type.CodeType
  * Support type appending
  */
 abstract class ImportAppender<T> : Appender<T>() {
+    abstract val imports: List<CodeType>
+
+    abstract fun setDeclaration(typeDeclaration: TypeDeclaration)
     abstract fun appendImport(codeType: CodeType)
+
 }

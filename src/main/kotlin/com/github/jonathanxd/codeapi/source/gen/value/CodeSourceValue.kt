@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,14 +27,11 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.value
 
+import com.github.jonathanxd.codeapi.CodePart
 import com.github.jonathanxd.codeapi.CodeSource
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.Appender
-import com.github.jonathanxd.codeapi.gen.value.AbstractGenerator
-import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
-import com.github.jonathanxd.codeapi.gen.value.Value
-import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
+import com.github.jonathanxd.codeapi.gen.value.*
 
 /**
  * [Value] that holds [CodeSource].
@@ -43,25 +40,21 @@ import com.github.jonathanxd.iutils.data.MapData
  * @param TARGET   Result Object type.
  * @param C        Generator type.
  */
-class CodeSourceValue<TARGET, C : AbstractGenerator<TARGET, C>>(private val source: CodeSource, val parents: Parent<ValueGenerator<*, TARGET, C>>) : Value<CodeSource, TARGET, C> {
+class CodeSourceValue<TARGET, C : AbstractGenerator<TARGET, C>>(override val value: CodeSource, val parents: Parent<ValueGenerator<*, TARGET, C>>) : Value<CodeSource, TARGET, C> {
 
-    override fun apply(value: TARGET, abstractGenerator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: MapData) {
+    override fun apply(value: CodePart, generator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: Data) {
 
-        source.forEach { part ->
-            val call = abstractGenerator.generateTo(part.javaClass /*as Class<? extends CodePart>*/, part, parents, codeSourceData, data)
+        this.value.forEach { part ->
+            val call = generator.generateTo(part.javaClass /*as Class<? extends CodePart>*/, part, parents, codeSourceData, data)
 
-            if (call != null && !call.isEmpty()) {
+            if (!call.isEmpty()) {
                 for (genValue in call) {
-                    AbstractGenerator.helpApply(genValue, part, abstractGenerator, appender, codeSourceData, data)
+                    AbstractGenerator.helpApply(genValue, part, generator, appender, codeSourceData, data)
                 }
             } else {
                 throw IllegalStateException("Cannot find generator for '" + part.javaClass.canonicalName + "'")
             }
         }
-    }
-
-    override fun getValue(): CodeSource {
-        return source
     }
 
     companion object {

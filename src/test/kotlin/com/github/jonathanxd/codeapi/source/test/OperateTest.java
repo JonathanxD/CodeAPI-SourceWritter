@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.test;
 
 import com.github.jonathanxd.codeapi.CodeSource;
-import com.github.jonathanxd.codeapi.interfaces.TypeDeclaration;
+import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.OperateTest_;
 import com.github.jonathanxd.iutils.annotation.Named;
 import com.github.jonathanxd.iutils.object.Pair;
@@ -43,6 +43,20 @@ public class OperateTest {
 
         SourceTest test = CommonSourceTest.test($._2());
 
+        test.expect("package com;\n" +
+                "\n" +
+                "public class OperateTest { \n" +
+                "    \n" +
+                "    public OperateTest ( int num ) { \n" +
+                "        System . out . println ( valueOf ( 9 + num + ( num * 2 ) ) ) ; \n" +
+                "        System . out . println ( valueOf ( 9 - ) ) ; \n" +
+                "        System . out . println ( valueOf ( 9 ~ 10 ) ) ; \n" +
+                "         \n" +
+                "    } \n" +
+                "    \n" +
+                "     \n" +
+                "} \n" +
+                "\n");
         test.consume(System.out::println);
     }
 

@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,6 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.ArgumentHolder
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
@@ -37,36 +38,38 @@ import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 import java.util.*
 
-object IfExpressionableSourceGenerator : ValueGenerator<IfExpressionable, String, PlainSourceGenerator> {
+object ArgumentHolderSourceGenerator : ValueGenerator<ArgumentHolder, String, PlainSourceGenerator> {
 
-    override fun gen(ifExpressionable: IfExpressionable, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    private const val NORMAL_OPEN_TAG = "("
+    private const val NORMAL_CLOSE_TAG = ")"
+
+    private const val ARRAY_OPEN_TAG = "{"
+    private const val ARRAY_CLOSE_TAG = "}"
+
+    override fun gen(inp: ArgumentHolder, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(PlainValue.create("("))
+        val OPEN_TOKEN = if (inp.array) ARRAY_OPEN_TAG else NORMAL_OPEN_TAG
+        val CLOSE_TOKEN = if (inp.array) ARRAY_CLOSE_TAG else NORMAL_CLOSE_TAG
 
-        val ifExprs = ifExpressionable.ifExprsAndOps
+        values.add(PlainValue.create(OPEN_TOKEN))
 
-        for (simpleExpr in ifExprs) {
+        val arguments = inp.arguments
 
-            if (simpleExpr is IfExpr) {
+        val iterator = arguments.iterator()
 
-                values.add(PlainValue.create("("))
+        while (iterator.hasNext()) {
+            val argument = iterator.next()
 
-                values.add(TargetValue.create(IfExpr::class.java, simpleExpr, parents))
+            values.add(TargetValue.create(argument.javaClass, argument, parents))
 
-                values.add(PlainValue.create(")"))
-            } else if (simpleExpr === Operators.OR) {
-                values.add(PlainValue.create("||"))
-            } else if (simpleExpr === Operators.AND) {
-                values.add(PlainValue.create("&&"))
-            }
-
+            if (iterator.hasNext())
+                values.add(PlainValue.create(", "))
 
         }
 
-        values.add(PlainValue.create(")"))
-
+        values.add(PlainValue.create(CLOSE_TOKEN))
 
         return values
     }

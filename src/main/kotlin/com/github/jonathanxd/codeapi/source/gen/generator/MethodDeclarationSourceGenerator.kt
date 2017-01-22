@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,7 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
-import com.github.jonathanxd.codeapi.common.CodeParameter
+import com.github.jonathanxd.codeapi.base.*
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
@@ -36,33 +36,45 @@ import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import java.util.*
 
-object ParameterizableSourceGenerator : ValueGenerator<Parameterizable, String, PlainSourceGenerator> {
+object MethodDeclarationSourceGenerator : ValueGenerator<MethodDeclaration, String, PlainSourceGenerator> {
 
-    override fun gen(parameterizable: Parameterizable, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: MethodDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+        val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
+        values.add(PlainValue.create("\n"))
+        values.add(TargetValue.create(Annotable::class.java, inp, parents))
+        values.add(TargetValue.create(ModifiersHolder::class.java, inp, parents))
+        values.add(TargetValue.create(GenericSignatureHolder::class.java, inp, parents))
 
-        values.add(PlainValue.create("("))
-
-        val parameters = parameterizable.parameters
-
-        val iterator = parameters.iterator()
-
-        while (iterator.hasNext()) {
-            val next = iterator.next()
-
-            values.add(TargetValue.create(Annotable::class.java, next, parents))
-            values.add(TargetValue.create(CodeParameter::class.java, next, parents))
-
-            if (iterator.hasNext())
-                values.add(PlainValue.create(", "))
-
+        if (inp !is ConstructorDeclaration) {
+            values.add(TargetValue.create(ReturnTypeHolder::class.java, inp, parents))
         }
 
-        values.add(PlainValue.create(")"))
+        if (inp is ConstructorDeclaration) {
+
+            var name = inp.name
+
+            val generatorParent = parents.find(ClassDeclaration::class.java)
+
+            if (generatorParent.isPresent) {
+                val generatorParent1 = generatorParent.get()
+                val target = generatorParent1.target as ClassDeclaration
+
+                name = target.simpleName
+            }
+
+            values.add(PlainValue.create(name))
+        } else {
+            values.add(TargetValue.create(Named::class.java, inp, parents))
+        }
+
+        values.add(TargetValue.create(ParametersHolder::class.java, inp, parents))
+        values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
 
         return values
+
     }
 
 }

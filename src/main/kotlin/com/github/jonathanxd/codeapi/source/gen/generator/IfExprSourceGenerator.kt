@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,35 +27,48 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.Types
+import com.github.jonathanxd.codeapi.base.IfExpr
+import com.github.jonathanxd.codeapi.base.InstanceOfCheck
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
+import com.github.jonathanxd.codeapi.literal.Literal
+import com.github.jonathanxd.codeapi.operator.Operators
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 
 object IfExprSourceGenerator : ValueGenerator<IfExpr, String, PlainSourceGenerator> {
 
-    override fun gen(ifExpr: IfExpr, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: IfExpr, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        val expr1 = ifExpr.expr1
-        val expr2 = ifExpr.expr2
-        val operation = ifExpr.operation
+        val expr1 = inp.expr1
+        val expr2 = inp.expr2
+        val operation = inp.operation
 
-        if (expr1 != null) {
-            values.add(TargetValue.create(expr1.javaClass, expr1, parents))
+        values.add(TargetValue.create(expr1.javaClass, expr1, parents))
+
+        if(operation == Operators.EQUAL_TO && expr2 is Literal && expr2.type.`is`(Types.BOOLEAN)) {
+            if(expr2.name == "true") {
+                return values
+            } else {
+                values.add(0, PlainValue.create("!"))
+                if(expr1 is InstanceOfCheck) {
+                    values.add(1, PlainValue.create("("))
+                    values.add(PlainValue.create(")"))
+                }
+                return values
+            }
         }
 
-        if (operation != null) {
-            values.add(TargetValue.create(operation.javaClass, operation, parents))
-        }
+        values.add(TargetValue.create(operation.javaClass, operation, parents))
 
-        if (expr2 != null) {
-            values.add(TargetValue.create(expr2.javaClass, expr2, parents))
-        }
+        values.add(TargetValue.create(expr2.javaClass, expr2, parents))
 
         return values
     }

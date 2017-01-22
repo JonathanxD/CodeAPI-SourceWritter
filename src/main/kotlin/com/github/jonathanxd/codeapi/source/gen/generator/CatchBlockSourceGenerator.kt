@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -29,6 +29,7 @@ package com.github.jonathanxd.codeapi.source.gen.generator
 
 import com.github.jonathanxd.codeapi.CodeSource
 import com.github.jonathanxd.codeapi.MutableCodeSource
+import com.github.jonathanxd.codeapi.base.CatchStatement
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
@@ -39,7 +40,7 @@ import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 import java.util.*
 
-object CatchBlockSourceGenerator : ValueGenerator<CatchBlock, String, PlainSourceGenerator> {
+object CatchBlockSourceGenerator : ValueGenerator<CatchStatement, String, PlainSourceGenerator> {
 
     private var CATCH_VAR_COUNT = 0
 
@@ -52,7 +53,7 @@ object CatchBlockSourceGenerator : ValueGenerator<CatchBlock, String, PlainSourc
             return i
         }
 
-    override fun gen(catchBlock: CatchBlock, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(catchBlock: CatchStatement, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
@@ -71,21 +72,22 @@ object CatchBlockSourceGenerator : ValueGenerator<CatchBlock, String, PlainSourc
             }
         }
 
-        val catchName = "internal__catch$$andIncrementCatchVar"
+        val catchName = catchBlock.variable.name
 
         values.add(PlainValue.create("(" + sj.toString() + " " + catchName + ")"))
 
-        val codeSource = catchBlock.body.orElse(CodeSource.empty())
+        val codeSource = catchBlock.body
 
         val source2 = MutableCodeSource()
 
-        var field = catchBlock.variable
+        //var field = catchBlock.variable
 
-        if (!field.value.isPresent) {
+        /*if (field.value == null) {
+            field = field.builder().withValue(CodeAPI)
             field = CodeField(field.name, field.variableType, Helper.accessLocalVariable(catchName, Throwable::class.java), emptyList(), emptyList())
         }
 
-        source2.add(field)
+        source2.add(field)*/
 
         source2.addAll(codeSource)
 

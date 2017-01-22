@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,7 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
-import com.github.jonathanxd.codeapi.base.ArgumentHolder
+import com.github.jonathanxd.codeapi.base.ModifiersHolder
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
@@ -35,43 +35,12 @@ import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import java.util.*
+import com.github.jonathanxd.codeapi.util.toString
 
-object ArgumenterizableSourceGenerator : ValueGenerator<ArgumentHolder, String, PlainSourceGenerator> {
+object ModifierHolderSourceGenerator : ValueGenerator<ModifiersHolder, String, PlainSourceGenerator> {
 
-    private const val NORMAL_OPEN_TAG = "("
-    private const val NORMAL_CLOSE_TAG = ")"
-
-    private const val ARRAY_OPEN_TAG = "{"
-    private const val ARRAY_CLOSE_TAG = "}"
-
-    override fun gen(inp: ArgumentHolder, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
-
-        val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
-
-        val OPEN_TOKEN = if (inp.array) ARRAY_OPEN_TAG else NORMAL_OPEN_TAG
-        val CLOSE_TOKEN = if (inp.array) ARRAY_CLOSE_TAG else NORMAL_CLOSE_TAG
-
-        values.add(PlainValue.create(OPEN_TOKEN))
-
-        val arguments = inp.arguments
-
-        val iterator = arguments.iterator()
-
-        while (iterator.hasNext()) {
-            val argument = iterator.next()
-
-            values.add(TargetValue.create(argument.value.javaClass, argument.value, parents))
-
-            if (iterator.hasNext())
-                values.add(PlainValue.create(", "))
-
-        }
-
-        values.add(PlainValue.create(CLOSE_TOKEN))
-
-        return values
+    override fun gen(inp: ModifiersHolder, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+        return listOf(PlainValue.create(toString(inp.modifiers)))
     }
 
 }

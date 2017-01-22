@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -25,34 +25,51 @@
  *      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *      THE SOFTWARE.
  */
-package com.github.jonathanxd.codeapi.source.gen.generator
+package com.github.jonathanxd.codeapi.source.gen.value
 
+import com.github.jonathanxd.codeapi.CodePart
 import com.github.jonathanxd.codeapi.common.Data
+import com.github.jonathanxd.codeapi.gen.Appender
+import com.github.jonathanxd.codeapi.gen.value.AbstractGenerator
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
-import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
-import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
-import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import com.github.jonathanxd.codeapi.source.gen.ImportAppender
+import com.github.jonathanxd.codeapi.type.CodeType
 
-object VariableOperateSourceGenerator : ValueGenerator<VariableOperate, String, PlainSourceGenerator> {
+/**
+ * Value of plain [TARGET].
+ *
+ * This [Value] append the provided [value] in [Appender].
+ *
+ * @param C        Generator type.
+ */
+class CodeTypeValue<C : AbstractGenerator<String, C>>(override val value: CodeType) : Value<CodeType, String, C> {
 
-    override fun gen(operate: VariableOperate, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun apply(value: CodePart, generator: C, appender: Appender<String>, codeSourceData: CodeSourceData, data: Data) {
+        if (this.value is CodeType && appender is ImportAppender<*>) {
 
-        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
+            if(appender.imports.contains(this.value)) {
+                appender.add(this.value.simpleName)
+                return
+            }
 
-        values.add(TargetValue.create(Accessor::class.java, operate, parents))
-
-        values.add(PlainValue.create(operate.name))
-
-        OperateSourceGenerator.addOperation(values, operate, parents, true)
-
-        if (Util.isBody(parents)) {
-            values.add(PlainValue.create(";"))
         }
 
-        return values
+        appender.add(this.value.canonicalName)
+
     }
 
+    companion object {
+
+        /**
+         * Create [PlainValue].
+         *
+         * @param value    Plain value.
+         * @param C        Generator type.
+         * @return [PlainValue]
+         */
+        fun <C : AbstractGenerator<String, C>> create(value: CodeType): Value<CodeType, String, C> {
+            return CodeTypeValue(value)
+        }
+    }
 }

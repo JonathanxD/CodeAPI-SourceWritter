@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -28,10 +28,7 @@
 package com.github.jonathanxd.codeapi.source.gen.generator
 
 import com.github.jonathanxd.codeapi.CodeAPI
-import com.github.jonathanxd.codeapi.base.BodyHolder
-import com.github.jonathanxd.codeapi.base.MethodInvocation
-import com.github.jonathanxd.codeapi.base.MethodSpecification
-import com.github.jonathanxd.codeapi.base.ParametersHolder
+import com.github.jonathanxd.codeapi.base.*
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.common.InvokeDynamic.LambdaFragment
 import com.github.jonathanxd.codeapi.common.InvokeDynamic.LambdaMethodReference
@@ -44,6 +41,7 @@ import com.github.jonathanxd.codeapi.keyword.Keywords
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import com.github.jonathanxd.codeapi.type.CodeType
 import java.util.*
 
 object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String, PlainSourceGenerator> {
@@ -99,15 +97,10 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
         val isCtr = spec.methodName == "<init>"
         val isSuper = spec.methodType == MethodType.SUPER_CONSTRUCTOR
 
-        var mi = inp
-
         if (isSuper) {
-            val localization = mi.localization
-            mi = mi.builder().withTarget(CodeAPI.accessLocal()).build()
+            val type = Util.localizationResolve(inp.localization, parents)
 
-            val type = Util.localizationResolve(localization, parents)
-
-            if (localization.`is`(type)) {
+            if (inp.localization.`is`(type)) {
                 values.add(PlainValue.create("this"))
             } else {
                 values.add(PlainValue.create("super"))
@@ -116,11 +109,10 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
 
         if (isCtr && !isRef && !isSuper) {
             values.add(TargetValue.create(Keywords.NEW, parents))
-            mi = mi.builder().withTarget(CodeAPI.accessLocal()).build()
         }
 
         if (!isSuper) {
-            values.addAll(AccessorSourceGenerator.gen(mi, !isRef && !isCtr, parents))
+            values.addAll(AccessorSourceGenerator.gen(inp, true, parents))
         }
 
         if (isRef) {
@@ -131,7 +123,21 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
             values.add(TargetValue.create(Keywords.NEW, parents))
         }
 
-        values.add(TargetValue.create(MethodSpecification::class.java, spec, parents))
+        if (inp.spec.methodType == MethodType.METHOD || inp.spec.methodType == MethodType.DYNAMIC_METHOD) {
+            val methodName = inp.spec.methodName
+
+            if (methodName != "<init>") {
+                values.add(PlainValue.create(inp.spec.methodName))
+            }
+        }
+
+        if(isCtr && !isRef && !isSuper) {
+            values.add(TargetValue.create(CodeType::class.java, inp.localization, parents))
+        }
+
+        if (inp.spec.methodType != MethodType.DYNAMIC_METHOD && inp.spec.methodType != MethodType.DYNAMIC_CONSTRUCTOR) {
+            values.add(TargetValue.create(ArgumentHolder::class.java, inp, parents))
+        }
 
 
         if (Util.isBody(parents)) {

@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,6 +27,9 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.Annotable
+import com.github.jonathanxd.codeapi.base.ParametersHolder
+import com.github.jonathanxd.codeapi.common.CodeParameter
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
@@ -35,23 +38,32 @@ import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import java.util.*
 
-object VariableStoreSourceGenerator : ValueGenerator<VariableDeclaration, String, PlainSourceGenerator> {
+object ParametersHolderSourceGenerator : ValueGenerator<ParametersHolder, String, PlainSourceGenerator> {
 
-    override fun gen(variableDeclaration: VariableDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
-        val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
+    override fun gen(inp: ParametersHolder, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
-        values.add(TargetValue.create(Accessor::class.java, variableDeclaration, parents))
+        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(PlainValue.create(variableDeclaration.name))
-        values.add(PlainValue.create("="))
-        values.add(TargetValue.create(variableDeclaration.value.orElse(Literals.NULL), parents))
+        values.add(PlainValue.create("("))
 
+        val parameters = inp.parameters
 
-        if (Util.isBody(parents)) {
-            values.add(PlainValue.create(";"))
+        val iterator = parameters.iterator()
+
+        while (iterator.hasNext()) {
+            val next = iterator.next()
+
+            values.add(TargetValue.create(Annotable::class.java, next, parents))
+            values.add(TargetValue.create(CodeParameter::class.java, next, parents))
+
+            if (iterator.hasNext())
+                values.add(PlainValue.create(", "))
+
         }
+
+        values.add(PlainValue.create(")"))
+
         return values
     }
 

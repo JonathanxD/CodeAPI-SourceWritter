@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.test;
 
 import com.github.jonathanxd.codeapi.CodeSource;
-import com.github.jonathanxd.codeapi.impl.CodeClass;
+import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.InnerClassTest_;
 import com.github.jonathanxd.iutils.annotation.Named;
 import com.github.jonathanxd.iutils.object.Pair;
@@ -39,10 +39,47 @@ public class InnerTest {
 
     @Test
     public void innerTest() {
-        Pair<@Named("Main class") CodeClass, @Named("Source") CodeSource> $ = InnerClassTest_.$();
+        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = InnerClassTest_.$();
 
         SourceTest test = CommonSourceTest.test($._2());
-
+        test.expect("package test;\n" +
+                "\n" +
+                "public class InnerClass { \n" +
+                "    private String field = \"XSD\" ; \n" +
+                "    \n" +
+                "    public InnerClass ( ) { \n" +
+                "        new Inner ( ) . call ( ) ; \n" +
+                "         \n" +
+                "    } \n" +
+                "    \n" +
+                "    \n" +
+                "    private InnerClass ( String str ) { \n" +
+                "        System . out . println ( str ) ; \n" +
+                "         \n" +
+                "    } \n" +
+                "    \n" +
+                "    \n" +
+                "    public void mm ( ) { \n" +
+                "        System . out . println ( \"A\" ) ; \n" +
+                "         \n" +
+                "    } \n" +
+                "    \n" +
+                "    public class Inner { \n" +
+                "        public InnerClass a = new InnerClass ( \"Hello\" ) ; \n" +
+                "        \n" +
+                "        private String call ( ) { \n" +
+                "            System . out . println ( InnerClass . this field ) ; \n" +
+                "            InnerClass . this mm ( ) ; \n" +
+                "            return \"A\" ; \n" +
+                "             \n" +
+                "        } \n" +
+                "        \n" +
+                "         \n" +
+                "    } \n" +
+                "    \n" +
+                "     \n" +
+                "} \n" +
+                "\n");
         test.consume(System.out::println);
     }
 }

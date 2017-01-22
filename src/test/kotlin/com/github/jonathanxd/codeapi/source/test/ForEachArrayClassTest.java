@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.test;
 
 import com.github.jonathanxd.codeapi.CodeSource;
-import com.github.jonathanxd.codeapi.impl.CodeClass;
+import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.ForEachArray_;
 import com.github.jonathanxd.iutils.annotation.Named;
 import com.github.jonathanxd.iutils.object.Pair;
@@ -40,17 +40,19 @@ public class ForEachArrayClassTest {
 
     @Test
     public void test() {
-        Pair<@Named("Main class") CodeClass, @Named("Source") CodeSource> $ = ForEachArray_.$();
+        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = ForEachArray_.$();
         SourceTest test = CommonSourceTest.test($._2());
 
         test.consume(System.out::println)
-                .expect("package com ; \n" +
+                .expect("package com;\n" +
+                        "\n" +
                         "public class ForEach { \n" +
-                        "    public static java.lang.String stra = \"XA\" ; \n" +
+                        "    public static String stra = \"XA\" ; \n" +
+                        "    \n" +
                         "    public ForEach ( java.lang.String[] strArray ) { \n" +
-                        "        java.lang.String v = com.ForEach . stra ; \n" +
-                        "        for ( java.lang.String str : strArray ) { \n" +
-                        "            java.lang.System . out . println ( str ) ; \n" +
+                        "        String v = ForEach . stra ; \n" +
+                        "        for ( String str : strArray ) { \n" +
+                        "            System . out . println ( str ) ; \n" +
                         "             \n" +
                         "        } \n" +
                         "        \n" +

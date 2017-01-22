@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -40,16 +40,40 @@ public class ArrayTest {
 
 
         PlainSourceGenerator plainSourceGenerator = new PlainSourceGenerator();
-        String source = plainSourceGenerator.gen(CommonGen.gen());
-
-        System.out.println(source);
+        SourceTest test = CommonSourceTest.test(CommonGen.gen());
+        test.expect("package com.github.jonathanxd.codeapi.test;\n" +
+                "\n" +
+                "public class CommonGen_Generated { \n" +
+                "    \n" +
+                "    public CommonGen_Generated ( ) { \n" +
+                "        String[][] array = new String [][] { \n" +
+                "            new String [] { \n" +
+                "                \"A\" ,  \"B\" ,  \"C\" ,  \"D\" ,  \"E\"  \n" +
+                "            } \n" +
+                "            \n" +
+                "            ,  new String [] { \n" +
+                "                \"F\" ,  \"G\" ,  \"H\" ,  \"I\" ,  \"J\"  \n" +
+                "            } \n" +
+                "            \n" +
+                "             \n" +
+                "        } \n" +
+                "        \n" +
+                "        ; \n" +
+                "        java.lang.String[] array2 = new String [ 0 ] ; \n" +
+                "        Object[] array3 = new Object [] { \n" +
+                "            1  \n" +
+                "        } \n" +
+                "        \n" +
+                "        ; \n" +
+                "        System . out . println ( array [ 0 ] [ 0 ] ) ; \n" +
+                "         \n" +
+                "    } \n" +
+                "    \n" +
+                "     \n" +
+                "} \n" +
+                "\n");
+        System.out.println(test.result());
 
     }
 
-    private static final class BCLoader extends ClassLoader {
-
-        public Class<?> define(String name, byte[] bytes) {
-            return super.defineClass(name, bytes, 0, bytes.length);
-        }
-    }
 }

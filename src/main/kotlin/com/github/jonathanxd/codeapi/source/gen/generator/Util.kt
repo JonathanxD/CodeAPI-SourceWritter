@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2016 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -52,6 +52,8 @@ object Util {
             return type
         }
     }
+
+    fun hasTypeParent(parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>) = parents.parent?.find(TypeDeclaration::class.java)?.isPresent ?: false
 
     fun isBody(parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>): Boolean {
         val parent = parents.parent
