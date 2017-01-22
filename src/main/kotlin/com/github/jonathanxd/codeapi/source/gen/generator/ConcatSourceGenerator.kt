@@ -27,21 +27,21 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.Concat
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Concat
-import com.github.jonathanxd.codeapi.source.gen.value.CodePartValue
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.CodePartValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
 object ConcatSourceGenerator : ValueGenerator<Concat, String, PlainSourceGenerator> {
 
-    override fun gen(concat: Concat, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
-        val concatenations = concat.concatenations
+    override fun gen(inp: Concat, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+        val concatenations = inp.concatenations
 
         if (concatenations.isEmpty())
             return listOf(PlainValue.create("\"\""))

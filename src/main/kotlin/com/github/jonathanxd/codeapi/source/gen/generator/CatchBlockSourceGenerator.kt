@@ -29,17 +29,14 @@ package com.github.jonathanxd.codeapi.source.gen.generator
 
 import com.github.jonathanxd.codeapi.CodeSource
 import com.github.jonathanxd.codeapi.MutableCodeSource
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.helper.Helper
-import com.github.jonathanxd.codeapi.impl.CodeField
-import com.github.jonathanxd.codeapi.interfaces.CatchBlock
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
 object CatchBlockSourceGenerator : ValueGenerator<CatchBlock, String, PlainSourceGenerator> {
@@ -55,7 +52,7 @@ object CatchBlockSourceGenerator : ValueGenerator<CatchBlock, String, PlainSourc
             return i
         }
 
-    override fun gen(catchBlock: CatchBlock, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(catchBlock: CatchBlock, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 

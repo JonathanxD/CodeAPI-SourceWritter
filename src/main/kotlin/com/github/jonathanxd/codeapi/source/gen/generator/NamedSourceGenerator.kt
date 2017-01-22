@@ -27,14 +27,13 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Named
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 
 object NamedSourceGenerator : ValueGenerator<Named, String, PlainSourceGenerator> {
 
@@ -42,7 +41,7 @@ object NamedSourceGenerator : ValueGenerator<Named, String, PlainSourceGenerator
         return if (named.name != null) named.name else ""
     }
 
-    override fun gen(named: Named, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(named: Named, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
         return listOf(PlainValue.create(genStr(named)))
     }
 

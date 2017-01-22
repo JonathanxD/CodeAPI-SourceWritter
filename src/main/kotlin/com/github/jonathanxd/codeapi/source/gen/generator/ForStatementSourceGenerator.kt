@@ -27,37 +27,44 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.BodyHolder
+import com.github.jonathanxd.codeapi.base.ForStatement
+import com.github.jonathanxd.codeapi.base.IfExpressionHolder
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Bodied
-import com.github.jonathanxd.codeapi.interfaces.ElseBlock
-import com.github.jonathanxd.codeapi.interfaces.IfBlock
-import com.github.jonathanxd.codeapi.interfaces.IfExpressionable
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
-import java.util.*
 
-object IfBlockSourceGenerator : ValueGenerator<IfBlock, String, PlainSourceGenerator> {
+object ForStatementSourceGenerator : ValueGenerator<ForStatement, String, PlainSourceGenerator> {
 
-    override fun gen(ifBlock: IfBlock, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: ForStatement, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
-        val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
+        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(PlainValue.create("if"))
+        values.add(PlainValue.create("for"))
+        values.add(PlainValue.create("("))
 
-        values.add(TargetValue.create(IfExpressionable::class.java, ifBlock, parents))
+        inp.forInit?.let { expression -> values.add(TargetValue.create(expression, parents)) }
 
-        values.add(TargetValue.create(Bodied::class.java, ifBlock, parents))
+        values.add(PlainValue.create(";"))
 
-        val elseBlock = ifBlock.elseBlock
+        val forExpressionOpt = inp.forExpression
 
-        if (elseBlock.isPresent) {
-            values.add(TargetValue.create(ElseBlock::class.java, elseBlock.get(), parents))
+        if (!forExpressionOpt.isEmpty()) {
+            values.add(TargetValue.create(IfExpressionHolder::class.java, inp, parents))
         }
+
+        values.add(PlainValue.create(";"))
+
+        inp.forUpdate?.let { expression -> values.add(TargetValue.create(expression, parents)) }
+
+        values.add(PlainValue.create(")"))
+
+        values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
 
         return values
     }

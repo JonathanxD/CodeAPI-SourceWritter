@@ -28,18 +28,18 @@
 package com.github.jonathanxd.codeapi.source.gen.generator
 
 import com.github.jonathanxd.codeapi.CodePart
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 import com.github.jonathanxd.codeapi.sugar.SugarSyntax
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 
 class SugarSyntaxGenerator<T : CodePart, E : CodePart>(val sugarSyntax: SugarSyntax<T, E>) : ValueGenerator<T, String, PlainSourceGenerator> {
 
-    override fun gen(part: T, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(part: T, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
         val generated = this.sugarSyntax.generator.generate(part)
 
         return listOf(TargetValue.create(generated.javaClass, generated, parents))

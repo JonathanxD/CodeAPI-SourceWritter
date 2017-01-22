@@ -27,25 +27,26 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.types.CodeType
-import com.github.jonathanxd.codeapi.types.GenericType
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
+import com.github.jonathanxd.codeapi.source.gen.value.ImportValue
+import com.github.jonathanxd.codeapi.type.CodeType
+import com.github.jonathanxd.codeapi.type.GenericType
 
 object CodeTypeSourceGenerator : ValueGenerator<CodeType, String, PlainSourceGenerator> {
 
-    override fun gen(codeType: CodeType, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: CodeType, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
-        if (codeType is GenericType)
-            return listOf(TargetValue.create(GenericType::class.java, codeType, parents))
+        if (inp is GenericType)
+            return listOf(ImportValue.create(inp), TargetValue.create(GenericType::class.java, inp, parents))
 
-        return listOf(PlainValue.create(codeType.canonicalName))
+        return listOf(ImportValue.create(inp), PlainValue.create(inp.canonicalName))
     }
 
 }

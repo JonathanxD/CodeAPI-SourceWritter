@@ -27,11 +27,11 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.value
 
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.Appender
 import com.github.jonathanxd.codeapi.gen.value.AbstractGenerator
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Value
-import com.github.jonathanxd.iutils.data.MapData
 
 /**
  * Value of plain [TARGET].
@@ -41,14 +41,10 @@ import com.github.jonathanxd.iutils.data.MapData
  * @param TARGET   Output object type.
  * @param C        Generator type.
  */
-class PlainValue<TARGET, C : AbstractGenerator<TARGET, C>>(private val value: TARGET) : Value<TARGET, TARGET, C> {
+class PlainValue<TARGET, C : AbstractGenerator<TARGET, C>>(override val value: TARGET) : Value<TARGET, TARGET, C> {
 
-    override fun apply(value: TARGET, generator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: MapData) {
-        appender.add(this.getValue())
-    }
-
-    override fun getValue(): TARGET {
-        return value
+    override fun apply(value: TARGET, generator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: Data) {
+        appender.add(this.value)
     }
 
     companion object {

@@ -27,20 +27,17 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.helper.Helper
-import com.github.jonathanxd.codeapi.interfaces.Returnable
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.types.CodeType
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 
 object ReturnableSourceGenerator : ValueGenerator<Returnable, String, PlainSourceGenerator> {
 
-    override fun gen(returnable: Returnable, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(returnable: Returnable, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         if (!returnable.returnType.isPresent)
             return emptyList()

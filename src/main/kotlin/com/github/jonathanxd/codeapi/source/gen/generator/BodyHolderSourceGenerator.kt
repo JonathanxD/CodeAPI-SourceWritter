@@ -27,49 +27,48 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.BodyHolder
+import com.github.jonathanxd.codeapi.base.EntryHolder
+import com.github.jonathanxd.codeapi.base.ModifiersHolder
+import com.github.jonathanxd.codeapi.base.TypeDeclaration
+import com.github.jonathanxd.codeapi.common.CodeModifier
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Bodied
-import com.github.jonathanxd.codeapi.interfaces.ForBlock
-import com.github.jonathanxd.codeapi.interfaces.IfExpressionable
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.CodeSourceValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
-object ForBlockSourceGenerator : ValueGenerator<ForBlock, String, PlainSourceGenerator> {
+object BodyHolderSourceGenerator : ValueGenerator<BodyHolder, String, PlainSourceGenerator> {
 
-    override fun gen(forBlock: ForBlock, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: BodyHolder, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+        val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
+        val body = inp.body
 
-        values.add(PlainValue.create("for"))
-        values.add(PlainValue.create("("))
+        val genBody = inp !is ModifiersHolder || !inp.modifiers.contains(CodeModifier.ABSTRACT)
 
-        val forInitOpt = forBlock.forInit
-
-        forInitOpt.ifPresent { expression -> values.add(TargetValue.create(expression, parents)) }
-
-        values.add(PlainValue.create(";"))
-
-        val forExpressionOpt = forBlock.forExpression
-
-        if (!forExpressionOpt.isEmpty()) {
-            values.add(TargetValue.create(IfExpressionable::class.java, forBlock, parents))
+        if (genBody) {
+            values.add(PlainValue.create("{"))
         }
 
-        values.add(PlainValue.create(";"))
+        if (inp is EntryHolder) {
+            values.add(TargetValue.create(EntryHolder::class.java, inp, parents))
+        }
 
-        val forUpdateOpt = forBlock.forUpdate
+        if (!genBody) {
+            values.add(PlainValue.create(";"))
+        }
 
-        forUpdateOpt.ifPresent { expression -> values.add(TargetValue.create(expression, parents)) }
+        values.add(CodeSourceValue.create(body, parents))
 
-        values.add(PlainValue.create(")"))
-
-        values.add(TargetValue.create(Bodied::class.java, forBlock, parents))
+        if (genBody) {
+            values.add(PlainValue.create("}"))
+        }
 
         return values
     }

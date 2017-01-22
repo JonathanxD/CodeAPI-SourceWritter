@@ -27,25 +27,27 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.Access
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Access
-import com.github.jonathanxd.codeapi.keywords.Keyword
+import com.github.jonathanxd.codeapi.keyword.Keyword
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 
 object AccessSourceGenerator : ValueGenerator<Access, String, PlainSourceGenerator> {
 
-    override fun gen(access: Access, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
-        if (access.keyword() == null && !access.localization.isPresent)
+    override fun gen(inp: Access, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+
+
+        if (inp.keyword == null && inp.localization == null)
             return emptyList()
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(TargetValue.create(Keyword::class.java, access.keyword(), parents))
+        values.add(TargetValue.create(Keyword::class.java, inp.keyword, parents))
 
         return values
     }

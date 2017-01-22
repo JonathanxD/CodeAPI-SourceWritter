@@ -28,35 +28,35 @@
 package com.github.jonathanxd.codeapi.source.gen.generator
 
 import com.github.jonathanxd.codeapi.CodeSource
+import com.github.jonathanxd.codeapi.base.BodyHolder
+import com.github.jonathanxd.codeapi.base.IfExpressionHolder
+import com.github.jonathanxd.codeapi.base.IfStatement
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.ElseBlock
-import com.github.jonathanxd.codeapi.interfaces.IfBlock
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
-object ElseBlockSourceGenerator : ValueGenerator<ElseBlock, String, PlainSourceGenerator> {
+object IfStatementSourceGenerator : ValueGenerator<IfStatement, String, PlainSourceGenerator> {
 
-    override fun gen(elseBlock: ElseBlock, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: IfStatement, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
-        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
+        val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(PlainValue.create("else"))
+        values.add(PlainValue.create("if"))
 
-        val expressionOpt = elseBlock.body
+        values.add(TargetValue.create(IfExpressionHolder::class.java, inp, parents))
 
-        expressionOpt.ifPresent { codeSource ->
-            if (codeSource.size() == 1 && codeSource.get(0) is IfBlock) {
-                val at0 = codeSource.get(0)
-                values.add(TargetValue.create(at0.javaClass, at0, parents))
-            } else {
-                values.add(TargetValue.create(CodeSource::class.java, codeSource, parents))
-            }
+        values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
+
+        val elseStatement = inp.elseStatement
+
+        if (elseStatement.isNotEmpty) {
+            values.add(TargetValue.create(CodeSource::class.java, elseStatement, parents))
         }
 
         return values

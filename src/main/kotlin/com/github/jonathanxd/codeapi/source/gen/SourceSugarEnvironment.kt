@@ -25,31 +25,16 @@
  *      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *      THE SOFTWARE.
  */
-package com.github.jonathanxd.codeapi.source.gen.generator
+package com.github.jonathanxd.codeapi.source.gen
 
-import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
-import com.github.jonathanxd.codeapi.gen.value.Value
-import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Extender
-import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
-import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
+import com.github.jonathanxd.codeapi.sugar.SugarEnvironment
+import java.util.concurrent.ThreadLocalRandom
 
-object ExtenderSourceGenerator : ValueGenerator<Extender, String, PlainSourceGenerator> {
+object SourceSugarEnvironment : SugarEnvironment {
 
-    override fun gen(extender: Extender, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun getVariableName(base: String): String {
+        val nextInt = ThreadLocalRandom.current().nextInt()
 
-        val superTypeOpt = extender.superType
-
-        if (!superTypeOpt.isPresent)
-            return emptyList()
-
-        return listOf(
-                PlainValue.create("extends"),
-                TargetValue.create(superTypeOpt.get().javaClass, superTypeOpt.get(), parents)
-        )
+        return "synthetic_var_${nextInt.toString().replace("-", "_")}"
     }
-
 }

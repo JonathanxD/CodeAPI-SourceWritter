@@ -27,47 +27,35 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
-import com.github.jonathanxd.codeapi.CodeSource
+import com.github.jonathanxd.codeapi.base.Accessor
+import com.github.jonathanxd.codeapi.base.FieldAccess
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Bodied
-import com.github.jonathanxd.codeapi.interfaces.EntryHolder
-import com.github.jonathanxd.codeapi.interfaces.TypeDeclaration
-import com.github.jonathanxd.codeapi.source.gen.value.CodeSourceValue
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
-object BodiedSourceGenerator : ValueGenerator<Bodied, String, PlainSourceGenerator> {
+object FieldAccessSourceGenerator : ValueGenerator<FieldAccess, String, PlainSourceGenerator> {
 
-    override fun gen(bodied: Bodied, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: FieldAccess, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        val body = bodied.body.orElse(CodeSource.empty())
+        val localization = Util.localizationResolve(inp.localization, parents)
 
-        val isExpr = bodied.isExpression
-        val isEmpty = body.isEmpty && bodied !is TypeDeclaration // Type declaration must have a body.
+        val accessor = if (inp.localization != localization) {
+            inp.builder().withLocalization(localization).build()
+        } else inp
 
-        if (isExpr || !isEmpty) {
-            values.add(PlainValue.create("{"))
-        }
+        values.add(TargetValue.create(Accessor::class.java, accessor, parents))
 
-        if (bodied is EntryHolder) {
-            values.add(TargetValue.create(EntryHolder::class.java, bodied, parents))
-        }
+        values.add(PlainValue.create(inp.name))
 
-        if (isEmpty && !isExpr) {
+        if (Util.isBody(parents)) {
             values.add(PlainValue.create(";"))
-        }
-
-        values.add(CodeSourceValue.create(body, parents))
-
-        if (isExpr || !isEmpty) {
-            values.add(PlainValue.create("}"))
         }
 
         return values

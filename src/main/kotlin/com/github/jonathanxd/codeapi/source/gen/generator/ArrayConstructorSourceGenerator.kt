@@ -27,40 +27,40 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.ArgumentHolder
+import com.github.jonathanxd.codeapi.base.ArrayConstructor
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Argumenterizable
-import com.github.jonathanxd.codeapi.interfaces.ArrayConstructor
-import com.github.jonathanxd.codeapi.keywords.Keyword
-import com.github.jonathanxd.codeapi.keywords.Keywords
+import com.github.jonathanxd.codeapi.keyword.Keyword
+import com.github.jonathanxd.codeapi.keyword.Keywords
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.types.CodeType
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
+import com.github.jonathanxd.codeapi.type.CodeType
 
 object ArrayConstructorSourceGenerator : ValueGenerator<ArrayConstructor, String, PlainSourceGenerator> {
 
-    override fun gen(arrayConstructor: ArrayConstructor, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: ArrayConstructor, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
         values.add(TargetValue.create(Keyword::class.java, Keywords.NEW, parents))
-        values.add(TargetValue.create(CodeType::class.java, arrayConstructor.arrayType.arrayBaseComponent, parents))
+        values.add(TargetValue.create(CodeType::class.java, inp.arrayType.arrayBaseComponent, parents))
 
-        val generateSizes = arrayConstructor.arguments.isEmpty()
+        val generateSizes = inp.arguments.isEmpty()
 
         if (!generateSizes) { // Arguments is Not EMPTY
 
-            val collect = arrayConstructor.dimensions.map { "[]" }.joinToString(separator = "")
+            val collect = inp.dimensions.map { "[]" }.joinToString(separator = "")
 
             values.add(PlainValue.create(collect))
 
-            values.add(TargetValue.create(Argumenterizable::class.java, arrayConstructor, parents))
+            values.add(TargetValue.create(ArgumentHolder::class.java, inp, parents))
         } else {
-            for (i in arrayConstructor.dimensions) {
+            for (i in inp.dimensions) {
                 values.add(PlainValue.create("["))
                 values.add(TargetValue.create(i, parents))
                 values.add(PlainValue.create("]"))

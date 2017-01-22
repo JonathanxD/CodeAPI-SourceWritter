@@ -29,95 +29,93 @@ package com.github.jonathanxd.codeapi.source.gen
 
 import com.github.jonathanxd.codeapi.CodePart
 import com.github.jonathanxd.codeapi.CodeSource
+import com.github.jonathanxd.codeapi.base.*
+import com.github.jonathanxd.codeapi.base.Annotation
 import com.github.jonathanxd.codeapi.common.CodeParameter
 import com.github.jonathanxd.codeapi.gen.Appender
 import com.github.jonathanxd.codeapi.gen.value.AbstractGenerator
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.generic.GenericSignature
-import com.github.jonathanxd.codeapi.impl.MethodInvocationImpl
-import com.github.jonathanxd.codeapi.impl.VariableAccessImpl
-import com.github.jonathanxd.codeapi.interfaces.*
-import com.github.jonathanxd.codeapi.interfaces.Annotation
-import com.github.jonathanxd.codeapi.keywords.Keyword
-import com.github.jonathanxd.codeapi.literals.Literal
-import com.github.jonathanxd.codeapi.options.CodeOptions
+import com.github.jonathanxd.codeapi.keyword.Keyword
+import com.github.jonathanxd.codeapi.literal.Literal
 import com.github.jonathanxd.codeapi.source.gen.generator.*
+import com.github.jonathanxd.codeapi.source.util.Ident
+import com.github.jonathanxd.codeapi.source.util.MultiString
 import com.github.jonathanxd.codeapi.sugar.SugarSyntax
-import com.github.jonathanxd.codeapi.types.ClassType
-import com.github.jonathanxd.codeapi.types.CodeType
-import com.github.jonathanxd.codeapi.types.GenericType
-import com.github.jonathanxd.codeapi.util.Ident
-import com.github.jonathanxd.codeapi.util.MultiString
+import com.github.jonathanxd.codeapi.type.CodeType
+import com.github.jonathanxd.codeapi.type.GenericType
 import com.github.jonathanxd.iutils.option.Options
 
 class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
 
-    private val registry = mutableMapOf<Class<*>, ValueGenerator<*, String, PlainSourceGenerator>>()
-    private val options = Options()
+    override val registry: MutableMap<Class<*>, ValueGenerator<*, String, PlainSourceGenerator>> = mutableMapOf<Class<*>, ValueGenerator<*, String, PlainSourceGenerator>>()
+    override val options: Options = Options()
+
 
     init {
-        this.options.set(CodeOptions.INLINE_FINALLY, false)
 
-        register(Implementer::class.java, ImplementerSourceGenerator)
-        register(Modifierable::class.java, ModifierSourceGenerator)
+        register(ImplementationHolder::class.java, ImplementationHolderSourceGenerator)
+        register(ModifiersHolder::class.java, ModifierSourceGenerator)
         register(Named::class.java, NamedSourceGenerator)
         register(Keyword::class.java, KeywordSourceGenerator)
         register(TypeDeclaration::class.java, TypeSourceGenerator)
+
+        // Field
         register(FieldDeclaration::class.java, FieldSourceGenerator)
+        register(FieldAccess::class.java, FieldAccessSourceGenerator)
+
+        // ...
+        register(VariableDeclaration::class.java, VariableSourceGenerator)
         register(MethodDeclaration::class.java, MethodSourceGenerator)
-        register(Returnable::class.java, ReturnableSourceGenerator)
+        register(ReturnTypeHolder::class.java, ReturnableSourceGenerator)
         register(CodeType::class.java, CodeTypeSourceGenerator)
-        register(Parameterizable::class.java, ParameterizableSourceGenerator)
+        register(ParametersHolder::class.java, ParameterizableSourceGenerator)
         register(CodeParameter::class.java, CodeParameterSourceGenerator)
-        register(TryBlock::class.java, TryBlockSourceGenerator)
-        register(CatchBlock::class.java, CatchBlockSourceGenerator)
+        register(TryStatement::class.java, TryBlockSourceGenerator)
+        register(CatchStatement::class.java, CatchBlockSourceGenerator)
         register(Literal::class.java, LiteralSourceGenerator)
-        register(Bodied::class.java, BodiedSourceGenerator)
-        register(IfBlock::class.java, IfBlockSourceGenerator)
-        register(ElseBlock::class.java, ElseBlockSourceGenerator)
+        register(BodyHolder::class.java, BodyHolderSourceGenerator)
+        register(IfStatement::class.java, IfStatementSourceGenerator)
+        //register(ElseBlock::class.java, ElseBlockSourceGenerator)
         register(CodeSource::class.java, CodeSourceSourceGenerator)
         register(StaticBlock::class.java, StaticBlockSourceGenerator)
-        register(ForBlock::class.java, ForBlockSourceGenerator)
         register(Access::class.java, AccessSourceGenerator)
         registerSuper(ConstructorDeclaration::class.java, MethodSourceGenerator)
-        register(Extender::class.java, ExtenderSourceGenerator)
-        register(PackageDeclaration::class.java, PackageDeclarationSourceGenerator)
+        register(SuperClassHolder::class.java, SuperClassHolderSourceGenerator)
+        //register(PackageDeclaration::class.java, PackageDeclarationSourceGenerator)
         register(ThrowException::class.java, ThrowExceptionGenerator)
         register(Return::class.java, ReturnSourceGenerator)
-        register(IfExpressionable::class.java, IfExpressionableSourceGenerator)
+        register(IfExpressionHolder::class.java, IfExpressionableSourceGenerator)
         register(IfExpr::class.java, IfExprSourceGenerator)
         register(VariableDeclaration::class.java, VariableStoreSourceGenerator)
         register(ArrayConstructor::class.java, ArrayConstructorSourceGenerator)
         register(ArrayLoad::class.java, ArrayLoadSourceGenerator)
         register(ArrayStore::class.java, ArrayStoreSourceGenerator)
         register(ArrayLength::class.java, ArrayLengthSourceGenerator)
-        register(TagLine::class.java, TagLineSourceGenerator)
+        //register(TagLine::class.java, TagLineSourceGenerator)
         register(Operate::class.java, OperateSourceGenerator)
-        register(VariableOperate::class.java, VariableOperateSourceGenerator)
-        register(ClassType::class.java, ClassTypeSourceGenerator)
+        //register(VariableOperate::class.java, VariableOperateSourceGenerator)
+        //register(ClassType::class.java, ClassTypeSourceGenerator)
         register(Accessor::class.java, AccessorSourceGenerator)
 
         // While & Do
-        register(DoWhileBlock::class.java, DoWhileBlockSourceGenerator)
-        register(WhileBlock::class.java, WhileBlockSourceGenerator)
-        register(SimpleWhileBlock::class.java, SimpleWhileBlockSourceGenerator)
-        register(ForEachBlock::class.java, ForEachSourceGenerator)
+        //register(DoWhileBlock::class.java, DoWhileBlockSourceGenerator)
+        register(WhileStatement::class.java, WhileBlockSourceGenerator)
+        //register(SimpleWhileBlock::class.java, SimpleWhileBlockSourceGenerator)
+        register(ForStatement::class.java, ForStatementSourceGenerator)
+        register(ForEachStatement::class.java, ForEachSourceGenerator)
 
         // Method body
         register(MethodSpecification::class.java, MethodSpecificationSourceGenerator)
-        register(Argumenterizable::class.java, ArgumenterizableSourceGenerator)
+        register(ArgumentHolder::class.java, ArgumenterizableSourceGenerator)
         register(VariableAccess::class.java, VariableAccessSourceGenerator)
         register(MethodInvocation::class.java, MethodInvocationSourceGenerator)
 
-        // Helper
-        register(VariableAccessImpl::class.java, HelperVASourceGenerator)
-        register(MethodInvocationImpl::class.java, HelperMISourceGenerator)
-
         // Cast
-        register(Casted::class.java, CastedPartSourceGenerator)
+        register(Cast::class.java, CastPartSourceGenerator)
 
         // Generics
-        register(Generifiable::class.java, GenerifiableSourceGenerator)
+        register(GenericSignatureHolder::class.java, GenericHolderSourceGenerator)
         register(GenericSignature::class.java, GenericSignatureSourceGenerator)
         register(GenericType::class.java, GenericTypeSourceGenerator)
 
@@ -130,14 +128,17 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
         registerSuper(TryWithResources::class.java, TryBlockSourceGenerator)
 
         // Instance Of
-        register(InstanceOf::class.java, InstanceOfSourceGenerator)
+        register(InstanceOfCheck::class.java, InstanceOfSourceGenerator)
+
+        // Label
+        register(Label::class.java, LabelSourceGenerator)
 
         // Control flow.
-        register(Break::class.java, BreakSourceGenerator)
-        register(Continue::class.java, ContinueSourceGenerator)
+        register(ControlFlow::class.java, ControlFlowSourceGenerator)
+        //register(Continue::class.java, ContinueSourceGenerator)
 
         // Switch & Case
-        register(Switch::class.java, SwitchSourceGenerator)
+        register(SwitchStatement::class.java, SwitchSourceGenerator)
         register(Case::class.java, CaseSourceGenerator)
 
         // Enum & Enum Entries
@@ -154,37 +155,30 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
 
     }
 
-    override fun <T : CodePart, R : CodePart> registerSugarSyntax(type: Class<T>?, sugarSyntax: SugarSyntax<T, R>?): SugarSyntax<*, *>? {
-        if(type != null && sugarSyntax != null) {
-            var syntax: SugarSyntax<*, *>? = null
+    override fun <T : CodePart, R : CodePart> registerSugarSyntax(type: Class<T>, sugarSyntax: SugarSyntax<T, R>): SugarSyntax<*, *>? {
+        var syntax: SugarSyntax<*, *>? = null
 
-            if (this.getRegistry().containsKey(type)) {
-                val generator = this.getRegistry()[type]
+        if (this.registry.containsKey(type)) {
+            val generator = this.registry[type]
 
-                if (generator is SugarSyntaxGenerator<*, *>)
-                    syntax = generator.sugarSyntax
-            }
-
-            this.getRegistry().put(type, SugarSyntaxGenerator(sugarSyntax))
-
-            return syntax
+            if (generator is SugarSyntaxGenerator<*, *>)
+                syntax = generator.sugarSyntax
         }
 
-        return null
+        this.registry.put(type, SugarSyntaxGenerator(sugarSyntax))
+
+        return syntax
     }
 
-    private fun <T> register(tClass: Class<T>, generator: ValueGenerator<out T, String, PlainSourceGenerator>) {
+    private fun <T> register(tClass: Class<T>, generator: ValueGenerator<T, String, PlainSourceGenerator>) {
         registry.put(tClass, generator)
     }
 
-    private fun <T> registerSuper(tClass: Class<T>, generator: ValueGenerator<in T, String, PlainSourceGenerator>) {
+    private fun <T> registerSuper(tClass: Class<T>, generator: ValueGenerator<T, String, PlainSourceGenerator>) {
         registry.put(tClass, generator)
     }
 
     override fun createAppender(): Appender<String> = MultiStringAppender(delimiter = " ")
-
-    override fun getRegistry(): MutableMap<Class<*>, ValueGenerator<*, String, PlainSourceGenerator>> = this.registry
-    override fun getOptions(): Options = this.options
 
     private class MultiStringAppender internal constructor(delimiter: String) : Appender<String>() {
         private val indentation = Ident(4)
@@ -196,6 +190,7 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
         }
 
         override fun add(elem: String) {
+            @Suppress("NAME_SHADOWING")
             var elem = elem
 
             if (elem.isEmpty())

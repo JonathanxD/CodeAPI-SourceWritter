@@ -28,25 +28,25 @@
 package com.github.jonathanxd.codeapi.source.gen.generator
 
 import com.github.jonathanxd.codeapi.CodeSource
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.source.gen.value.CodePartValue
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.CodePartValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
 object CodeSourceSourceGenerator : ValueGenerator<CodeSource, String, PlainSourceGenerator> {
 
-    override fun gen(codeSource: CodeSource, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: CodeSource, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
         values.add(PlainValue.create("{"))
 
-        codeSource.forEach { codePart -> values.add(CodePartValue.create(codePart, parents)) }
+        inp.forEach { codePart -> values.add(CodePartValue.create(codePart, parents)) }
 
         values.add(PlainValue.create("}"))
 

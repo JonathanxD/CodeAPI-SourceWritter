@@ -27,32 +27,31 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.ArrayStore
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.ArrayStore
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
-import java.util.*
 
 object ArrayStoreSourceGenerator : ValueGenerator<ArrayStore, String, PlainSourceGenerator> {
 
-    override fun gen(arrayStore: ArrayStore, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: ArrayStore, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        arrayStore.target.ifPresent { target -> values.add(TargetValue.create(target, parents)) }
+        values.add(TargetValue.create(inp.target, parents))
 
         values.add(PlainValue.create("["))
-        values.add(TargetValue.create(arrayStore.index, parents))
+        values.add(TargetValue.create(inp.index, parents))
         values.add(PlainValue.create("]"))
 
         values.add(PlainValue.create("="))
 
-        values.add(TargetValue.create(arrayStore.valueToStore, parents))
+        values.add(TargetValue.create(inp.valueToStore, parents))
 
         return values
 

@@ -28,21 +28,21 @@
 package com.github.jonathanxd.codeapi.source.gen.generator
 
 import com.github.jonathanxd.codeapi.common.CodeParameter
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 
 object CodeParameterSourceGenerator : ValueGenerator<CodeParameter, String, PlainSourceGenerator> {
 
-    override fun gen(codeParameter: CodeParameter, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
-        val type = codeParameter.requiredType
+    override fun gen(inp: CodeParameter, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+        val type = inp.type
 
-        return listOf<Value<*, String, PlainSourceGenerator>>(TargetValue.create(type.javaClass, type, parents), PlainValue.create(codeParameter.name))
+        return listOf(TargetValue.create(type.javaClass, type, parents), PlainValue.create(inp.name))
     }
 
 }

@@ -27,36 +27,33 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.ImplementationHolder
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Casted
-import com.github.jonathanxd.codeapi.source.gen.value.CodePartValue
+import com.github.jonathanxd.codeapi.keyword.Keywords
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
-object CastedPartSourceGenerator : ValueGenerator<Casted, String, PlainSourceGenerator> {
+object ImplementationHolderSourceGenerator : ValueGenerator<ImplementationHolder, String, PlainSourceGenerator> {
 
-    override fun gen(casted: Casted, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: ImplementationHolder, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
-        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
+        if (inp.implementations.isEmpty())
+            return emptyList()
 
-        val castedPart = casted.castedPart
 
-        if (castedPart.isPresent) {
-            casted.type.ifPresent { type ->
-                values.add(PlainValue.create("("))
-                values.add(TargetValue.create(type, parents))
-                values.add(PlainValue.create(")"))
-            }
+        val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-            values.add(CodePartValue.create(castedPart.get(), parents))
+        values.add(PlainValue.create(NamedSourceGenerator.genStr(Keywords.IMPLEMENTS)))
+
+        for (codeType in inp.implementations) {
+            values.add(TargetValue.create(codeType.javaClass, codeType, parents))
         }
-
 
         return values
     }

@@ -27,26 +27,24 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.generic.GenericSignature
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.types.GenericType
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
-import java.util.*
 
-object GenericSignatureSourceGenerator : ValueGenerator<GenericSignature<out GenericType>, String, PlainSourceGenerator> {
+object GenericSignatureSourceGenerator : ValueGenerator<GenericSignature, String, PlainSourceGenerator> {
 
-    override fun gen(genericSignature: GenericSignature<out GenericType>, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: GenericSignature, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
 
-        val types = genericSignature.types
+        val types = inp.types
 
         for (i in types.indices) {
             val hasNext = i + 1 < types.size

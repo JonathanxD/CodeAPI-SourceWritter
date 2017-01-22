@@ -27,30 +27,30 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.*
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.*
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.types.ClassType
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 
 object ClassSourceGenerator : ValueGenerator<ClassDeclaration, String, PlainSourceGenerator> {
 
-    override fun gen(codeClass: ClassDeclaration, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: ClassDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         return listOf(
-                TargetValue.create(Modifierable::class.java, codeClass, parents),
+                TargetValue.create(ModifiersHolder::class.java, inp, parents),
 
-                TargetValue.create(ClassType::class.java, codeClass.classType, parents),
+                PlainValue.create("class"),
 
-                TargetValue.create(Named::class.java, codeClass, parents),
-                TargetValue.create(Extender::class.java, codeClass, parents),
-                TargetValue.create(Implementer::class.java, codeClass, parents),
+                TargetValue.create(Named::class.java, inp, parents),
+                TargetValue.create(SuperClassHolder::class.java, inp, parents),
+                TargetValue.create(ImplementationHolder::class.java, inp, parents),
 
-                TargetValue.create(Bodied::class.java, codeClass, parents)
+                TargetValue.create(BodyHolder::class.java, inp, parents)
         )
     }
 

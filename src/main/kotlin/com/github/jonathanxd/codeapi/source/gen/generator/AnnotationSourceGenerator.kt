@@ -27,29 +27,28 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.Annotation
+import com.github.jonathanxd.codeapi.base.EnumValue
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Annotation
-import com.github.jonathanxd.codeapi.interfaces.EnumValue
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.types.CodeType
-import com.github.jonathanxd.codeapi.util.ArrayUtility
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
+import com.github.jonathanxd.codeapi.type.CodeType
+import com.github.jonathanxd.iutils.array.ArrayUtils
 
 object AnnotationSourceGenerator : ValueGenerator<Annotation, String, PlainSourceGenerator> {
 
-    override fun gen(annotation: Annotation, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: Annotation, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-
         values.add(PlainValue.create("@"))
-        values.add(TargetValue.create(CodeType::class.java, annotation.type.orElseThrow(::NullPointerException), parents))
+        values.add(TargetValue.create(CodeType::class.java, inp.type, parents))
 
-        val valuesMap = annotation.values
+        val valuesMap = inp.values
 
         values.add(PlainValue.create<String, PlainSourceGenerator>("("))
 
@@ -81,7 +80,7 @@ object AnnotationSourceGenerator : ValueGenerator<Annotation, String, PlainSourc
         } else if (value is Annotation) {
             values.add(TargetValue.create(Annotation::class.java, value, parents))
         } else if (value.javaClass.isArray) {
-            val valuesObj = ArrayUtility.toObjectArray(value)
+            val valuesObj = ArrayUtils.toObjectArray(value)
 
             values.add(PlainValue.create("{"))
 

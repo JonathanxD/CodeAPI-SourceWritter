@@ -27,67 +27,68 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.CodeAPI
+import com.github.jonathanxd.codeapi.base.BodyHolder
+import com.github.jonathanxd.codeapi.base.MethodInvocation
+import com.github.jonathanxd.codeapi.base.MethodSpecification
+import com.github.jonathanxd.codeapi.base.ParametersHolder
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.common.InvokeDynamic.LambdaFragment
-import com.github.jonathanxd.codeapi.common.InvokeDynamic.isInvokeDynamicLambda
+import com.github.jonathanxd.codeapi.common.InvokeDynamic.LambdaMethodReference
 import com.github.jonathanxd.codeapi.common.MethodType
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.*
-import com.github.jonathanxd.codeapi.keywords.Keywords
+import com.github.jonathanxd.codeapi.keyword.Keywords
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.types.CodeType
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
 object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String, PlainSourceGenerator> {
 
-    override fun gen(methodInvocationImpl: MethodInvocation, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: MethodInvocation, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        val invokeDynamicOpt = methodInvocationImpl.invokeDynamic
+        val invokeDynamic = inp.invokeDynamic
 
-        val spec = methodInvocationImpl.spec
+        val spec = inp.spec
 
         val METHOD_SEPARATOR: String
 
-        if (invokeDynamicOpt.isPresent) {
-
-            val invokeDynamic = invokeDynamicOpt.get()
+        if (invokeDynamic != null) {
 
             if (invokeDynamic is LambdaFragment) {
 
                 val methodFragment = invokeDynamic.methodFragment
 
-                val method = methodFragment.method
+                val method = methodFragment.declaration
 
-                val bodyOpt = method.body
+                val body = method.body
 
-                values.add(TargetValue.create(Parameterizable::class.java, method, parents))
+                values.add(TargetValue.create(ParametersHolder::class.java, method, parents))
 
-                if (bodyOpt.isPresent) {
+                if (body.isNotEmpty) {
                     values.add(PlainValue.create("->"))
 
-                    values.add(TargetValue.create(Bodied::class.java, method, parents))
+                    values.add(TargetValue.create(BodyHolder::class.java, method, parents))
                 } else {
                     values.add(PlainValue.create("-> {};"))
                 }
 
                 return values
 
-            } else if (isInvokeDynamicLambda(invokeDynamic)) {
-                if (spec.arguments.isEmpty()) {
+            } else if (invokeDynamic is LambdaMethodReference) {
+                if (inp.arguments.isEmpty()) {
                     METHOD_SEPARATOR = "::"
                 } else {
                     values.add(PlainValue.create("() ->"))
                     METHOD_SEPARATOR = "."
                 }
             } else {
-                return listOf(PlainValue.create("// Dynamic::[" + methodInvocationImpl.toString() + "];"))
+                return listOf(PlainValue.create("// Dynamic::[" + inp.toString() + "];"))
             }
         } else {
             METHOD_SEPARATOR = "."
@@ -98,17 +99,15 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
         val isCtr = spec.methodName == "<init>"
         val isSuper = spec.methodType == MethodType.SUPER_CONSTRUCTOR
 
-        var mi = methodInvocationImpl
+        var mi = inp
 
         if (isSuper) {
-            val localization = mi.localization.orElse(null)
-            mi = mi.setTarget(null)
+            val localization = mi.localization
+            mi = mi.builder().withTarget(CodeAPI.accessLocal()).build()
 
-            val type = parents.find(TypeDeclaration::class.java)
-                    .orElseThrow { IllegalArgumentException("Cannot determine current class.") }
-                    .target as CodeType
+            val type = Util.localizationResolve(localization, parents)
 
-            if (localization == null || localization.`is`(type)) {
+            if (localization.`is`(type)) {
                 values.add(PlainValue.create("this"))
             } else {
                 values.add(PlainValue.create("super"))
@@ -117,7 +116,7 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
 
         if (isCtr && !isRef && !isSuper) {
             values.add(TargetValue.create(Keywords.NEW, parents))
-            mi = mi.setTarget(null)
+            mi = mi.builder().withTarget(CodeAPI.accessLocal()).build()
         }
 
         if (!isSuper) {

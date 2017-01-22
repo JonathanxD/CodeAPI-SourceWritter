@@ -27,19 +27,26 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.GenericSignatureHolder
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.types.ClassType
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
+import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 
-object ClassTypeSourceGenerator : ValueGenerator<ClassType, String, PlainSourceGenerator> {
+object GenericHolderSourceGenerator : ValueGenerator<GenericSignatureHolder, String, PlainSourceGenerator> {
 
-    override fun gen(classType: ClassType, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
-        return listOf(PlainValue.create(classType.plainName))
+    override fun gen(inp: GenericSignatureHolder, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+        if (inp.genericSignature.types.isEmpty())
+            return emptyList()
+
+        val genericSignature = inp.genericSignature
+
+        return listOf(PlainValue.create("<"), TargetValue.create(genericSignature.javaClass, genericSignature, parents), PlainValue.create(">"))
+
     }
 
 }

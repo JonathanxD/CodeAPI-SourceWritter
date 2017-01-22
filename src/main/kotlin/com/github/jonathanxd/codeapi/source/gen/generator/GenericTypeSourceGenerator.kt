@@ -27,20 +27,20 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.types.GenericType
+import com.github.jonathanxd.codeapi.type.GenericType
 import com.github.jonathanxd.codeapi.util.GenericTypeUtil
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 
 object GenericTypeSourceGenerator : ValueGenerator<GenericType, String, PlainSourceGenerator> {
 
-    override fun gen(genericType: GenericType, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
-        return listOf(PlainValue.create(GenericTypeUtil.toSourceString(genericType)))
+    override fun gen(inp: GenericType, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+        return listOf(PlainValue.create(GenericTypeUtil.toSourceString(inp)))
     }
 
 }

@@ -27,16 +27,36 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.ImplementationHolder
+import com.github.jonathanxd.codeapi.base.SuperClassHolder
+import com.github.jonathanxd.codeapi.base.TypeDeclaration
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
-import com.github.jonathanxd.codeapi.util.Parent
+import com.github.jonathanxd.codeapi.type.CodeType
+import com.github.jonathanxd.codeapi.util.Alias
 
 object Util {
+
+    fun localizationResolve(type: CodeType, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>): CodeType {
+        if(type is Alias) {
+            val decl = parents.find(TypeDeclaration::class.java).orElseThrow { RuntimeException("Cannot determine the localization type for alias '$type'") }.target as TypeDeclaration
+
+            return when(type) {
+                is Alias.THIS -> decl
+                is Alias.SUPER -> (decl as SuperClassHolder).superClass!!
+                is Alias.INTERFACE -> (decl as ImplementationHolder).implementations[type.n]
+            }
+
+        } else {
+            return type
+        }
+    }
 
     fun isBody(parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>): Boolean {
         val parent = parents.parent
 
-        return parent != null && (BodiedSourceGenerator::class.java.isAssignableFrom(parent.current.javaClass) || CodeSourceSourceGenerator::class.java.isAssignableFrom(parent.current.javaClass))
+        return parent != null && (BodyHolderSourceGenerator::class.java.isAssignableFrom(parent.current.javaClass) || CodeSourceSourceGenerator::class.java.isAssignableFrom(parent.current.javaClass))
     }
 
 }

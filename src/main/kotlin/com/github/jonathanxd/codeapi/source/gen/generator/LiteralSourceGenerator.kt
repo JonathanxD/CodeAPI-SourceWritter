@@ -27,28 +27,37 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.Types
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.literals.Literal
-import com.github.jonathanxd.codeapi.literals.Literals
+import com.github.jonathanxd.codeapi.literal.Literal
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.ImportValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
+import com.github.jonathanxd.codeapi.type.CodeType
+import com.github.jonathanxd.codeapi.type.PlainCodeType
+import com.github.jonathanxd.codeapi.util.codeType
 import java.util.*
 
 object LiteralSourceGenerator : ValueGenerator<Literal, String, PlainSourceGenerator> {
 
-    override fun gen(literal: Literal, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: Literal, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        if (literal is Literals.LongLiteral) {
-            values.add(PlainValue.create(literal.getName() + "L"))
-        } else if (literal is Literals.ClassLiteral) {
-            values.add(PlainValue.create(literal.getName() + ".class"))
+        if (inp.type.`is`(Types.LONG)) {
+            values.add(PlainValue.create(inp.name + "L"))
+        } else if (inp.type.`is`(Types.DOUBLE)) {
+            values.add(PlainValue.create(inp.name + "D"))
+        } else if (inp.type.`is`(Types.FLOAT)) {
+            values.add(PlainValue.create(inp.name + "F"))
+        } else if (inp.type.`is`(CodeType::class.codeType)) {
+            values.add(ImportValue.create(PlainCodeType(inp.name, false)))
+            values.add(PlainValue.create(inp.name + ".class"))
         } else {
-            values.add(PlainValue.create(literal.name))
+            values.add(PlainValue.create(inp.name))
         }
 
         if (Util.isBody(parents)) {

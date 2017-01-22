@@ -27,27 +27,27 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.ArrayLoad
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.ArrayLoad
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
 object ArrayLoadSourceGenerator : ValueGenerator<ArrayLoad, String, PlainSourceGenerator> {
 
-    override fun gen(arrayLoad: ArrayLoad, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: ArrayLoad, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        arrayLoad.target.ifPresent { target -> values.add(TargetValue.create(target, parents)) }
+        values.add(TargetValue.create(inp.target, parents))
 
         values.add(PlainValue.create("["))
-        values.add(TargetValue.create(arrayLoad.index, parents))
+        values.add(TargetValue.create(inp.index, parents))
         values.add(PlainValue.create("]"))
 
 

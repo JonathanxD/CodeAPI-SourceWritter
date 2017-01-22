@@ -25,22 +25,41 @@
  *      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *      THE SOFTWARE.
  */
-package com.github.jonathanxd.codeapi.source.gen.generator
+package com.github.jonathanxd.codeapi.source.gen.value
 
+import com.github.jonathanxd.codeapi.common.Data
+import com.github.jonathanxd.codeapi.gen.Appender
+import com.github.jonathanxd.codeapi.gen.value.AbstractGenerator
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Value
-import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.impl.MethodInvocationImpl
-import com.github.jonathanxd.codeapi.interfaces.MethodInvocation
-import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
-import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
+import com.github.jonathanxd.codeapi.source.gen.ImportAppender
+import com.github.jonathanxd.codeapi.type.CodeType
 
-object HelperMISourceGenerator : ValueGenerator<MethodInvocationImpl, String, PlainSourceGenerator> {
+/**
+ * Value of plain [TARGET].
+ *
+ * This [Value] append the provided [value] in [Appender].
+ *
+ * @param C        Generator type.
+ */
+class ImportValue<TARGET, C : AbstractGenerator<TARGET, C>>(override val value: CodeType) : Value<CodeType, TARGET, C> {
 
-    override fun gen(methodInvocationImpl: MethodInvocationImpl, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
-        return listOf(TargetValue.create(MethodInvocation::class.java, methodInvocationImpl, parents))
+    override fun apply(value: TARGET, generator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: Data) {
+        if (this.value is CodeType && appender is ImportAppender<*>)
+            appender.appendImport(this.value)
     }
 
+    companion object {
+
+        /**
+         * Create [PlainValue].
+         *
+         * @param value    Plain value.
+         * @param C        Generator type.
+         * @return [PlainValue]
+         */
+        fun <TARGET, C : AbstractGenerator<TARGET, C>> create(value: CodeType): Value<CodeType, TARGET, C> {
+            return ImportValue(value)
+        }
+    }
 }

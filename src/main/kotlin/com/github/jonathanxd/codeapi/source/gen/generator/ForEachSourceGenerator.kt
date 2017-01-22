@@ -27,44 +27,43 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.BodyHolder
+import com.github.jonathanxd.codeapi.base.ForEachStatement
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.common.IterationTypes
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Bodied
-import com.github.jonathanxd.codeapi.interfaces.ForEachBlock
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.SourceSugarEnvironment
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
-object ForEachSourceGenerator : ValueGenerator<ForEachBlock, String, PlainSourceGenerator> {
+object ForEachSourceGenerator : ValueGenerator<ForEachStatement, String, PlainSourceGenerator> {
 
-    override fun gen(forEachBlock: ForEachBlock, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: ForEachStatement, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        val field = forEachBlock.field
-        val iterableElement = forEachBlock.iterableElement
-        val iterationType = forEachBlock.iterationType
+        val variableDeclaration = inp.variable
+        val iterableElement = inp.iterableElement
+        val iterationType = inp.iterationType
 
         if (iterationType === IterationTypes.ITERABLE_ELEMENT || iterationType === IterationTypes.ARRAY) {
             values.add(PlainValue.create("for"))
             values.add(PlainValue.create("("))
-            values.add(TargetValue.create(field.javaClass, field, parents))
+            values.add(TargetValue.create(variableDeclaration.javaClass, variableDeclaration, parents))
             values.add(PlainValue.create(":"))
             values.add(TargetValue.create(iterableElement.javaClass, iterableElement, parents))
             values.add(PlainValue.create(")"))
-            values.add(TargetValue.create(Bodied::class.java, forEachBlock, parents))
+            values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
         } else {
-            val start = iterationType.generator
+            val start = iterationType.createGenerator(SourceSugarEnvironment)
 
-            val generated = start.generate(forEachBlock)
+            val generated = start.generate(inp, this)
 
-            for (part in generated) {
-                values.add(TargetValue.create(part.javaClass, part, parents))
-            }
+            generated.mapTo(values) { TargetValue.create(it.javaClass, it, parents) }
 
         }
 

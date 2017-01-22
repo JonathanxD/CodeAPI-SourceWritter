@@ -27,34 +27,34 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.BodyHolder
+import com.github.jonathanxd.codeapi.base.Label
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Implementer
-import com.github.jonathanxd.codeapi.keywords.Keywords
-import com.github.jonathanxd.codeapi.source.gen.value.MultiValue
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
-object ImplementerSourceGenerator : ValueGenerator<Implementer, String, PlainSourceGenerator> {
+/**
+ * Created by jonathan on 09/05/16.
+ */
+object LabelSourceGenerator : ValueGenerator<Label, String, PlainSourceGenerator> {
 
-    override fun gen(implementer: Implementer, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
-
-        if (implementer.implementations.isEmpty())
-            return emptyList()
-
+    override fun gen(inp: Label, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(PlainValue.create(NamedSourceGenerator.genStr(Keywords.IMPLEMENTS)))
 
-        for (codeType in implementer.implementations) {
-            values.add(TargetValue.create(codeType.javaClass, codeType, parents))
-        }
+        values.add(PlainValue.create(inp.name))
+        values.add(PlainValue.create("{"))
+
+        values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
+
+        values.add(PlainValue.create("}"))
 
         return values
     }

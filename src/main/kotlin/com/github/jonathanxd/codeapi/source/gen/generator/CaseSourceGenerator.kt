@@ -28,24 +28,24 @@
 package com.github.jonathanxd.codeapi.source.gen.generator
 
 import com.github.jonathanxd.codeapi.CodeSource
+import com.github.jonathanxd.codeapi.base.Case
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Case
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
 object CaseSourceGenerator : ValueGenerator<Case, String, PlainSourceGenerator> {
 
-    override fun gen(aCase: Case, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(aCase: Case, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        val valueOpt = aCase.value
+        val value = aCase.value
 
 
         if (aCase.isDefault) {
@@ -54,15 +54,13 @@ object CaseSourceGenerator : ValueGenerator<Case, String, PlainSourceGenerator> 
             values.add(PlainValue.create("case"))
         }
 
-        if (valueOpt.isPresent) {
-            val value = valueOpt.get()
-
+        if (value != null) {
             values.add(TargetValue.create(value, parents))
         }
 
         values.add(PlainValue.create(":"))
 
-        values.add(TargetValue.create(CodeSource::class.java, aCase.body.orElseThrow(::NullPointerException), parents))
+        values.add(TargetValue.create(CodeSource::class.java, aCase.body, parents))
 
 
         return values

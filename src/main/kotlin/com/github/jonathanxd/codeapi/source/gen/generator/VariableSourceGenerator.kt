@@ -27,26 +27,37 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.VariableDeclaration
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Generifiable
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 
-object GenerifiableSourceGenerator : ValueGenerator<Generifiable, String, PlainSourceGenerator> {
+object VariableSourceGenerator : ValueGenerator<VariableDeclaration, String, PlainSourceGenerator> {
 
-    override fun gen(generifiable: Generifiable, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
-        if (generifiable.genericSignature.types.isEmpty())
-            return emptyList()
+    override fun gen(inp: VariableDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
-        val genericSignature = generifiable.genericSignature
+        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        return listOf(PlainValue.create("<"), TargetValue.create(genericSignature.javaClass, genericSignature, parents), PlainValue.create(">"))
+        values.add(TargetValue.create(inp.type.javaClass, inp.type, parents))
 
+        values.add(PlainValue.create(inp.name))
+
+        inp.value?.let { value ->
+            values.add(PlainValue.create("="))
+            values.add(TargetValue.create(value.javaClass, value, parents))
+        }
+
+        if (Util.isBody(parents)) {
+            values.add(PlainValue.create(";"))
+        }
+
+
+        return values
     }
 
 }

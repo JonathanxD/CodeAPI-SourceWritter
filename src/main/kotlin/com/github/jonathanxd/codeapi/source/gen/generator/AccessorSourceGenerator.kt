@@ -27,19 +27,18 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.Access
+import com.github.jonathanxd.codeapi.base.Accessor
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Access
-import com.github.jonathanxd.codeapi.interfaces.AccessLocal
-import com.github.jonathanxd.codeapi.interfaces.Accessor
-import com.github.jonathanxd.codeapi.source.gen.value.CodePartValue
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.CodePartValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.types.CodeType
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
+import com.github.jonathanxd.codeapi.type.CodeType
 
 object AccessorSourceGenerator : ValueGenerator<Accessor, String, PlainSourceGenerator> {
 
@@ -48,18 +47,18 @@ object AccessorSourceGenerator : ValueGenerator<Accessor, String, PlainSourceGen
 
         var anySeparator = false
 
-        val target = accessor.target.orElse(null)
-        val localization = accessor.localization.orElse(null)
-        val targetIsAccess = target != null && target is Access
+        val target = accessor.target
+        val localization = accessor.localization
+        val targetIsAccess = target is Access
 
-        if (target != null && !targetIsAccess && target !== localization) {
+        if (!targetIsAccess && target !== localization) {
             values.add(CodePartValue.create(target, parents))
 
             if (separator) {
                 values.add(PlainValue.create("."))
                 anySeparator = true
             }
-        } else if (localization != null && target !is AccessLocal) {
+        } else if ((target as Access).type != Access.Type.LOCAL) {
             values.add(TargetValue.create(CodeType::class.java, localization, parents))
             if (separator) {
                 values.add(PlainValue.create("."))
@@ -67,7 +66,7 @@ object AccessorSourceGenerator : ValueGenerator<Accessor, String, PlainSourceGen
             }
         }
 
-        if (targetIsAccess && target !is AccessLocal) {
+        if (targetIsAccess && (target as Access).type != Access.Type.LOCAL) {
             values.add(TargetValue.create(Access::class.java, target, parents))
             if (anySeparator || separator) values.add(PlainValue.create<String, PlainSourceGenerator>("."))
         }
@@ -76,7 +75,7 @@ object AccessorSourceGenerator : ValueGenerator<Accessor, String, PlainSourceGen
         return values
     }
 
-    override fun gen(inp: Accessor, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: Accessor, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
         return gen(inp, true, parents)
     }
 

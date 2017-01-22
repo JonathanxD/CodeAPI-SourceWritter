@@ -27,31 +27,30 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.*
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.*
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
-import java.util.*
 
 object FieldSourceGenerator : ValueGenerator<FieldDeclaration, String, PlainSourceGenerator> {
 
-    override fun gen(codeField: FieldDeclaration, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: FieldDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>(
-                TargetValue.create(Annotable::class.java, codeField, parents),
-                TargetValue.create(Modifierable::class.java, codeField, parents)
+                TargetValue.create(Annotable::class.java, inp, parents),
+                TargetValue.create(ModifiersHolder::class.java, inp, parents)
         )
 
-        codeField.type.ifPresent { type -> values.add(TargetValue.create(type.javaClass, type, parents)) }
+        values.add(TargetValue.create(inp.type.javaClass, inp.type, parents))
 
-        values.add(PlainValue.create(codeField.name))
+        values.add(PlainValue.create(inp.name))
 
-        codeField.value.ifPresent { value ->
+        inp.value?.let { value ->
             values.add(PlainValue.create("="))
             values.add(TargetValue.create(value.javaClass, value, parents))
         }

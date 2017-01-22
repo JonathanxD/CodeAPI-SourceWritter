@@ -27,38 +27,22 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.VariableAccess
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Accessor
-import com.github.jonathanxd.codeapi.interfaces.TypeDeclaration
-import com.github.jonathanxd.codeapi.interfaces.VariableAccess
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.types.CodeType
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
 object VariableAccessSourceGenerator : ValueGenerator<VariableAccess, String, PlainSourceGenerator> {
 
-    override fun gen(variableAccess: VariableAccess, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
-        var variableAccess = variableAccess
+    override fun gen(inp: VariableAccess, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        val at = variableAccess.target.orElse(null)
-        val localization = variableAccess.localization.orElse(null)
-
-        if (at == null && localization == null) {
-            variableAccess = variableAccess.setLocalization(parents.find(TypeDeclaration::class.java)
-                    .orElseThrow { IllegalArgumentException("Cannot determine target type.") }
-                    .target as CodeType)
-        }
-
-        values.add(TargetValue.create(Accessor::class.java, variableAccess, parents))
-
-        values.add(PlainValue.create(variableAccess.name))
+        values.add(PlainValue.create(inp.name))
 
         if (Util.isBody(parents)) {
             values.add(PlainValue.create(";"))

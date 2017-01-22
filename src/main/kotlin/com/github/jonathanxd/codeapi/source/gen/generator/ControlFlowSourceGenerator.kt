@@ -27,22 +27,33 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.ControlFlow
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Continue
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
-object ContinueSourceGenerator : ValueGenerator<Continue, String, PlainSourceGenerator> {
+/**
+ * Created by jonathan on 09/05/16.
+ */
+object ControlFlowSourceGenerator : ValueGenerator<ControlFlow, String, PlainSourceGenerator> {
 
-    override fun gen(aContinue: Continue, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: ControlFlow, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(PlainValue.create("continue"))
+        when(inp.type) {
+            ControlFlow.Type.BREAK -> values.add(PlainValue.create("break"))
+            ControlFlow.Type.CONTINUE -> values.add(PlainValue.create("continue"))
+        }
+
+        inp.at?.let {
+            values.add(PlainValue.create(it.name))
+        }
 
         if (Util.isBody(parents)) {
             values.add(PlainValue.create(";"))

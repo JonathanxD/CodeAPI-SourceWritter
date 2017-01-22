@@ -27,29 +27,27 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
-import com.github.jonathanxd.codeapi.CodeSource
-import com.github.jonathanxd.codeapi.MutableCodeSource
+import com.github.jonathanxd.codeapi.base.AnnotationDeclaration
+import com.github.jonathanxd.codeapi.base.TypeDeclaration
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.AnnotationDeclaration
-import com.github.jonathanxd.codeapi.interfaces.TypeDeclaration
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 
 object AnnotationTypeSourceGenerator : ValueGenerator<AnnotationDeclaration, String, PlainSourceGenerator> {
 
-    override fun gen(annotationDeclaration: AnnotationDeclaration, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: AnnotationDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
 
-        val source = annotationDeclaration.body.map(CodeSource::toMutable).orElse(MutableCodeSource())
+        val source = inp.body.toMutable()
 
-        source.addAll(0, annotationDeclaration.properties)
+        source.addAll(0, inp.properties)
 
-        values.add(TargetValue.create(TypeDeclaration::class.java, annotationDeclaration.setBody(source), parents))
+        values.add(TargetValue.create(TypeDeclaration::class.java, inp.builder().withBody(source).build(), parents))
 
         return values
     }

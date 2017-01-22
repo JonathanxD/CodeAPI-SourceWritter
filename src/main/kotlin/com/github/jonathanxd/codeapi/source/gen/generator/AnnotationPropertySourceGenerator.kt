@@ -27,39 +27,39 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.Annotable
+import com.github.jonathanxd.codeapi.base.AnnotationProperty
+import com.github.jonathanxd.codeapi.base.Named
+import com.github.jonathanxd.codeapi.base.ReturnTypeHolder
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Annotable
-import com.github.jonathanxd.codeapi.interfaces.AnnotationProperty
-import com.github.jonathanxd.codeapi.interfaces.Named
-import com.github.jonathanxd.codeapi.interfaces.Returnable
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 import java.util.*
 
 object AnnotationPropertySourceGenerator : ValueGenerator<AnnotationProperty, String, PlainSourceGenerator> {
 
-    override fun gen(annotationProperty: AnnotationProperty, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: AnnotationProperty, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
         values.addAll(
                 Arrays.asList(
-                        TargetValue.create(Annotable::class.java, annotationProperty, parents),
-                        TargetValue.create(Returnable::class.java, annotationProperty, parents),
-                        TargetValue.create(Named::class.java, annotationProperty, parents),
+                        TargetValue.create(Annotable::class.java, inp, parents),
+                        TargetValue.create(ReturnTypeHolder::class.java, inp, parents),
+                        TargetValue.create(Named::class.java, inp, parents),
                         PlainValue.create("()")
                 ))
 
 
-        val value = annotationProperty.value
+        val value = inp.value
 
-        if (value.isPresent) {
+        if (value != null) {
             values.add(PlainValue.create("default"))
-            AnnotationSourceGenerator.addType(value.get(), values, parents)
+            AnnotationSourceGenerator.addType(value, values, parents)
         }
 
         values.add(PlainValue.create(";"))

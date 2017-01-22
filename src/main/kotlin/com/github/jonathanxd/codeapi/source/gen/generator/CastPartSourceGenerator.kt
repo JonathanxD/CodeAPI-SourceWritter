@@ -27,20 +27,35 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.Cast
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.impl.VariableAccessImpl
-import com.github.jonathanxd.codeapi.interfaces.VariableAccess
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.CodePartValue
+import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 
-object HelperVASourceGenerator : ValueGenerator<VariableAccessImpl, String, PlainSourceGenerator> {
+object CastPartSourceGenerator : ValueGenerator<Cast, String, PlainSourceGenerator> {
 
-    override fun gen(variableAccess: VariableAccessImpl, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
-        return listOf(TargetValue.create(VariableAccess::class.java, variableAccess, parents))
+    override fun gen(casted: Cast, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+
+        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
+
+        val castedPart = casted.castedPart
+
+
+        values.add(PlainValue.create("("))
+        values.add(TargetValue.create(casted.targetType, parents))
+        values.add(PlainValue.create(")"))
+
+
+        values.add(CodePartValue.create(castedPart, parents))
+
+
+        return values
     }
 
 }

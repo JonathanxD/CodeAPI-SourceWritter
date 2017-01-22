@@ -27,28 +27,50 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.BodyHolder
+import com.github.jonathanxd.codeapi.base.IfExpressionHolder
+import com.github.jonathanxd.codeapi.base.WhileStatement
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Bodied
-import com.github.jonathanxd.codeapi.interfaces.SimpleWhileBlock
-import com.github.jonathanxd.codeapi.interfaces.WhileBlock
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
-import java.util.*
 
-object WhileBlockSourceGenerator : ValueGenerator<WhileBlock, String, PlainSourceGenerator> {
+object WhileBlockSourceGenerator : ValueGenerator<WhileStatement, String, PlainSourceGenerator> {
 
-    override fun gen(whileBlock: WhileBlock, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: WhileStatement, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
-        val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
+        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(TargetValue.create(SimpleWhileBlock::class.java, whileBlock, parents))
+        fun addWhileStm() {
+            values.add(PlainValue.create("while"))
 
-        values.add(TargetValue.create(Bodied::class.java, whileBlock, parents))
+            values.add(PlainValue.create("("))
 
+            val expressions = inp.expressions
+
+            if (expressions.isEmpty()) {
+                values.add(PlainValue.create("true"))
+            } else {
+                values.add(TargetValue.create(IfExpressionHolder::class.java, inp, parents))
+            }
+
+            values.add(PlainValue.create(")"))
+        }
+
+        if (inp.type == WhileStatement.Type.WHILE) {
+            addWhileStm()
+        }
+
+        values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
+
+        if (inp.type == WhileStatement.Type.DO_WHILE) {
+            addWhileStm()
+            values.add(PlainValue.create(";"))
+        }
 
         return values
     }

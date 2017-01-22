@@ -27,13 +27,10 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.value
 
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.Appender
-import com.github.jonathanxd.codeapi.gen.value.AbstractGenerator
-import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
-import com.github.jonathanxd.codeapi.gen.value.Value
-import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.types.CodeType
-import com.github.jonathanxd.codeapi.util.Parent
+import com.github.jonathanxd.codeapi.gen.value.*
+import com.github.jonathanxd.codeapi.type.CodeType
 import com.github.jonathanxd.iutils.data.MapData
 
 /**
@@ -46,15 +43,13 @@ import com.github.jonathanxd.iutils.data.MapData
  * @param TARGET   Output object type.
  * @param C        Generator type.
  */
-class TargetValue<V, TARGET, C : AbstractGenerator<TARGET, C>> internal constructor(private val value: Class<*>, val `val`: V, private val parents: Parent<ValueGenerator<*, TARGET, C>>) : Value<Class<*>, TARGET, C> {
+class TargetValue<V: Any, TARGET, C : AbstractGenerator<TARGET, C>> internal constructor(override val value: Class<*>, val `val`: V, private val parents: Parent<ValueGenerator<*, TARGET, C>>) : Value<Class<*>, TARGET, C> {
 
-    override fun apply(value: TARGET, abstractGenerator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: MapData) {
+    override fun apply(value: TARGET, generator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: Data) {
 
-        val to = abstractGenerator.generateTo(this.value, this.`val`, this.parents, codeSourceData, data)
-        to.forEach { d -> d.apply(value, abstractGenerator, appender, codeSourceData, data) }
+        val to = generator.generateTo(this.value, this.`val`, this.parents, codeSourceData, data)
+        to.forEach { d -> d.apply(value, generator, appender, codeSourceData, data) }
     }
-
-    override fun getValue(): Class<*> = this.value
 
 
     companion object {
@@ -70,7 +65,7 @@ class TargetValue<V, TARGET, C : AbstractGenerator<TARGET, C>> internal construc
          * @param C           Generator type.
          * @return [TargetValue].
          */
-        fun <V, TARGET, C : AbstractGenerator<TARGET, C>> create(targetClass: Class<*>, `val`: V, parents: Parent<ValueGenerator<*, TARGET, C>>): Value<Class<*>, TARGET, C> {
+        fun <V: Any, TARGET, C : AbstractGenerator<TARGET, C>> create(targetClass: Class<*>, `val`: V, parents: Parent<ValueGenerator<*, TARGET, C>>): Value<Class<*>, TARGET, C> {
             return TargetValue(targetClass, `val`, parents)
         }
 

@@ -27,34 +27,34 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.ArgumentHolder
+import com.github.jonathanxd.codeapi.base.BodyHolder
+import com.github.jonathanxd.codeapi.base.EnumEntry
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.Argumenterizable
-import com.github.jonathanxd.codeapi.interfaces.Bodied
-import com.github.jonathanxd.codeapi.interfaces.EnumEntry
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
 
 object EntrySourceGenerator : ValueGenerator<EnumEntry, String, PlainSourceGenerator> {
 
-    override fun gen(enumEntry: EnumEntry, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: EnumEntry, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(PlainValue.create(enumEntry.name)) // Or TargetValue.create(Named.class) but I want to avoid the overhead.
+        values.add(PlainValue.create(inp.name)) // Or TargetValue.create(Named.class) but I want to avoid the overhead.
 
-        val constructorSpec = enumEntry.constructorSpec
+        val constructorSpec = inp.constructorSpec
 
-        if (constructorSpec.isPresent) {
-            values.add(TargetValue.create(Argumenterizable::class.java, enumEntry, parents))
+        if (constructorSpec != null) {
+            values.add(TargetValue.create(ArgumentHolder::class.java, inp, parents))
         }
 
-        if (enumEntry.hasBody()) {
-            values.add(TargetValue.create(Bodied::class.java, enumEntry, parents))
+        if (inp.body.isNotEmpty) {
+            values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
         }
 
         return values

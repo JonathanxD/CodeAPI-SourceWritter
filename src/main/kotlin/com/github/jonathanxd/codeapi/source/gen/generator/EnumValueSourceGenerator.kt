@@ -27,31 +27,28 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.base.EnumValue
+import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.interfaces.EnumValue
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.types.CodeType
-import com.github.jonathanxd.codeapi.util.Parent
-import com.github.jonathanxd.iutils.data.MapData
-import java.util.*
+import com.github.jonathanxd.codeapi.type.CodeType
 
 object EnumValueSourceGenerator : ValueGenerator<EnumValue, String, PlainSourceGenerator> {
 
-    override fun gen(enumValue: EnumValue, plainSourceGenerator: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: MapData): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: EnumValue, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        val enumType = enumValue.enumType
+        val enumType = inp.enumType
 
-        if (enumType != null) {
-            values.add(TargetValue.create(CodeType::class.java, enumType, parents))
-            values.add(PlainValue.create("."))
-        }
+        values.add(TargetValue.create(CodeType::class.java, enumType, parents))
+        values.add(PlainValue.create("."))
 
-        values.add(PlainValue.create(enumValue.enumValue))
+        values.add(PlainValue.create(inp.enumEntry))
 
 
         return values
