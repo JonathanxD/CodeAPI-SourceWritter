@@ -1,0 +1,16 @@
+public @interface MyAnnotation { 
+    String value () ; 
+    String id () default "A" ; 
+    java.lang.String[] names () default { 
+        "A" , "B"  
+    } 
+    
+    ; 
+    int[] ns () default { 
+        1 , 2  
+    } 
+    
+    ; 
+     
+} 
+

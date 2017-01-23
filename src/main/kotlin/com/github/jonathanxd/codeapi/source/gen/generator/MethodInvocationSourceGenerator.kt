@@ -112,7 +112,7 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
         }
 
         if (!isSuper) {
-            values.addAll(AccessorSourceGenerator.gen(inp, true, parents))
+            values.addAll(AccessorSourceGenerator.gen(inp, !isRef, parents))
         }
 
         if (isRef) {

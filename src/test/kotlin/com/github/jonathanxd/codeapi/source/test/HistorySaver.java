@@ -27,34 +27,53 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
-import com.github.jonathanxd.codeapi.base.TypeDeclaration;
-import com.github.jonathanxd.codeapi.test.GenericClass_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
+import com.github.jonathanxd.codeapi.type.CodeType;
 
-import org.junit.Test;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 
-public class TestGenericClass {
+import kotlin.text.Charsets;
 
-    @Test
-    public void genericClass() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = GenericClass_.$();
-        CommonSourceTest.test(this.getClass(), $._1(), $._2()).consume(System.out::println).expect("package com;\n" +
-                "\n" +
-                "import java.util.List;\n" +
-                "\n" +
-                "public class Generic < T  extends  List < T > > implements List < T > { \n" +
-                "    \n" +
-                "    public static < T  extends  List < T > > void test ( T val ) { \n" +
-                "        T fieldi = null ; \n" +
-                "         \n" +
-                "    } \n" +
-                "    \n" +
-                "    public T test ; \n" +
-                "     \n" +
-                "} \n" +
-                "\n");
+/**
+ * Tests history saver
+ */
+public class HistorySaver {
+
+    private static final String PATH = "src/test/resources/";
+    private static final boolean IS_GRADLE_ENVIRONMENT;
+
+    static {
+        String prop = System.getProperty("env");
+
+        IS_GRADLE_ENVIRONMENT = prop != null && prop.equals("gradle");
+
+        if (IS_GRADLE_ENVIRONMENT) {
+            System.out.println("Gradle environment property defined!");
+        }
+    }
+
+
+    public static void save(Class<?> ofClass, CodeType theClass, String output) {
+        if (IS_GRADLE_ENVIRONMENT)
+            return;
+
+        File root = new File(PATH, "history/");
+
+        if (!root.exists())
+            root.mkdirs();
+
+        File toSave = new File(root, ofClass.getSimpleName() + "_" + theClass.getSimpleName() + ".history");
+
+        if (toSave.exists())
+            toSave.delete();
+
+        try {
+            Files.write(toSave.toPath(), output.getBytes(Charsets.UTF_8), StandardOpenOption.CREATE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

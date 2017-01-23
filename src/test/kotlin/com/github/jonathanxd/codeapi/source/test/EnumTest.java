@@ -41,7 +41,7 @@ public class EnumTest {
     public void test() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = EnumTest_.$();
 
-        SourceTest test = CommonSourceTest.test($._2());
+        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
         test.expect("import com.github.jonathanxd.codeapi.test.EnumTest_.MyItf;\n" +
                 "\n" +
                 "public enum MyEnum implements MyItf { \n" +

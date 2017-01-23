@@ -40,7 +40,7 @@ public class AnnotatedTest {
     @Test
     public void annotatedTest() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = AnnotatedTest_.$();
-        SourceTest test = CommonSourceTest.test($._2());
+        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
         test.expect("package test;\n" +
                 "\n" +
                 "import com.github.jonathanxd.codeapi.test.AnnotatedTest_.Simple;\n" +

@@ -39,7 +39,7 @@ public class TryWithResourcesTest {
     @Test
     public void testSource() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = TryWithResourcesTest_.$();
-        SourceTest test = CommonSourceTest.test($._2());
+        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
         test.expect("package test;\n" +
                 "\n" +
                 "import com.github.jonathanxd.codeapi.test.TryWithResourcesTest_.Trm;\n" +

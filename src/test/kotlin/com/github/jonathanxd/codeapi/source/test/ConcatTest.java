@@ -41,7 +41,7 @@ public class ConcatTest {
     public void concatTest() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = ConcatTest_.$();
 
-        SourceTest test = CommonSourceTest.test($._2());
+        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
         test.expect("package com;\n" +
                 "\n" +
                 "public class ConcatTest { \n" +

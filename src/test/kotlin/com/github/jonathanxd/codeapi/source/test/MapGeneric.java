@@ -34,7 +34,7 @@ import com.github.jonathanxd.codeapi.common.CodeModifier;
 import com.github.jonathanxd.codeapi.factory.ClassFactory;
 import com.github.jonathanxd.codeapi.factory.FieldFactory;
 import com.github.jonathanxd.codeapi.literal.Literals;
-import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator;
+import com.github.jonathanxd.codeapi.type.CodeType;
 import com.github.jonathanxd.codeapi.type.Generic;
 
 import org.junit.Test;
@@ -48,11 +48,13 @@ public class MapGeneric {
 
         MutableCodeSource cs = new MutableCodeSource();
 
-        cs.add(ClassFactory.aClass(EnumSet.of(CodeModifier.PUBLIC), "com.ACS", CodeAPI.sourceOfParts(
+        CodeType type;
+
+        cs.add(type = ClassFactory.aClass(EnumSet.of(CodeModifier.PUBLIC), "com.ACS", CodeAPI.sourceOfParts(
                 FieldFactory.field(Generic.type(CodeAPI.getJavaType(Map.class)).of(Types.STRING).of(Types.INTEGER_WRAPPER), "upo", Literals.NULL)
         )));
 
-        CommonSourceTest.test(cs)
+        CommonSourceTest.test(this.getClass(), type, cs)
                 .consume(System.out::println)
                 .expect("package com;\n" +
                         "\n" +

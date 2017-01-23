@@ -29,13 +29,16 @@ package com.github.jonathanxd.codeapi.source.test;
 
 import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator;
+import com.github.jonathanxd.codeapi.type.CodeType;
 
 public class CommonSourceTest {
 
-    public static SourceTest test(CodeSource source) {
+    public static SourceTest test(Class<?> ofClass, CodeType theClass, CodeSource source) {
         PlainSourceGenerator plainSourceGenerator = new PlainSourceGenerator();
 
         String gen = plainSourceGenerator.gen(source);
+
+        HistorySaver.save(ofClass, theClass, gen);
 
         return new SourceTest(gen);
     }

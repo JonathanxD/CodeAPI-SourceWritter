@@ -40,7 +40,7 @@ public class InstanceOfTest {
     @Test
     public void instanceOfTest() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = InstanceOf_.$();
-        SourceTest test = CommonSourceTest.test($._2());
+        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
 
         System.out.println(test.result());
 

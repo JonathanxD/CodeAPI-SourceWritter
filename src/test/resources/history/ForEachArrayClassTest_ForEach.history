@@ -1,0 +1,18 @@
+package com;
+
+public class ForEach { 
+    public static String stra = "XA" ; 
+    
+    public ForEach ( java.lang.String[] strArray ) { 
+        String v = ForEach . stra ; 
+        for ( String str : strArray ) { 
+            System . out . println ( str ) ; 
+             
+        } 
+        
+         
+    } 
+    
+     
+} 
+

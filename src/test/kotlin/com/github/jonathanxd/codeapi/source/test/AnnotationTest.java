@@ -41,7 +41,7 @@ public class AnnotationTest {
     public void annotationTest() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = AnnotationTest_.$();
 
-        SourceTest test = CommonSourceTest.test($._2());
+        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
         test.expect("public @interface MyAnnotation { \n" +
                 "    String value () ; \n" +
                 "    String id () default \"A\" ; \n" +

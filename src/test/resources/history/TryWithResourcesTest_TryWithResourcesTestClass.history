@@ -1,0 +1,18 @@
+package test;
+
+import com.github.jonathanxd.codeapi.test.TryWithResourcesTest_.Trm;
+
+public class TryWithResourcesTestClass { 
+    
+    public TryWithResourcesTestClass ( ) { 
+        try ( Trm trm = new Trm ( ) ) { 
+            trm . read ( ) ; 
+             
+        } 
+        
+         
+    } 
+    
+     
+} 
+

@@ -41,7 +41,7 @@ public class ForEachArrayClassTest {
     @Test
     public void test() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = ForEachArray_.$();
-        SourceTest test = CommonSourceTest.test($._2());
+        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
 
         test.consume(System.out::println)
                 .expect("package com;\n" +

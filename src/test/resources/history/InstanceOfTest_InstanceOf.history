@@ -1,0 +1,21 @@
+package test;
+
+public class InstanceOf { 
+    
+    public static void test ( Object param ) { 
+        if ( param instanceof String ) { 
+            System . out . println ( "Object is String!" ) 
+        } else { 
+            System . out . println ( "Object is not String!" )  
+        } 
+        
+        boolean b = param instanceof String ; 
+        boolean b2 = ! b ; 
+        Integer ab = new Integer ( 9 ) ; 
+        boolean b9 = ab == 9 ; 
+         
+    } 
+    
+     
+} 
+

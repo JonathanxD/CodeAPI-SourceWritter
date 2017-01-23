@@ -41,7 +41,7 @@ public class SwitchSourceTest {
     public void switchTest() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = SwitchTest_.$();
 
-        SourceTest test = CommonSourceTest.test($._2());
+        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
 
         test.consume(System.out::println);
     }

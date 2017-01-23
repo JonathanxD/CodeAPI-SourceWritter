@@ -1,0 +1,20 @@
+package test;
+
+import com.github.jonathanxd.codeapi.test.AnnotatedTest_.Simple;
+import com.github.jonathanxd.codeapi.test.AnnotatedTest_.MyEnum;
+import java.lang.invoke.MethodHandle.PolymorphicSignature;
+
+@ Simple ( { MyEnum . A , MyEnum . B , MyEnum . C  } ) 
+public class AnnotatedTestClass { 
+    
+    @ PolymorphicSignature ( ) 
+    public static Object polymorphic ( @ Deprecated ( ) Object first ) { 
+        return null ; 
+         
+    } 
+    
+    @ Simple ( { MyEnum . A  } ) 
+    public static String field = null ; 
+     
+} 
+

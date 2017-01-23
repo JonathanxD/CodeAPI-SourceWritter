@@ -42,7 +42,7 @@ public class TestLoopSource {
     @Test
     public void testSource() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = LoopTest_.$();
-        SourceTest test = CommonSourceTest.test($._2());
+        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
         test.expect("package fullName;\n" +
                 "\n" +
                 "public class LoopTest_ { \n" +

@@ -1,0 +1,15 @@
+package com;
+
+import java.util.List;
+
+public class Generic < T  extends  List < T > > implements List < T > { 
+    
+    public static < T  extends  List < T > > void test ( T val ) { 
+        T fieldi = null ; 
+         
+    } 
+    
+    public T test ; 
+     
+} 
+

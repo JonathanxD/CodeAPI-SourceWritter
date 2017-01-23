@@ -40,7 +40,7 @@ public class TestForeachClass {
     @Test
     public void genericClass() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = ForEach_.$();
-        CommonSourceTest.test($._2()).consume(System.out::println).expect("package com;\n" +
+        CommonSourceTest.test(this.getClass(), $._1(), $._2()).consume(System.out::println).expect("package com;\n" +
                 "\n" +
                 "import java.util.List;\n" +
                 "\n" +

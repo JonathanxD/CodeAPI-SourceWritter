@@ -29,6 +29,7 @@ package com.github.jonathanxd.codeapi.source.test;
 
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator;
 import com.github.jonathanxd.codeapi.test.CommonGen;
+import com.github.jonathanxd.codeapi.type.PlainCodeType;
 
 import org.junit.Test;
 
@@ -40,7 +41,7 @@ public class ArrayTest {
 
 
         PlainSourceGenerator plainSourceGenerator = new PlainSourceGenerator();
-        SourceTest test = CommonSourceTest.test(CommonGen.gen());
+        SourceTest test = CommonSourceTest.test(this.getClass(), new PlainCodeType(CommonGen.class.getCanonicalName() + "_Generated"), CommonGen.gen());
         test.expect("package com.github.jonathanxd.codeapi.test;\n" +
                 "\n" +
                 "public class CommonGen_Generated { \n" +
