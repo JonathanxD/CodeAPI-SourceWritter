@@ -257,8 +257,8 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
                 this.multiString.newLine()
             else {
                 if(this.multiString.isCurrentLineEmpty())
-                    this.multiString.add("$prefix$t")
-                else this.multiString.add(t)
+                    this.multiString.addND("$prefix$t")
+                else this.multiString.addND(t)
             }
         }
 

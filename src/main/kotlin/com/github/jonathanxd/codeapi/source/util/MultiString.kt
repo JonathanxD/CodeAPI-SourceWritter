@@ -39,6 +39,10 @@ class MultiString(private val delimiter: String, private val preparer: (String) 
         this.add(str, true)
     }
 
+    fun addND(str: String) {
+        this.add(str, false)
+    }
+
     private fun add(str: String, appendDelimiter: Boolean) {
         var str = str
         if (strings.size <= line) {
