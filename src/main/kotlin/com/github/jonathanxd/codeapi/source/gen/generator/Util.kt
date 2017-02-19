@@ -39,10 +39,10 @@ import com.github.jonathanxd.codeapi.util.Alias
 object Util {
 
     fun localizationResolve(type: CodeType, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>): CodeType {
-        if(type is Alias) {
+        if (type is Alias) {
             val decl = parents.find(TypeDeclaration::class.java).orElseThrow { RuntimeException("Cannot determine the localization type for alias '$type'") }.target as TypeDeclaration
 
-            return when(type) {
+            return when (type) {
                 is Alias.THIS -> decl
                 is Alias.SUPER -> (decl as SuperClassHolder).superClass!!
                 is Alias.INTERFACE -> (decl as ImplementationHolder).implementations[type.n]
@@ -52,6 +52,7 @@ object Util {
             return type
         }
     }
+
 
     fun hasTypeParent(parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>) = parents.parent?.find(TypeDeclaration::class.java)?.isPresent ?: false
 

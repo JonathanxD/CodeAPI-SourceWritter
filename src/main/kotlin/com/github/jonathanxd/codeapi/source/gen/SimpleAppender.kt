@@ -25,42 +25,11 @@
  *      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *      THE SOFTWARE.
  */
-package com.github.jonathanxd.codeapi.source.gen.generator
-
-import com.github.jonathanxd.codeapi.base.ControlFlow
-import com.github.jonathanxd.codeapi.common.Data
-import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
-import com.github.jonathanxd.codeapi.gen.value.Parent
-import com.github.jonathanxd.codeapi.gen.value.Value
-import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
-import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.source.gen2.generator.Util
-import java.util.*
+package com.github.jonathanxd.codeapi.source.gen
 
 /**
- * Created by jonathan on 09/05/16.
+ * Support simple appending without applying formatting rules. (Ident rules still applied)
  */
-object ControlFlowSourceGenerator : ValueGenerator<ControlFlow, String, PlainSourceGenerator> {
-
-    override fun gen(inp: ControlFlow, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
-
-        val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
-
-        when(inp.type) {
-            ControlFlow.Type.BREAK -> values.add(PlainValue.create("break"))
-            ControlFlow.Type.CONTINUE -> values.add(PlainValue.create("continue"))
-        }
-
-        inp.at?.let {
-            values.add(PlainValue.create(it.name))
-        }
-
-        if (Util.isBody(parents)) {
-            values.add(PlainValue.create(";"))
-        }
-
-        return values
-    }
-
+interface SimpleAppender<in T> {
+    fun simpleAppend(t: T)
 }

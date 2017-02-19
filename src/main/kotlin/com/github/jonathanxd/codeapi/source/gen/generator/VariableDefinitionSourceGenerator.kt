@@ -36,6 +36,7 @@ import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import com.github.jonathanxd.codeapi.source.gen2.generator.Util
 import java.util.*
 
 object VariableDefinitionSourceGenerator : ValueGenerator<VariableDefinition, String, PlainSourceGenerator> {

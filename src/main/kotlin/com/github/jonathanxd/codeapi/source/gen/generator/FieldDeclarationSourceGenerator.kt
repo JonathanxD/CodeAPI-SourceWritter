@@ -28,6 +28,7 @@
 package com.github.jonathanxd.codeapi.source.gen.generator
 
 import com.github.jonathanxd.codeapi.base.*
+import com.github.jonathanxd.codeapi.base.comment.CommentHolder
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
@@ -36,6 +37,7 @@ import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import com.github.jonathanxd.codeapi.source.gen2.generator.Util
 import com.github.jonathanxd.codeapi.type.CodeType
 
 object FieldDeclarationSourceGenerator : ValueGenerator<FieldDeclaration, String, PlainSourceGenerator> {
@@ -43,6 +45,7 @@ object FieldDeclarationSourceGenerator : ValueGenerator<FieldDeclaration, String
     override fun gen(inp: FieldDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>(
+                TargetValue.create(CommentHolder::class.java, inp, parents),
                 TargetValue.create(Annotable::class.java, inp, parents),
                 TargetValue.create(ModifiersHolder::class.java, inp, parents)
         )

@@ -28,6 +28,7 @@
 package com.github.jonathanxd.codeapi.source.gen.generator
 
 import com.github.jonathanxd.codeapi.base.*
+import com.github.jonathanxd.codeapi.base.comment.CommentHolder
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
@@ -44,6 +45,7 @@ object MethodDeclarationSourceGenerator : ValueGenerator<MethodDeclaration, Stri
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
         values.add(PlainValue.create("\n"))
+        values.add(TargetValue.create(CommentHolder::class.java, inp, parents))
         values.add(TargetValue.create(Annotable::class.java, inp, parents))
         values.add(TargetValue.create(ModifiersHolder::class.java, inp, parents))
         values.add(TargetValue.create(GenericSignatureHolder::class.java, inp, parents))

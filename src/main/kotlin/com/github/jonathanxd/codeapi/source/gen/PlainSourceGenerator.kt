@@ -31,6 +31,7 @@ import com.github.jonathanxd.codeapi.CodePart
 import com.github.jonathanxd.codeapi.CodeSource
 import com.github.jonathanxd.codeapi.base.*
 import com.github.jonathanxd.codeapi.base.Annotation
+import com.github.jonathanxd.codeapi.base.comment.*
 import com.github.jonathanxd.codeapi.common.CodeParameter
 import com.github.jonathanxd.codeapi.gen.Appender
 import com.github.jonathanxd.codeapi.gen.value.AbstractGenerator
@@ -153,6 +154,16 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
         // Concat
         register(Concat::class.java, ConcatSourceGenerator)
 
+        // Comments
+
+        register(CommentHolder::class.java, CommentHolderSourceGenerator)
+        register(Comments::class.java, CommentsSourceGenerator)
+        register(Plain::class.java, PlainCommentSourceGenerator)
+        register(Link::class.java, LinkCommentSourceGenerator)
+        register(Code::class.java, CodeCommentSourceGenerator)
+        register(Code.CodeNode.Plain::class.java, PlainCodeNodeSourceGenerator)
+        register(Code.CodeNode.CodeRepresentation::class.java, RepCodeNodeSourceGenerator)
+
     }
 
     override fun <T : CodePart, R : CodePart> registerSugarSyntax(type: Class<T>, sugarSyntax: SugarSyntax<T, R>): SugarSyntax<*, *>? {
@@ -180,7 +191,7 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
 
     override fun createAppender(): Appender<String> = MultiStringAppender(delimiter = " ")
 
-    private class MultiStringAppender internal constructor(delimiter: String) : ImportAppender<String>() {
+    private class MultiStringAppender internal constructor(delimiter: String) : ImportAppender<String>(), SimpleAppender<String> {
         override val imports = mutableListOf<CodeType>()
         private var typeDeclaration: TypeDeclaration? = null
         private var pkg: String = ""
@@ -233,6 +244,14 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
 
             if (!found)
                 imports += codeType
+        }
+
+        override fun simpleAppend(t: String) {
+
+            if(t == "\n")
+                this.multiString.newLine()
+            else
+                this.multiString.add(t)
         }
 
         override fun add(elem: String) {

@@ -38,6 +38,7 @@ import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.CodePartValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import com.github.jonathanxd.codeapi.source.gen2.generator.Util
 import com.github.jonathanxd.codeapi.type.CodeType
 
 object AccessorSourceGenerator : ValueGenerator<Accessor, String, PlainSourceGenerator> {

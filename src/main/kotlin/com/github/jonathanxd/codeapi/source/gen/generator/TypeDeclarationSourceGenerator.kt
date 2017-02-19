@@ -28,6 +28,7 @@
 package com.github.jonathanxd.codeapi.source.gen.generator
 
 import com.github.jonathanxd.codeapi.base.*
+import com.github.jonathanxd.codeapi.base.comment.CommentHolder
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
@@ -38,6 +39,7 @@ import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.DeclarationValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import com.github.jonathanxd.codeapi.source.gen2.generator.Util
 
 object TypeDeclarationSourceGenerator : ValueGenerator<TypeDeclaration, String, PlainSourceGenerator> {
 
@@ -45,6 +47,7 @@ object TypeDeclarationSourceGenerator : ValueGenerator<TypeDeclaration, String, 
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>(
                 DeclarationValue.create(inp),
+                TargetValue.create(CommentHolder::class.java, inp, parents),
                 TargetValue.create(Annotable::class.java, inp, parents),
 
                 TargetValue.create(ModifiersHolder::class.java, inp, parents),
