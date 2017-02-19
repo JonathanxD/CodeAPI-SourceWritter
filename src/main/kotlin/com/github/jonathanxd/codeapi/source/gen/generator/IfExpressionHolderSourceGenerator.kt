@@ -53,12 +53,12 @@ object IfExpressionHolderSourceGenerator : ValueGenerator<IfExpressionHolder, St
         expressions.forEachIndexed { i, codePart ->
             if (codePart is IfExpr) {
 
-                if(i > 0)
+                if (i > 0)
                     values.add(PlainValue.create("("))
 
                 values.add(TargetValue.create(IfExpr::class.java, codePart, parents))
 
-                if(i > 0)
+                if (i > 0)
                     values.add(PlainValue.create(")"))
             } else if (codePart === Operators.OR) {
                 values.add(PlainValue.create("||"))

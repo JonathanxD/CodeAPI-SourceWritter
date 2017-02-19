@@ -35,7 +35,6 @@ import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.source.gen2.generator.Util
 import java.util.*
 
 /**
@@ -47,7 +46,7 @@ object ControlFlowSourceGenerator : ValueGenerator<ControlFlow, String, PlainSou
 
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        when(inp.type) {
+        when (inp.type) {
             ControlFlow.Type.BREAK -> values.add(PlainValue.create("break"))
             ControlFlow.Type.CONTINUE -> values.add(PlainValue.create("continue"))
         }

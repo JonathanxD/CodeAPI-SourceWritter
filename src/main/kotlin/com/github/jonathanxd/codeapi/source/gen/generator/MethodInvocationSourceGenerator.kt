@@ -27,8 +27,10 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
-import com.github.jonathanxd.codeapi.CodeAPI
-import com.github.jonathanxd.codeapi.base.*
+import com.github.jonathanxd.codeapi.base.ArgumentHolder
+import com.github.jonathanxd.codeapi.base.BodyHolder
+import com.github.jonathanxd.codeapi.base.MethodInvocation
+import com.github.jonathanxd.codeapi.base.ParametersHolder
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.common.InvokeDynamic.LambdaFragment
 import com.github.jonathanxd.codeapi.common.InvokeDynamic.LambdaMethodReference
@@ -41,7 +43,6 @@ import com.github.jonathanxd.codeapi.keyword.Keywords
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.source.gen2.generator.Util
 import com.github.jonathanxd.codeapi.type.CodeType
 import java.util.*
 
@@ -132,7 +133,7 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
             }
         }
 
-        if(isCtr && !isRef && !isSuper) {
+        if (isCtr && !isRef && !isSuper) {
             values.add(TargetValue.create(CodeType::class.java, inp.localization, parents))
         }
 

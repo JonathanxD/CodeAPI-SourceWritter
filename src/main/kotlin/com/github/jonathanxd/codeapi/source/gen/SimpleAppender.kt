@@ -32,4 +32,6 @@ package com.github.jonathanxd.codeapi.source.gen
  */
 interface SimpleAppender<in T> {
     fun simpleAppend(t: T)
+
+    fun setPrefix(t: T)
 }

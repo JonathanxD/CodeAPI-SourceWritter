@@ -39,7 +39,6 @@ import com.github.jonathanxd.codeapi.keyword.Keywords
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.source.gen2.generator.Util
 import com.github.jonathanxd.codeapi.type.CodeType
 
 object ArrayConstructorSourceGenerator : ValueGenerator<ArrayConstructor, String, PlainSourceGenerator> {
@@ -53,7 +52,8 @@ object ArrayConstructorSourceGenerator : ValueGenerator<ArrayConstructor, String
 
         val generateSizes = inp.arguments.isEmpty()
 
-        if (!generateSizes) { // Arguments is Not EMPTY
+        if (!generateSizes) {
+            // Arguments is Not EMPTY
 
             val collect = inp.dimensions.map { "[]" }.joinToString(separator = "")
 

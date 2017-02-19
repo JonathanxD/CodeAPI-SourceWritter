@@ -34,12 +34,10 @@ import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.generic.GenericSignature
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.DeclarationValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.source.gen2.generator.Util
 
 object TypeDeclarationSourceGenerator : ValueGenerator<TypeDeclaration, String, PlainSourceGenerator> {
 

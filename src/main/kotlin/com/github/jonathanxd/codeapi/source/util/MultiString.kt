@@ -55,6 +55,8 @@ class MultiString(private val delimiter: String, private val preparer: (String) 
         line += 1
     }
 
+    fun isCurrentLineEmpty() = line == strings.size
+
     override fun toString(): String {
         return strings.joinToString(separator = "")
     }

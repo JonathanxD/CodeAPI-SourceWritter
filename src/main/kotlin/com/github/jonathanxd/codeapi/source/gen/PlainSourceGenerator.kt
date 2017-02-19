@@ -201,6 +201,7 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
         private var brackets = 0
         private var first = true
         private val isInBrackets get() = brackets > 0
+        private var prefix = ""
 
         init {
             this.multiString = MultiString(delimiter) { s -> indentation.identString + s }
@@ -246,12 +247,19 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
                 imports += codeType
         }
 
+        override fun setPrefix(t: String) {
+            this.prefix = t
+        }
+
         override fun simpleAppend(t: String) {
 
             if(t == "\n")
                 this.multiString.newLine()
-            else
-                this.multiString.add(t)
+            else {
+                if(this.multiString.isCurrentLineEmpty())
+                    this.multiString.add("$prefix$t")
+                else this.multiString.add(t)
+            }
         }
 
         override fun add(elem: String) {
@@ -265,6 +273,9 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
 
             @Suppress("NAME_SHADOWING")
             var elem = elem
+
+            if(this.multiString.isCurrentLineEmpty())
+                elem = "$prefix$elem"
 
             if (elem.isEmpty())
                 return

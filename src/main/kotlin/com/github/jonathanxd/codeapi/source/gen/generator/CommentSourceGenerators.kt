@@ -34,6 +34,7 @@ import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.PrefixPlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.SimplePlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 
@@ -77,11 +78,13 @@ object CommentsSourceGenerator : ValueGenerator<Comments, String, PlainSourceGen
             }
         }
 
-        values.add(SimplePlainValue.create(prefix))
+        values.add(PrefixPlainValue.create("$prefix "))
 
         commentList.forEach {
             values.add(TargetValue.create(it, parents))
         }
+
+        values.add(PrefixPlainValue.create(""))
 
         when (inp.type) {
             Comments.Type.COMMENT -> {

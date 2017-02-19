@@ -25,33 +25,24 @@
  *      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *      THE SOFTWARE.
  */
-package com.github.jonathanxd.codeapi.source.gen.generator
+package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.base.VariableDefinition
-import com.github.jonathanxd.codeapi.common.Data
-import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
-import com.github.jonathanxd.codeapi.gen.value.Parent
-import com.github.jonathanxd.codeapi.gen.value.Value
-import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
-import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import java.util.*
+import com.github.jonathanxd.codeapi.CodeSource;
+import com.github.jonathanxd.codeapi.base.TypeDeclaration;
+import com.github.jonathanxd.codeapi.test.CommentClassTest_;
+import com.github.jonathanxd.codeapi.test.InnerClassTest_;
+import com.github.jonathanxd.iutils.annotation.Named;
+import com.github.jonathanxd.iutils.object.Pair;
 
-object VariableDefinitionSourceGenerator : ValueGenerator<VariableDefinition, String, PlainSourceGenerator> {
+import org.junit.Test;
 
-    override fun gen(inp: VariableDefinition, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
-        val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
+public class CommentTest {
 
-        values.add(PlainValue.create(inp.name))
-        values.add(PlainValue.create("="))
-        values.add(TargetValue.create(inp.value, parents))
+    @Test
+    public void innerTest() {
+        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = CommentClassTest_.$();
 
-
-        if (Util.isBody(parents)) {
-            values.add(PlainValue.create(";"))
-        }
-        return values
+        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        test.consume(System.out::println);
     }
-
 }

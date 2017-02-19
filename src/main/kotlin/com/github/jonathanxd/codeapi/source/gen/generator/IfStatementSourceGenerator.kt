@@ -27,7 +27,6 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
-import com.github.jonathanxd.codeapi.CodeSource
 import com.github.jonathanxd.codeapi.base.BodyHolder
 import com.github.jonathanxd.codeapi.base.IfExpressionHolder
 import com.github.jonathanxd.codeapi.base.IfStatement
@@ -54,7 +53,8 @@ object IfStatementSourceGenerator : ValueGenerator<IfStatement, String, PlainSou
 
         val elseStatement = inp.elseStatement
 
-        if(elseStatement.isEmpty) { // Clean body
+        if (elseStatement.isEmpty) {
+            // Clean body
             values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
         } else {
             values.add(PlainValue.create("{"))

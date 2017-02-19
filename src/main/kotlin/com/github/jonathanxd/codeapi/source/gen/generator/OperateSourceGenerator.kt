@@ -37,7 +37,6 @@ import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.CodePartValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.source.gen2.generator.Util
 
 object OperateSourceGenerator : ValueGenerator<Operate, String, PlainSourceGenerator> {
 

@@ -44,7 +44,7 @@ object SuperClassHolderSourceGenerator : ValueGenerator<SuperClassHolder, String
 
         val superType = inp.superClass
 
-        if(superType.`is`(Types.OBJECT))
+        if (superType.`is`(Types.OBJECT))
             return emptyList()
 
         return listOf(

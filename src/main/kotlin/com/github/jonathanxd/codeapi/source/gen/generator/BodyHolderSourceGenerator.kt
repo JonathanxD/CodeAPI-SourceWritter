@@ -30,7 +30,6 @@ package com.github.jonathanxd.codeapi.source.gen.generator
 import com.github.jonathanxd.codeapi.base.BodyHolder
 import com.github.jonathanxd.codeapi.base.EntryHolder
 import com.github.jonathanxd.codeapi.base.ModifiersHolder
-import com.github.jonathanxd.codeapi.base.TypeDeclaration
 import com.github.jonathanxd.codeapi.common.CodeModifier
 import com.github.jonathanxd.codeapi.common.Data
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData

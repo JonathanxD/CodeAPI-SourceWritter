@@ -53,12 +53,12 @@ object IfExprSourceGenerator : ValueGenerator<IfExpr, String, PlainSourceGenerat
 
         values.add(TargetValue.create(expr1.javaClass, expr1, parents))
 
-        if(operation == Operators.EQUAL_TO && expr2 is Literal && expr2.type.`is`(Types.BOOLEAN)) {
-            if(expr2.name == "true") {
+        if (operation == Operators.EQUAL_TO && expr2 is Literal && expr2.type.`is`(Types.BOOLEAN)) {
+            if (expr2.name == "true") {
                 return values
             } else {
                 values.add(0, PlainValue.create("!"))
-                if(expr1 is InstanceOfCheck) {
+                if (expr1 is InstanceOfCheck) {
                     values.add(1, PlainValue.create("("))
                     values.add(PlainValue.create(")"))
                 }
