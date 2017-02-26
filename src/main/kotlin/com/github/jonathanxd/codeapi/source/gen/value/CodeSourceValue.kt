@@ -45,14 +45,14 @@ class CodeSourceValue<TARGET, C : AbstractGenerator<TARGET, C>>(override val val
     override fun apply(value: CodePart, generator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: Data) {
 
         this.value.forEach { part ->
-            val call = generator.generateTo(part.javaClass /*as Class<? extends CodePart>*/, part, parents, codeSourceData, data)
+            val call = generator.generateTo(part::class.java /*as Class<? extends CodePart>*/, part, parents, codeSourceData, data)
 
             if (!call.isEmpty()) {
                 for (genValue in call) {
                     AbstractGenerator.helpApply(genValue, part, generator, appender, codeSourceData, data)
                 }
             } else {
-                throw IllegalStateException("Cannot find generator for '" + part.javaClass.canonicalName + "'")
+                throw IllegalStateException("Cannot find generator for '" + part::class.java.canonicalName + "'")
             }
         }
     }

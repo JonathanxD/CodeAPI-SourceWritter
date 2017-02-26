@@ -45,7 +45,7 @@ object ThrowExceptionGenerator : ValueGenerator<ThrowException, String, PlainSou
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>(
                 PlainValue.create("throw"),
-                TargetValue.create(partToThrow.javaClass, partToThrow, parents)
+                TargetValue.create(partToThrow::class.java, partToThrow, parents)
         )
 
         if (Util.isBody(parents)) {

@@ -45,7 +45,7 @@ object GenericHolderSourceGenerator : ValueGenerator<GenericSignatureHolder, Str
 
         val genericSignature = inp.genericSignature
 
-        return listOf(PlainValue.create("<"), TargetValue.create(genericSignature.javaClass, genericSignature, parents), PlainValue.create(">"))
+        return listOf(PlainValue.create("<"), TargetValue.create(genericSignature::class.java, genericSignature, parents), PlainValue.create(">"))
 
     }
 

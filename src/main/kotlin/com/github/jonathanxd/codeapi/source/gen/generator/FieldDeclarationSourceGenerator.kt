@@ -55,19 +55,19 @@ object FieldDeclarationSourceGenerator : ValueGenerator<FieldDeclaration, String
 
         inp.value?.let { value ->
             values.add(PlainValue.create("="))
-            values.add(TargetValue.create(value.javaClass, value, parents))
+            values.add(TargetValue.create(value::class.java, value, parents))
         }
 
         val generatorParent1 = parents.find { generatorParent ->
-            if (MethodInvocation::class.java.isAssignableFrom(generatorParent.current.javaClass)) {
+            if (MethodInvocation::class.java.isAssignableFrom(generatorParent.current::class.java)) {
                 return@find true
             }
 
-            TypeDeclaration::class.java.isAssignableFrom(generatorParent.current.javaClass)
+            TypeDeclaration::class.java.isAssignableFrom(generatorParent.current::class.java)
 
         }.orElse(null)
 
-        if (generatorParent1 != null && TypeDeclaration::class.java.isAssignableFrom(generatorParent1.current.javaClass)) {
+        if (generatorParent1 != null && TypeDeclaration::class.java.isAssignableFrom(generatorParent1.current::class.java)) {
             values.add(PlainValue.create(";"))
         } else {
 

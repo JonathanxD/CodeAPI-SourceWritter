@@ -79,7 +79,7 @@ object AnnotationSourceGenerator : ValueGenerator<Annotation, String, PlainSourc
             values.add(TargetValue.create(EnumValue::class.java, value, parents))
         } else if (value is Annotation) {
             values.add(TargetValue.create(Annotation::class.java, value, parents))
-        } else if (value.javaClass.isArray) {
+        } else if (value::class.java.isArray) {
             val valuesObj = ArrayUtils.toObjectArray(value)
 
             values.add(PlainValue.create("{"))

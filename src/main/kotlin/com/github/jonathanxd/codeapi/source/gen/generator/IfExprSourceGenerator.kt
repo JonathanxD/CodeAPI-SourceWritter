@@ -51,7 +51,7 @@ object IfExprSourceGenerator : ValueGenerator<IfExpr, String, PlainSourceGenerat
         val expr2 = inp.expr2
         val operation = inp.operation
 
-        values.add(TargetValue.create(expr1.javaClass, expr1, parents))
+        values.add(TargetValue.create(expr1::class.java, expr1, parents))
 
         if (operation == Operators.EQUAL_TO && expr2 is Literal && expr2.type.`is`(Types.BOOLEAN)) {
             if (expr2.name == "true") {
@@ -66,9 +66,9 @@ object IfExprSourceGenerator : ValueGenerator<IfExpr, String, PlainSourceGenerat
             }
         }
 
-        values.add(TargetValue.create(operation.javaClass, operation, parents))
+        values.add(TargetValue.create(operation::class.java, operation, parents))
 
-        values.add(TargetValue.create(expr2.javaClass, expr2, parents))
+        values.add(TargetValue.create(expr2::class.java, expr2, parents))
 
         return values
     }

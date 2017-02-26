@@ -62,7 +62,7 @@ object ArgumentHolderSourceGenerator : ValueGenerator<ArgumentHolder, String, Pl
         while (iterator.hasNext()) {
             val argument = iterator.next()
 
-            values.add(TargetValue.create(argument.javaClass, argument, parents))
+            values.add(TargetValue.create(argument::class.java, argument, parents))
 
             if (iterator.hasNext())
                 values.add(PlainValue.create(", "))

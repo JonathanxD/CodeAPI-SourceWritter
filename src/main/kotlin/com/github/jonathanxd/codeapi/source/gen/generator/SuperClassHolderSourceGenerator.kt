@@ -49,7 +49,7 @@ object SuperClassHolderSourceGenerator : ValueGenerator<SuperClassHolder, String
 
         return listOf(
                 PlainValue.create("extends"),
-                TargetValue.create(superType.javaClass, superType, parents)
+                TargetValue.create(superType::class.java, superType, parents)
         )
     }
 

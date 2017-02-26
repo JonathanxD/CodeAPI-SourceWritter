@@ -44,7 +44,7 @@ object Util {
 
             return when (type) {
                 is Alias.THIS -> decl
-                is Alias.SUPER -> (decl as SuperClassHolder).superClass!!
+                is Alias.SUPER -> (decl as SuperClassHolder).superClass
                 is Alias.INTERFACE -> (decl as ImplementationHolder).implementations[type.n]
             }
 
@@ -59,7 +59,7 @@ object Util {
     fun isBody(parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>): Boolean {
         val parent = parents.parent
 
-        return parent != null && (BodyHolderSourceGenerator::class.java.isAssignableFrom(parent.current.javaClass) || CodeSourceSourceGenerator::class.java.isAssignableFrom(parent.current.javaClass))
+        return parent != null && (BodyHolderSourceGenerator::class.java.isAssignableFrom(parent.current::class.java) || CodeSourceSourceGenerator::class.java.isAssignableFrom(parent.current::class.java))
     }
 
 }

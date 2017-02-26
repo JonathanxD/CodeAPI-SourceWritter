@@ -50,7 +50,7 @@ class CodePartValue<TARGET, C : AbstractGenerator<TARGET, C>>(override val value
             if (this.value is CodeType) {
                 call = generator.generateTo(CodeType::class.java, this.value, parents, codeSourceData, data)
             } else {
-                call = generator.generateTo(this.value.javaClass, this.value, parents, codeSourceData, data)
+                call = generator.generateTo(this.value::class.java, this.value, parents, codeSourceData, data)
             }
 
             if (!call.isEmpty()) {
@@ -58,7 +58,7 @@ class CodePartValue<TARGET, C : AbstractGenerator<TARGET, C>>(override val value
                     AbstractGenerator.helpApply(genValue, this.value, generator, appender, codeSourceData, data)
                 }
             } else {
-                throw IllegalStateException("Cannot find generator for '" + this.value.javaClass.canonicalName + "'")
+                throw IllegalStateException("Cannot find generator for '" + this.value::class.java.canonicalName + "'")
             }
         } catch (t: Throwable) {
             throw RuntimeException("Parents: " + parents, t)

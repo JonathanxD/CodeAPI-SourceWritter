@@ -90,7 +90,7 @@ class TargetValue<V: Any, TARGET, C : AbstractGenerator<TARGET, C>> internal con
                 return create(CodeType::class.java, `val`, parents)
             }
 
-            return TargetValue(`val`.javaClass, `val`, parents)
+            return TargetValue(`val`::class.java, `val`, parents)
         }
     }
 }

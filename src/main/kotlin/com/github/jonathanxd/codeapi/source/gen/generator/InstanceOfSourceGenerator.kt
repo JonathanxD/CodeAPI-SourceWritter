@@ -45,7 +45,7 @@ object InstanceOfSourceGenerator : ValueGenerator<InstanceOfCheck, String, Plain
         val type = inp.checkType
 
         return listOf(
-                TargetValue.create(part.javaClass, part, parents),
+                TargetValue.create(part::class.java, part, parents),
                 PlainValue.create("instanceof"),
                 TargetValue.create(CodeType::class.java, type, parents)
         )

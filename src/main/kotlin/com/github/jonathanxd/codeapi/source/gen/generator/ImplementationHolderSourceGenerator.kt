@@ -52,7 +52,7 @@ object ImplementationHolderSourceGenerator : ValueGenerator<ImplementationHolder
         values.add(PlainValue.create(Keywords.IMPLEMENTS.name))
 
         for (codeType in inp.implementations) {
-            values.add(TargetValue.create(codeType.javaClass, codeType, parents))
+            values.add(TargetValue.create(codeType::class.java, codeType, parents))
         }
 
         return values

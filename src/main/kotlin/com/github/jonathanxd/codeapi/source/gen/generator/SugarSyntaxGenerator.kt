@@ -43,7 +43,7 @@ class SugarSyntaxGenerator<in T : CodePart, out E : CodePart>(val sugarSyntax: S
     override fun gen(inp: T, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
         val generated = this.sugarSyntax.createGenerator(SourceSugarEnvironment).generate(inp, this)
 
-        return listOf(TargetValue.create(generated.javaClass, generated, parents))
+        return listOf(TargetValue.create(generated::class.java, generated, parents))
     }
 
 }

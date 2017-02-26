@@ -54,7 +54,7 @@ object TryStatementSourceGenerator : ValueGenerator<TryStatement, String, PlainS
         values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
 
         inp.catchStatements.forEach {
-            values.add(TargetValue.create(it.javaClass, it, parents))
+            values.add(TargetValue.create(it::class.java, it, parents))
         }
 
         if (finallyStatement.isNotEmpty) {

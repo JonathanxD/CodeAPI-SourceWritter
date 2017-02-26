@@ -53,9 +53,9 @@ object ForEachSourceGenerator : ValueGenerator<ForEachStatement, String, PlainSo
         if (iterationType === IterationTypes.ITERABLE_ELEMENT || iterationType === IterationTypes.ARRAY) {
             values.add(PlainValue.create("for"))
             values.add(PlainValue.create("("))
-            values.add(TargetValue.create(variableDeclaration.javaClass, variableDeclaration, parents))
+            values.add(TargetValue.create(variableDeclaration::class.java, variableDeclaration, parents))
             values.add(PlainValue.create(":"))
-            values.add(TargetValue.create(iterableElement.javaClass, iterableElement, parents))
+            values.add(TargetValue.create(iterableElement::class.java, iterableElement, parents))
             values.add(PlainValue.create(")"))
             values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
         } else {
@@ -63,7 +63,7 @@ object ForEachSourceGenerator : ValueGenerator<ForEachStatement, String, PlainSo
 
             val generated = start.generate(inp, this)
 
-            generated.mapTo(values) { TargetValue.create(it.javaClass, it, parents) }
+            generated.mapTo(values) { TargetValue.create(it::class.java, it, parents) }
 
         }
 

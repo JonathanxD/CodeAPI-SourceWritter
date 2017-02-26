@@ -58,7 +58,7 @@ object OperateSourceGenerator : ValueGenerator<Operate, String, PlainSourceGener
     }
 
     internal fun addOperation(values: MutableList<Value<*, String, PlainSourceGenerator>>, operate: Operate, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, appendEq: Boolean) {
-        values.add(TargetValue.create(operate.operation.javaClass, operate.operation, parents))
+        values.add(TargetValue.create(operate.operation::class.java, operate.operation, parents))
         operate.value?.let { value ->
 
             if (appendEq) values.add(PlainValue.create("="))
@@ -67,7 +67,7 @@ object OperateSourceGenerator : ValueGenerator<Operate, String, PlainSourceGener
                 values.add(PlainValue.create("("))
             }
 
-            values.add(TargetValue.create(value.javaClass, value, parents))
+            values.add(TargetValue.create(value::class.java, value, parents))
 
             if (value is Operate) {
                 values.add(PlainValue.create(")"))
