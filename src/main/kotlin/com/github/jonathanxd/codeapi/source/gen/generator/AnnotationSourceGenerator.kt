@@ -75,6 +75,7 @@ object AnnotationSourceGenerator : ValueGenerator<Annotation, String, PlainSourc
     fun addType(value: Any, values: MutableList<Value<*, String, PlainSourceGenerator>>, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>) {
         if (value is CodeType) {
             values.add(TargetValue.create(CodeType::class.java, value, parents))
+            values.add(PlainValue.create(".class"))
         } else if (value is EnumValue) {
             values.add(TargetValue.create(EnumValue::class.java, value, parents))
         } else if (value is Annotation) {
