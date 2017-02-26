@@ -57,12 +57,16 @@ object AnnotationSourceGenerator : ValueGenerator<Annotation, String, PlainSourc
 
             AnnotationSourceGenerator.addType(value, values, parents)
         } else {
+            val entries = valuesMap.entries
 
-            valuesMap.forEach { key, value ->
+            entries.forEachIndexed { index, (key, value) ->
                 values.add(PlainValue.create<String, PlainSourceGenerator>(key))
                 values.add(PlainValue.create<String, PlainSourceGenerator>("="))
 
                 addType(value, values, parents)
+
+                if(index + 1 < entries.size)
+                    values.add(PlainValue.create<String, PlainSourceGenerator>(","))
             }
         }
 
