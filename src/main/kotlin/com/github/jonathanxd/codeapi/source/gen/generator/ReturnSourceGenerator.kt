@@ -29,6 +29,7 @@ package com.github.jonathanxd.codeapi.source.gen.generator
 
 import com.github.jonathanxd.codeapi.base.Return
 import com.github.jonathanxd.codeapi.common.Data
+import com.github.jonathanxd.codeapi.common.Void
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
@@ -46,7 +47,7 @@ object ReturnSourceGenerator : ValueGenerator<Return, String, PlainSourceGenerat
 
         val type = inp.type
 
-        if (type.type == "void" || type.javaSpecName == "V") {
+        if (type.type == "void" || type.javaSpecName == "V" || value is Void) {
             return Arrays.asList(PlainValue.create("return"), PlainValue.create(";"))
         }
 
