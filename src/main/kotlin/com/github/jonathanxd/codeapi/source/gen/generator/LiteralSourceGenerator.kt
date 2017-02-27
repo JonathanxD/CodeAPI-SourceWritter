@@ -55,7 +55,7 @@ object LiteralSourceGenerator : ValueGenerator<Literal, String, PlainSourceGener
         } else if (inp.type.`is`(Types.FLOAT)) {
             values.add(PlainValue.create(inp.name + "F"))
         } else if (inp.type.`is`(CodeType::class.codeType)) {
-            val type = PlainCodeType(inp.name, false)
+            val type = inp.value as CodeType
             values.add(ImportValue.create(type))
             values.add(CodeTypeValue.create(type))
             values.add(PlainValue.create(".class"))
