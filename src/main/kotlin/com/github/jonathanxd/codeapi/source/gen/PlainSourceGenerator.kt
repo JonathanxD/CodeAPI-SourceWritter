@@ -236,6 +236,9 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
                     this
             }
 
+            if(type.isPrimitive)
+                return
+
             if (imports.contains(type))
                 return
 

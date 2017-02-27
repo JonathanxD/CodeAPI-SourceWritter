@@ -58,7 +58,7 @@ object AccessorSourceGenerator : ValueGenerator<Accessor, String, PlainSourceGen
                 values.add(PlainValue.create("."))
                 anySeparator = true
             }
-        } else if (targetIsAccess && (target as Access).type != Access.Type.LOCAL) {
+        } else if(!targetIsAccess && target === localization) {
             values.add(TargetValue.create(CodeType::class.java, localization, parents))
             if (separator) {
                 values.add(PlainValue.create("."))
@@ -66,9 +66,17 @@ object AccessorSourceGenerator : ValueGenerator<Accessor, String, PlainSourceGen
             }
         }
 
-        if (targetIsAccess && (target as Access).type != Access.Type.LOCAL) {
-            values.add(TargetValue.create(Access::class.java, target, parents))
-            if (!anySeparator && separator) values.add(PlainValue.create<String, PlainSourceGenerator>("."))
+        if(targetIsAccess && target !== localization) {
+            target as Access
+
+            if(target.type == Access.Type.STATIC) {
+                values.add(TargetValue.create(CodeType::class.java, localization, parents))
+                values.add(TargetValue.create(Access::class.java, target, parents))
+                if (!anySeparator && separator) values.add(PlainValue.create<String, PlainSourceGenerator>("."))
+            } else if(target.type == Access.Type.THIS || target.type != Access.Type.LOCAL) {
+                values.add(TargetValue.create(Access::class.java, target, parents))
+                if (!anySeparator && separator) values.add(PlainValue.create<String, PlainSourceGenerator>("."))
+            }
         }
 
 

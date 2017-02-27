@@ -56,7 +56,7 @@ public class TestSource_Invocations {
                 "    \n" +
                 "    public InvocationsTest__Generated ( ) { \n" +
                 "        System . out . println ( \"Hello\" ) ; \n" +
-                "        InvocationsTest__Generated . printIt ( \"Oi\" ) ; \n" +
+                "        this . printIt ( \"Oi\" ) ; \n" +
                 "         \n" +
                 "    } \n" +
                 "    \n" +

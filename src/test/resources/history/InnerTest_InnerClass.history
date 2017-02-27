@@ -24,8 +24,8 @@ public class InnerClass {
         public InnerClass a = new InnerClass ( "Hello" ) ; 
         
         private String call ( ) { 
-            System . out . println ( InnerClass . this field ) ; 
-            InnerClass . this mm ( ) ; 
+            System . out . println ( InnerClass . this . field ) ; 
+            InnerClass . this . mm ( ) ; 
             return "A" ; 
              
         } 

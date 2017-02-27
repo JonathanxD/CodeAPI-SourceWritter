@@ -30,7 +30,6 @@ package com.github.jonathanxd.codeapi.source.test;
 import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.CommentClassTest_;
-import com.github.jonathanxd.codeapi.test.InnerClassTest_;
 import com.github.jonathanxd.iutils.annotation.Named;
 import com.github.jonathanxd.iutils.object.Pair;
 

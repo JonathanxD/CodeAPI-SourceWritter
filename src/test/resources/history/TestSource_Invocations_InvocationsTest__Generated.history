@@ -11,7 +11,7 @@ public class InvocationsTest__Generated {
     
     public InvocationsTest__Generated ( ) { 
         System . out . println ( "Hello" ) ; 
-        InvocationsTest__Generated . printIt ( "Oi" ) ; 
+        this . printIt ( "Oi" ) ; 
          
     } 
     

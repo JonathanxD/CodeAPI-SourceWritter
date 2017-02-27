@@ -35,20 +35,25 @@ import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.keyword.Keyword
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import com.github.jonathanxd.codeapi.type.CodeType
 
 object AccessSourceGenerator : ValueGenerator<Access, String, PlainSourceGenerator> {
 
     override fun gen(inp: Access, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
-        val key = inp.keyword
-
-        if (key == null || inp.localization == null)
-            return emptyList()
+        val key = inp.keyword ?: return emptyList()
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
+        if(inp.type == Access.Type.OUTER && inp.localization != null) {
+            values.add(TargetValue.create(CodeType::class.java, inp.localization!!, parents))
+            values.add(PlainValue.create("."))
+        }
+
         values.add(TargetValue.create(Keyword::class.java, key, parents))
+
 
         return values
     }

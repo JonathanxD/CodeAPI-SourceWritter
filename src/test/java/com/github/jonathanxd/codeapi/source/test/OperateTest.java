@@ -29,51 +29,28 @@ package com.github.jonathanxd.codeapi.source.test;
 
 import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
-import com.github.jonathanxd.codeapi.test.InnerClassTest_;
+import com.github.jonathanxd.codeapi.test.OperateTest_;
 import com.github.jonathanxd.iutils.annotation.Named;
 import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
-public class InnerTest {
+public class OperateTest {
 
     @Test
-    public void innerTest() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = InnerClassTest_.$();
+    public void operateTest() {
+        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = OperateTest_.$();
 
         SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
-        test.expect("package test;\n" +
+
+        test.expect("package com;\n" +
                 "\n" +
-                "public class InnerClass { \n" +
-                "    private String field = \"XSD\" ; \n" +
+                "public class OperateTest { \n" +
                 "    \n" +
-                "    public InnerClass ( ) { \n" +
-                "        new Inner ( ) . call ( ) ; \n" +
-                "         \n" +
-                "    } \n" +
-                "    \n" +
-                "    \n" +
-                "    private InnerClass ( String str ) { \n" +
-                "        System . out . println ( str ) ; \n" +
-                "         \n" +
-                "    } \n" +
-                "    \n" +
-                "    \n" +
-                "    public void mm ( ) { \n" +
-                "        System . out . println ( \"A\" ) ; \n" +
-                "         \n" +
-                "    } \n" +
-                "    \n" +
-                "    public class Inner { \n" +
-                "        public InnerClass a = new InnerClass ( \"Hello\" ) ; \n" +
-                "        \n" +
-                "        private String call ( ) { \n" +
-                "            System . out . println ( InnerClass . this field ) ; \n" +
-                "            InnerClass . this mm ( ) ; \n" +
-                "            return \"A\" ; \n" +
-                "             \n" +
-                "        } \n" +
-                "        \n" +
+                "    public OperateTest ( int num ) { \n" +
+                "        System . out . println ( String . valueOf ( 9 + num + ( num * 2 ) ) ) ; \n" +
+                "        System . out . println ( String . valueOf ( 9 - ) ) ; \n" +
+                "        System . out . println ( String . valueOf ( 9 ~ 10 ) ) ; \n" +
                 "         \n" +
                 "    } \n" +
                 "    \n" +
@@ -82,4 +59,5 @@ public class InnerTest {
                 "\n");
         test.consume(System.out::println);
     }
+
 }

@@ -114,7 +114,7 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
         }
 
         if (!isSuper) {
-            values.addAll(AccessorSourceGenerator.gen(inp, !isRef, parents))
+            values.addAll(AccessorSourceGenerator.gen(inp, !isRef && !isCtr, parents))
         }
 
         if (isRef) {
@@ -133,9 +133,9 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
             }
         }
 
-        if (isCtr && !isRef && !isSuper) {
+        /*if (isCtr && !isRef && !isSuper) {
             values.add(TargetValue.create(CodeType::class.java, inp.localization, parents))
-        }
+        }*/
 
         if (inp.spec.methodType != MethodType.DYNAMIC_METHOD && inp.spec.methodType != MethodType.DYNAMIC_CONSTRUCTOR) {
             values.add(TargetValue.create(ArgumentHolder::class.java, inp, parents))
