@@ -51,7 +51,7 @@ object OperateSourceGenerator : ValueGenerator<Operate, String, PlainSourceGener
         OperateSourceGenerator.addOperation(values, inp, parents, false)
 
         if (Util.isBody(parents)) {
-            values.add(PlainValue.create(";"))
+            Util.close(values)
         }
 
         return values

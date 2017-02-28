@@ -73,6 +73,5 @@ public class InnerTest {
                 "    }\n" +
                 "    \n" +
                 "}\n");
-        test.consume(System.out::println);
     }
 }

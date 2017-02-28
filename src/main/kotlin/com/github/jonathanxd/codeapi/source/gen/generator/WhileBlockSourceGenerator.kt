@@ -47,33 +47,39 @@ object WhileBlockSourceGenerator : ValueGenerator<WhileStatement, String, PlainS
 
         if (inp.type == WhileStatement.Type.DO_WHILE) {
             values.add(PlainValue.create("do"))
+            values.add(PlainValue.create(" "))
         }
 
         fun addWhileStm() {
             values.add(PlainValue.create("while"))
-
-            values.add(PlainValue.create("("))
+            values.add(PlainValue.create(" "))
 
             val expressions = inp.expressions
 
             if (expressions.isEmpty()) {
+                values.add(PlainValue.create("("))
                 values.add(PlainValue.create("true"))
+                values.add(PlainValue.create(")"))
             } else {
                 values.add(TargetValue.create(IfExpressionHolder::class.java, inp, parents))
             }
 
-            values.add(PlainValue.create(")"))
         }
 
         if (inp.type == WhileStatement.Type.WHILE) {
             addWhileStm()
+            values.add(PlainValue.create(" "))
         }
 
         values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
 
-        if (inp.type == WhileStatement.Type.DO_WHILE) {
+        if (inp.type == WhileStatement.Type.WHILE) {
+            values.add(PlainValue.create("\n"))
+        }else if (inp.type == WhileStatement.Type.DO_WHILE) {
+            values.add(PlainValue.create(" "))
             addWhileStm()
             values.add(PlainValue.create(";"))
+            values.add(PlainValue.create("\n"))
         }
 
         return values

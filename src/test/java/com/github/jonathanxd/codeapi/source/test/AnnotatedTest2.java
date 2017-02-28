@@ -77,7 +77,6 @@ public class AnnotatedTest2 {
     public void annotatedTest() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = AnnotatedTest2.$();
         SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
-        System.out.println(test.result());
         test.expect("package test;\n" +
                 "\n" +
                 "import com.github.jonathanxd.codeapi.test.AnnotatedTest_.Simple;\n" +

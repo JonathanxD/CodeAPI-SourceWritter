@@ -40,21 +40,20 @@ public class TestGenericClass {
     @Test
     public void genericClass() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = GenericClass_.$();
-        CommonSourceTest.test(this.getClass(), $._1(), $._2()).consume(System.out::println).expect("package com;\n" +
-                "\n" +
-                "import java.util.List;\n" +
-                "\n" +
-                "public class Generic < T  extends  List < T > > implements List < T > { \n" +
-                "    \n" +
-                "    public static < T  extends  List < T > > void test ( T val ) { \n" +
-                "        T fieldi = null ; \n" +
-                "         \n" +
-                "    } \n" +
-                "    \n" +
-                "    public T test ; \n" +
-                "     \n" +
-                "} \n" +
-                "\n");
+        CommonSourceTest.test(this.getClass(), $._1(), $._2())
+                .expect("package com;\n" +
+                        "\n" +
+                        "import java.util.List;\n" +
+                        "\n" +
+                        "public class Generic<T extends List<T>> implements List<T> {\n" +
+                        "\n" +
+                        "    public static <T extends List<T>> void test(T val) {\n" +
+                        "        T fieldi = null;\n" +
+                        "    }\n" +
+                        "    \n" +
+                        "    public T test;\n" +
+                        "    \n" +
+                        "}\n");
     }
 
 }

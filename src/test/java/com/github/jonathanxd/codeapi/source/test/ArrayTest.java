@@ -54,7 +54,6 @@ public class ArrayTest {
                 "    }\n" +
                 "    \n" +
                 "}\n");
-        System.out.println(test.result());
 
     }
 

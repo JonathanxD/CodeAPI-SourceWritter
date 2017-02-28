@@ -35,9 +35,6 @@ import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
-/**
- * Created by jonathan on 03/06/16.
- */
 public class TestSource_Invocations {
     @Test
     public void testSource() {
@@ -50,66 +47,52 @@ public class TestSource_Invocations {
                 "import com.github.jonathanxd.codeapi.test.WorldGreeter;\n" +
                 "import java.util.function.Supplier;\n" +
                 "\n" +
-                "public class InvocationsTest__Generated { \n" +
-                "    public final String FIELD = \"AVD\" ; \n" +
-                "    public final int n = 15 ; \n" +
+                "public class InvocationsTest__Generated {\n" +
+                "\n" +
+                "    public final String FIELD = \"AVD\";\n" +
+                "    public final int n = 15;\n" +
                 "    \n" +
-                "    public InvocationsTest__Generated ( ) { \n" +
-                "        System . out . println ( \"Hello\" ) ; \n" +
-                "        this . printIt ( \"Oi\" ) ; \n" +
-                "         \n" +
-                "    } \n" +
+                "    public InvocationsTest__Generated() {\n" +
+                "        System.out.println(\"Hello\");\n" +
+                "        this.printIt(\"Oi\");\n" +
+                "    }\n" +
                 "    \n" +
+                "    public void printIt(Object n) {\n" +
+                "        if (n != null) {\n" +
+                "            System.out.println(\"Hello :D\");\n" +
+                "        }\n" +
+                "        String dingdong = \"DingDong\";\n" +
+                "        System.out.println(dingdong);\n" +
+                "        System.out.println(n);\n" +
+                "    }\n" +
                 "    \n" +
-                "    public void printIt ( Object n ) { \n" +
-                "        if ( n != null ) { \n" +
-                "            System . out . println ( \"Hello :D\" ) ; \n" +
-                "             \n" +
-                "        } \n" +
-                "        \n" +
-                "        String dingdong = \"DingDong\" ; \n" +
-                "        System . out . println ( dingdong ) ; \n" +
-                "        System . out . println ( n ) ; \n" +
-                "         \n" +
-                "    } \n" +
+                "    public boolean check(int x) {\n" +
+                "        InvocationsTest_.bmp(\"xy\", \"yz\");\n" +
+                "        System.out.println(\"Invoke Interface ->\");\n" +
+                "        Greeter greeter = new WorldGreeter();\n" +
+                "        String greetingVar = greeter.hello();\n" +
+                "        System.out.println(greetingVar);\n" +
+                "        System.out.println(\"Invoke Interface <-\");\n" +
+                "        System.out.println(\"Invoke Dynamic ->\");\n" +
+                "        Supplier supplier2 = () -> {\n" +
+                "            return \"BRB\";\n" +
+                "        };\n" +
+                "        System.out.println((String)supplier2.get());\n" +
+                "        Supplier supplier = greeter::hello;\n" +
+                "        String str = (String)supplier.get();\n" +
+                "        System.out.println(str);\n" +
+                "        System.out.println(\"Invoke Dynamic <-\");\n" +
+                "        System.out.println(\"Invoke Dynamic Bootstrap ->\");\n" +
+                "        // Dynamic::[MethodInvocationImpl(localization=JavaType[Lcom/github/jonathanxd/codeapi/test/InvocationsTest_;], arguments=[QuotedStringLiteral[name=\"World\", type=JavaType[Ljava/lang/String;]]], spec=MethodSpecificationImpl(methodType=DYNAMIC_METHOD, methodName=helloWorld, description=TypeSpec(returnType=PredefinedType[V], parameterTypes=[PredefinedType[Ljava/lang/String;]])), invokeType=INVOKE_VIRTUAL, invokeDynamic=Bootstrap[methodTypeSpec = MethodTypeSpec(localization=JavaType[Lcom/github/jonathanxd/codeapi/test/InvocationsTest_;], methodName=myBootstrap, typeSpec=TypeSpec(returnType=JavaType[Ljava/lang/invoke/CallSite;], parameterTypes=[JavaType[Ljava/lang/invoke/MethodHandles$Lookup;], JavaType[Ljava/lang/String;], JavaType[Ljava/lang/invoke/MethodType;], LoadedArrayCodeType[[Ljava/lang/Object;]])), invokeType = INVOKE_STATIC, arguments = []], target=AccessImpl(type=STATIC, localization=null))];\n" +
+                "        System.out.println(\"Invoke Dynamic Bootstrap <-\");\n" +
+                "        if (x == 9 || x == 7) {\n" +
+                "            return 0;\n" +
+                "        }\n" +
+                "        System.out.println(x);\n" +
+                "        return 1;\n" +
+                "    }\n" +
                 "    \n" +
-                "    \n" +
-                "    public boolean check ( int x ) { \n" +
-                "        InvocationsTest_ . bmp ( \"xy\" ,  \"yz\" ) ; \n" +
-                "        System . out . println ( \"Invoke Interface ->\" ) ; \n" +
-                "        Greeter greeter = new WorldGreeter ( ) ; \n" +
-                "        String greetingVar = greeter . hello ( ) ; \n" +
-                "        System . out . println ( greetingVar ) ; \n" +
-                "        System . out . println ( \"Invoke Interface <-\" ) ; \n" +
-                "        System . out . println ( \"Invoke Dynamic ->\" ) ; \n" +
-                "        Supplier supplier2 = ( ) -> { \n" +
-                "            return \"BRB\" ; \n" +
-                "             \n" +
-                "        } \n" +
-                "        \n" +
-                "        ; \n" +
-                "        System . out . println ( ( String ) supplier2 . get ( ) ) ; \n" +
-                "        Supplier supplier = greeter :: hello ; \n" +
-                "        String str = ( String ) supplier . get ( ) ; \n" +
-                "        System . out . println ( str ) ; \n" +
-                "        System . out . println ( \"Invoke Dynamic <-\" ) ; \n" +
-                "        System . out . println ( \"Invoke Dynamic Bootstrap ->\" ) ; \n" +
-                "        // Dynamic::[MethodInvocationImpl(localization=JavaType[Lcom/github/jonathanxd/codeapi/test/InvocationsTest_;], arguments=[QuotedStringLiteral[name=\"World\", type=JavaType[Ljava/lang/String;]]], spec=MethodSpecificationImpl(methodType=DYNAMIC_METHOD, methodName=helloWorld, description=TypeSpec(returnType=PredefinedType[V], parameterTypes=[PredefinedType[Ljava/lang/String;]])), invokeType=INVOKE_VIRTUAL, invokeDynamic=Bootstrap[methodTypeSpec = MethodTypeSpec(localization=JavaType[Lcom/github/jonathanxd/codeapi/test/InvocationsTest_;], methodName=myBootstrap, typeSpec=TypeSpec(returnType=JavaType[Ljava/lang/invoke/CallSite;], parameterTypes=[JavaType[Ljava/lang/invoke/MethodHandles$Lookup;], JavaType[Ljava/lang/String;], JavaType[Ljava/lang/invoke/MethodType;], LoadedArrayCodeType[[Ljava/lang/Object;]])), invokeType = INVOKE_STATIC, arguments = []], target=AccessImpl(type=STATIC, localization=null))]; \n" +
-                "        System . out . println ( \"Invoke Dynamic Bootstrap <-\" ) ; \n" +
-                "        if ( x == 9 || ( x == 7 ) ) { \n" +
-                "            return 0 ; \n" +
-                "             \n" +
-                "        } \n" +
-                "        \n" +
-                "        System . out . println ( x ) ; \n" +
-                "        return 1 ; \n" +
-                "         \n" +
-                "    } \n" +
-                "    \n" +
-                "     \n" +
-                "} \n" +
-                "\n");
-        test.consume(System.out::println);
+                "}\n");
 
     }
 

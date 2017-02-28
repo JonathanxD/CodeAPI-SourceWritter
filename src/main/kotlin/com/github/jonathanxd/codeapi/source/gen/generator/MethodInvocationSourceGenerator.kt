@@ -71,11 +71,11 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
                 values.add(TargetValue.create(ParametersHolder::class.java, method, parents))
 
                 if (body.isNotEmpty) {
-                    values.add(PlainValue.create("->"))
+                    values.add(PlainValue.create(" -> "))
 
                     values.add(TargetValue.create(BodyHolder::class.java, method, parents))
                 } else {
-                    values.add(PlainValue.create("-> {};"))
+                    values.add(PlainValue.create(" -> {};"))
                 }
 
                 return values
@@ -84,11 +84,11 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
                 if (inp.arguments.isEmpty()) {
                     METHOD_SEPARATOR = "::"
                 } else {
-                    values.add(PlainValue.create("() ->"))
+                    values.add(PlainValue.create("() -> "))
                     METHOD_SEPARATOR = "."
                 }
             } else {
-                return listOf(PlainValue.create("// Dynamic::[" + inp.toString() + "];"))
+                return listOf(PlainValue.create("// Dynamic::[" + inp.toString() + "];"), PlainValue.create("\n"))
             }
         } else {
             METHOD_SEPARATOR = "."
@@ -145,8 +145,7 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
 
 
         if (Util.isBody(parents)) {
-            values.add(PlainValue.create(";"))
-            values.add(PlainValue.create("\n"))
+            Util.close(values)
         }
 
         return values

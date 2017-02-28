@@ -54,7 +54,6 @@ public class ConcatTest {
                 "    }\n" +
                 "    \n" +
                 "}\n");
-        test.consume(System.out::println);
     }
 
 }

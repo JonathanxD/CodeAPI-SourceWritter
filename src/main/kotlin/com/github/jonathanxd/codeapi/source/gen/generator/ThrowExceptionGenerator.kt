@@ -49,7 +49,7 @@ object ThrowExceptionGenerator : ValueGenerator<ThrowException, String, PlainSou
         )
 
         if (Util.isBody(parents)) {
-            values.add(PlainValue.create(";"))
+            Util.close(values)
         }
 
         return values

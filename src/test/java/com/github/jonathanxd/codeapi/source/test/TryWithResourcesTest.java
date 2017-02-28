@@ -44,19 +44,14 @@ public class TryWithResourcesTest {
                 "\n" +
                 "import com.github.jonathanxd.codeapi.test.TryWithResourcesTest_.Trm;\n" +
                 "\n" +
-                "public class TryWithResourcesTestClass { \n" +
+                "public class TryWithResourcesTestClass {\n" +
+                "\n" +
+                "    public TryWithResourcesTestClass() {\n" +
+                "        try (Trm trm = new Trm()) {\n" +
+                "            trm.read();\n" +
+                "        }\n" +
+                "    }\n" +
                 "    \n" +
-                "    public TryWithResourcesTestClass ( ) { \n" +
-                "        try ( Trm trm = new Trm ( ) ) { \n" +
-                "            trm . read ( ) ; \n" +
-                "             \n" +
-                "        } \n" +
-                "        \n" +
-                "         \n" +
-                "    } \n" +
-                "    \n" +
-                "     \n" +
-                "} \n" +
-                "\n");
+                "}\n");
     }
 }

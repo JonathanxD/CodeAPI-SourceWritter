@@ -72,7 +72,7 @@ object ArrayConstructorSourceGenerator : ValueGenerator<ArrayConstructor, String
         }
 
         if (Util.isBody(parents)) {
-            values.add(PlainValue.create(";"))
+            Util.close(values)
         }
 
 

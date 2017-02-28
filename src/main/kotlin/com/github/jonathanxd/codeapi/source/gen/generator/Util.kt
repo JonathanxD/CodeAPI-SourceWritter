@@ -33,8 +33,10 @@ import com.github.jonathanxd.codeapi.base.ImplementationHolder
 import com.github.jonathanxd.codeapi.base.SuperClassHolder
 import com.github.jonathanxd.codeapi.base.TypeDeclaration
 import com.github.jonathanxd.codeapi.gen.value.Parent
+import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.type.CodeType
 import com.github.jonathanxd.codeapi.util.Alias
 
@@ -62,6 +64,11 @@ object Util {
         val parent = parents.parent
 
         return parent != null && (BodyHolderSourceGenerator::class.java.isAssignableFrom(parent.current::class.java) || CodeSourceSourceGenerator::class.java.isAssignableFrom(parent.current::class.java))
+    }
+
+    fun close(values: MutableList<Value<*, String, PlainSourceGenerator>>) {
+        values.add(PlainValue.create(";"))
+        values.add(PlainValue.create("\n"))
     }
 
     fun getBody(parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>): CodeSource {

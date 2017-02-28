@@ -4,10 +4,10 @@ import java.util.List;
 
 public class ForEach {
 
-    
     public ForEach(List<String> strList) {
-        for(String str:strList){
+        for (String str : strList){
             System.out.println(str);
-        }}
+        }
+    }
     
 }

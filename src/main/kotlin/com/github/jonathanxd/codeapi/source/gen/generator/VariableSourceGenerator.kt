@@ -53,8 +53,7 @@ object VariableSourceGenerator : ValueGenerator<VariableDeclaration, String, Pla
         }
 
         if (Util.isBody(parents)) {
-            values.add(PlainValue.create(";"))
-            values.add(PlainValue.create("\n"))
+            Util.close(values)
         }
 
 

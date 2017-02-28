@@ -40,24 +40,19 @@ public class TestForeachClass {
     @Test
     public void genericClass() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = ForEach_.$();
-        CommonSourceTest.test(this.getClass(), $._1(), $._2()).consume(System.out::println).expect("package com;\n" +
+        CommonSourceTest.test(this.getClass(), $._1(), $._2()).expect("package com;\n" +
                 "\n" +
                 "import java.util.List;\n" +
                 "\n" +
-                "public class ForEach { \n" +
+                "public class ForEach {\n" +
+                "\n" +
+                "    public ForEach(List<String> strList) {\n" +
+                "        for (String str : strList){\n" +
+                "            System.out.println(str);\n" +
+                "        }\n" +
+                "    }\n" +
                 "    \n" +
-                "    public ForEach ( List < String > strList ) { \n" +
-                "        for ( String str : strList ) { \n" +
-                "            System . out . println ( str ) ; \n" +
-                "             \n" +
-                "        } \n" +
-                "        \n" +
-                "         \n" +
-                "    } \n" +
-                "    \n" +
-                "     \n" +
-                "} \n" +
-                "\n");
+                "}\n");
     }
 
 }

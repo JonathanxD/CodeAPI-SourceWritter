@@ -31,6 +31,8 @@ import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator;
 import com.github.jonathanxd.codeapi.type.CodeType;
 
+import org.junit.Assert;
+
 public class CommonSourceTest {
 
     public static SourceTest test(Class<?> ofClass, CodeType theClass, CodeSource source) {

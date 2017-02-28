@@ -4,6 +4,6 @@
 *.ipr
 CompilerHints
 build/
-out/
+/out/
 .gradle
 wiki/

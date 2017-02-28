@@ -33,6 +33,8 @@ import com.github.jonathanxd.codeapi.Types;
 import com.github.jonathanxd.codeapi.common.CodeModifier;
 import com.github.jonathanxd.codeapi.factory.ClassFactory;
 import com.github.jonathanxd.codeapi.factory.FieldFactory;
+import com.github.jonathanxd.codeapi.factory.MethodFactory;
+import com.github.jonathanxd.codeapi.helper.Predefined;
 import com.github.jonathanxd.codeapi.literal.Literals;
 import com.github.jonathanxd.codeapi.type.CodeType;
 import com.github.jonathanxd.codeapi.type.Generic;
@@ -55,16 +57,15 @@ public class MapGeneric {
         )));
 
         CommonSourceTest.test(this.getClass(), type, cs)
-                .consume(System.out::println)
                 .expect("package com;\n" +
                         "\n" +
                         "import java.util.Map;\n" +
                         "\n" +
-                        "public class ACS { \n" +
-                        "    Map < String ,  Integer > upo = null ; \n" +
-                        "     \n" +
-                        "} \n" +
-                        "\n");
+                        "public class ACS {\n" +
+                        "\n" +
+                        "    Map<String, Integer> upo = null;\n" +
+                        "    \n" +
+                        "}\n");
 
     }
 }

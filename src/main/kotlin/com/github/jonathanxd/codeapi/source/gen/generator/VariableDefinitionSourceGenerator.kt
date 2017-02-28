@@ -49,8 +49,7 @@ object VariableDefinitionSourceGenerator : ValueGenerator<VariableDefinition, St
 
 
         if (Util.isBody(parents)) {
-            values.add(PlainValue.create(";"))
-            values.add(PlainValue.create("\n"))
+            Util.close(values)
         }
         return values
     }

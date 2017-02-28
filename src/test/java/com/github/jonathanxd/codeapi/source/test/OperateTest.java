@@ -45,19 +45,15 @@ public class OperateTest {
 
         test.expect("package com;\n" +
                 "\n" +
-                "public class OperateTest { \n" +
+                "public class OperateTest {\n" +
+                "\n" +
+                "    public OperateTest(int num) {\n" +
+                "        System.out.println(String.valueOf(9 + num + (num * 2)));\n" +
+                "        System.out.println(String.valueOf(9 - ));\n" +
+                "        System.out.println(String.valueOf(9 ~ 10));\n" +
+                "    }\n" +
                 "    \n" +
-                "    public OperateTest ( int num ) { \n" +
-                "        System . out . println ( String . valueOf ( 9 + num + ( num * 2 ) ) ) ; \n" +
-                "        System . out . println ( String . valueOf ( 9 - ) ) ; \n" +
-                "        System . out . println ( String . valueOf ( 9 ~ 10 ) ) ; \n" +
-                "         \n" +
-                "    } \n" +
-                "    \n" +
-                "     \n" +
-                "} \n" +
-                "\n");
-        test.consume(System.out::println);
+                "}\n");
     }
 
 }

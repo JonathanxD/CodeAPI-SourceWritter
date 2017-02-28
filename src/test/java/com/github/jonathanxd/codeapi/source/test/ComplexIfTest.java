@@ -39,33 +39,26 @@ import org.junit.Test;
 public class ComplexIfTest {
 
     @Test
-    public void instanceOfTest() {
+    public void complexIfTest() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = ComplexIfTest_.$();
         SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
 
-        System.out.println(test.result());
-
         test.expect("package test;\n" +
                 "\n" +
-                "public class InstanceOf { \n" +
+                "public class ComplexIf {\n" +
+                "\n" +
+                "    public ComplexIf(boolean h, boolean x, boolean y, boolean z) {\n" +
+                "        boolean a = 9 < 5;\n" +
+                "        String b = (9 < 5) ? \"9 < 5\" : \"9 >= 5\";\n" +
+                "        String b = (9 < 5) ? \"9 < 5\" : \"9 >= 5\";\n" +
+                "        if (h && x && (y || z)) {\n" +
+                "            System.out.println(\"true\");\n" +
+                "        } else {\n" +
+                "            System.out.println(\"false\");\n" +
+                "        }\n" +
+                "    }\n" +
                 "    \n" +
-                "    public static void test ( Object param ) { \n" +
-                "        if ( param instanceof String ) { \n" +
-                "            System . out . println ( \"Object is String!\" ) \n" +
-                "        } else { \n" +
-                "            System . out . println ( \"Object is not String!\" )  \n" +
-                "        } \n" +
-                "        \n" +
-                "        boolean b = param instanceof String ; \n" +
-                "        boolean b2 = ! b ; \n" +
-                "        Integer ab = new Integer ( 9 ) ; \n" +
-                "        boolean b9 = ab == 9 ; \n" +
-                "         \n" +
-                "    } \n" +
-                "    \n" +
-                "     \n" +
-                "} \n" +
-                "\n");
+                "}\n");
     }
 
 }

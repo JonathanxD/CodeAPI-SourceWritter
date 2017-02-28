@@ -2,21 +2,27 @@ package fullName;
 
 public class LoopTest_ {
 
-    
     public LoopTest_() {
         int x = 0;
-        while((x<17)){
+        while (x < 17) {
             System.out.println(x);
-            x = x+1;
-        }for(int i = 0;(i<100);i = i+1){
-            if(i==5){
-                continue;}System.out.println(i);
-        }int u = 0;
-        do{
+            x = x + 1;
+        }
+        for (int i = 0; (i < 100); i = i + 1) {
+            if (i == 5) {
+                continue;
+            }
+            System.out.println(i);
+        }
+        int u = 0;
+        do {
             System.out.println(u);
-            u = u+1;
-            if(u==2){
-                break;}}while((u<5));System.out.println("Hello World");
+            u = u + 1;
+            if (u == 2) {
+                break;
+            }
+        } while (u < 5);
+        System.out.println("Hello World");
     }
     
 }

@@ -47,12 +47,15 @@ object TryWithResourcesSourceGenerator : ValueGenerator<TryWithResources, String
         val variable = inp.variable
 
         values.add(PlainValue.create("try"))
+        values.add(PlainValue.create(" "))
 
         values.add(PlainValue.create("("))
 
         values.add(TargetValue.create(VariableDeclaration::class.java, variable, parents))
 
         values.add(PlainValue.create(")"))
+
+        values.add(PlainValue.create(" "))
 
         values.add(TargetValue.create(TryStatement::class.java, inp, parents))
 

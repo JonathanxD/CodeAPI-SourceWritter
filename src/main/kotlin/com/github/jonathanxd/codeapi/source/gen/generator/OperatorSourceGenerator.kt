@@ -25,40 +25,27 @@
  *      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *      THE SOFTWARE.
  */
-package com.github.jonathanxd.codeapi.source.test;
+package com.github.jonathanxd.codeapi.source.gen.generator
 
-import com.github.jonathanxd.codeapi.CodeSource;
-import com.github.jonathanxd.codeapi.base.TypeDeclaration;
-import com.github.jonathanxd.codeapi.test.InstanceOf_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
+import com.github.jonathanxd.codeapi.common.Data
+import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
+import com.github.jonathanxd.codeapi.gen.value.Value
+import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
+import com.github.jonathanxd.codeapi.operator.Operator
+import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 
-import org.junit.Test;
+object OperatorSourceGenerator : ValueGenerator<Operator, String, PlainSourceGenerator> {
 
-public class InstanceOfTest {
+    override fun gen(inp: Operator, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
-    @Test
-    public void instanceOfTest() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = InstanceOf_.$();
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        test.expect("package test;\n" +
-                "\n" +
-                "public class InstanceOf {\n" +
-                "\n" +
-                "    public static void test(Object param) {\n" +
-                "        if (param instanceof String) {\n" +
-                "            System.out.println(\"Object is String!\");\n" +
-                "        } else {\n" +
-                "            System.out.println(\"Object is not String!\");\n" +
-                "        }\n" +
-                "        boolean b = param instanceof String;\n" +
-                "        boolean b2 = !b;\n" +
-                "        Integer ab = new Integer(9);\n" +
-                "        boolean b9 = ab == 9;\n" +
-                "    }\n" +
-                "    \n" +
-                "}\n");
+        values.add(PlainValue.create(" "))
+        values.add(PlainValue.create(inp.name))
+        values.add(PlainValue.create(" "))
+
+        return values
     }
-
 }

@@ -50,11 +50,10 @@ object LabelSourceGenerator : ValueGenerator<Label, String, PlainSourceGenerator
 
 
         values.add(PlainValue.create(inp.name))
-        values.add(PlainValue.create("{"))
+        values.add(PlainValue.create(": "))
 
         values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
-
-        values.add(PlainValue.create("}"))
+        values.add(PlainValue.create("\n"))
 
         return values
     }

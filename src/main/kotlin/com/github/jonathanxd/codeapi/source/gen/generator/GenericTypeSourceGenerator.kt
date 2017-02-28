@@ -44,11 +44,9 @@ object GenericTypeSourceGenerator : ValueGenerator<GenericType, String, PlainSou
     override fun gen(inp: GenericType, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
         return toSourceString(inp, {
             listOf<Value<*, String, PlainSourceGenerator>>(ImportValue.create(it), CodeTypeValue.create(it))
-            //TargetValue.create(CodeType::class.java, it, parents)
         }, {
             PlainValue.create(it)
         })
-        //return listOf(PlainValue.create(GenericTypeUtil.toSourceString(inp)))
     }
 
 }

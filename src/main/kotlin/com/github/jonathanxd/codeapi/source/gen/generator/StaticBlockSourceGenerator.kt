@@ -44,10 +44,10 @@ object StaticBlockSourceGenerator : ValueGenerator<StaticBlock, String, PlainSou
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(PlainValue.create("static"))
+        values.add(PlainValue.create("static "))
 
         values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
-
+        values.add(PlainValue.create("\n"))
 
         return values
     }

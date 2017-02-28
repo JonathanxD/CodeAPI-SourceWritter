@@ -43,7 +43,87 @@ public class SwitchSourceTest {
 
         SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
 
-        test.consume(System.out::println);
+        test.expect("package com;\n" +
+                "\n" +
+                "import com.github.jonathanxd.codeapi.test.SwitchTest_.TestEnum;\n" +
+                "\n" +
+                "public class SwitchTestClass {\n" +
+                "\n" +
+                "    public SwitchTestClass(int number, int number2, TestEnum testEnum, String str, Object o) {\n" +
+                "        switch (number) {\n" +
+                "            case 1: {\n" +
+                "                System.out.println(\"1\");\n" +
+                "                break;\n" +
+                "            }\n" +
+                "            case 3: {\n" +
+                "                System.out.println(\"3\");\n" +
+                "            }\n" +
+                "            case 5: {\n" +
+                "                System.out.println(\"5\");\n" +
+                "                break;\n" +
+                "            }\n" +
+                "            default: {\n" +
+                "                System.out.println(\"default\");\n" +
+                "            }\n" +
+                "        }\n" +
+                "        switch (number2) {\n" +
+                "            case 1: {\n" +
+                "                System.out.println(\"1\");\n" +
+                "                break;\n" +
+                "            }\n" +
+                "            case 10: {\n" +
+                "                System.out.println(\"10\");\n" +
+                "                break;\n" +
+                "            }\n" +
+                "            case 100: {\n" +
+                "                System.out.println(\"100\");\n" +
+                "                break;\n" +
+                "            }\n" +
+                "            default: {\n" +
+                "                System.out.println(\"default\");\n" +
+                "            }\n" +
+                "        }\n" +
+                "        switch (testEnum) {\n" +
+                "            case TestEnum.A: {\n" +
+                "                System.out.println(\"A\");\n" +
+                "                break;\n" +
+                "            }\n" +
+                "            case TestEnum.B: {\n" +
+                "                System.out.println(\"B\");\n" +
+                "            }\n" +
+                "            default: {\n" +
+                "                System.out.println(\"B or default\");\n" +
+                "            }\n" +
+                "        }\n" +
+                "        switch (str) {\n" +
+                "            case \"AHEAD\": {\n" +
+                "                System.out.println(\"AHEAD\");\n" +
+                "                break;\n" +
+                "            }\n" +
+                "            case \"XM\": {\n" +
+                "                System.out.println(\"XM\");\n" +
+                "                break;\n" +
+                "            }\n" +
+                "            case \"AH\": {\n" +
+                "                System.out.println(\"AH\");\n" +
+                "                break;\n" +
+                "            }\n" +
+                "            default: {\n" +
+                "                System.out.println(\"default\");\n" +
+                "            }\n" +
+                "        }\n" +
+                "        switch (o.hashCode()) {\n" +
+                "            case 0: {\n" +
+                "                System.out.println(\"Zero\");\n" +
+                "                break;\n" +
+                "            }\n" +
+                "            default: {\n" +
+                "                System.out.println(\"default\");\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "    \n" +
+                "}\n");
     }
 
 }

@@ -40,6 +40,7 @@ import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.generic.GenericSignature
 import com.github.jonathanxd.codeapi.keyword.Keyword
 import com.github.jonathanxd.codeapi.literal.Literal
+import com.github.jonathanxd.codeapi.operator.Operator
 import com.github.jonathanxd.codeapi.source.gen.generator.*
 import com.github.jonathanxd.codeapi.source.util.Indent
 import com.github.jonathanxd.codeapi.source.util.MultiString
@@ -106,6 +107,7 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
         register(ArrayLength::class.java, ArrayLengthSourceGenerator)
         //register(TagLine::class.java, TagLineSourceGenerator)
         register(Operate::class.java, OperateSourceGenerator)
+        register(Operator::class.java, OperatorSourceGenerator)
         //register(VariableOperate::class.java, VariableOperateSourceGenerator)
         //register(ClassType::class.java, ClassTypeSourceGenerator)
         register(Accessor::class.java, AccessorSourceGenerator)

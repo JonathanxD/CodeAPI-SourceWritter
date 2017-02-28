@@ -2,11 +2,10 @@ package com;
 
 public class OperateTest {
 
-    
     public OperateTest(int num) {
-        System.out.println(String.valueOf(9+num+(num*2)));
-        System.out.println(String.valueOf(9-));
-        System.out.println(String.valueOf(9~10));
+        System.out.println(String.valueOf(9 + num + (num * 2)));
+        System.out.println(String.valueOf(9 - ));
+        System.out.println(String.valueOf(9 ~ 10));
     }
     
 }

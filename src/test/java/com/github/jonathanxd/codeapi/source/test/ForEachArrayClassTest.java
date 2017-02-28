@@ -43,20 +43,19 @@ public class ForEachArrayClassTest {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = ForEachArray_.$();
         SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
 
-        test.consume(System.out::println)
-                .expect("package com;\n" +
-                        "\n" +
-                        "public class ForEach {\n" +
-                        "\n" +
-                        "    public static String stra = \"XA\";\n" +
-                        "    \n" +
-                        "    public ForEach(String[] strArray) {\n" +
-                        "        String v = ForEach.stra;\n" +
-                        "        for (String str : strArray){\n" +
-                        "            System.out.println(str);\n" +
-                        "        }\n" +
-                        "    }\n" +
-                        "    \n" +
-                        "}\n");
+        test.expect("package com;\n" +
+                "\n" +
+                "public class ForEach {\n" +
+                "\n" +
+                "    public static String stra = \"XA\";\n" +
+                "    \n" +
+                "    public ForEach(String[] strArray) {\n" +
+                "        String v = ForEach.stra;\n" +
+                "        for (String str : strArray){\n" +
+                "            System.out.println(str);\n" +
+                "        }\n" +
+                "    }\n" +
+                "    \n" +
+                "}\n");
     }
 }

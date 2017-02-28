@@ -66,9 +66,7 @@ object IfExprSourceGenerator : ValueGenerator<IfExpr, String, PlainSourceGenerat
             }
         }
 
-        values.add(PlainValue.create(" "))
         values.add(TargetValue.create(operation::class.java, operation, parents))
-        values.add(PlainValue.create(" "))
 
         values.add(TargetValue.create(expr2::class.java, expr2, parents))
 

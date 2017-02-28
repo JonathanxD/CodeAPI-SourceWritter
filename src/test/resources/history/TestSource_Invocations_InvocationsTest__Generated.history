@@ -15,15 +15,14 @@ public class InvocationsTest__Generated {
         this.printIt("Oi");
     }
     
-    
     public void printIt(Object n) {
-        if(n!=null){
+        if (n != null) {
             System.out.println("Hello :D");
-        }String dingdong = "DingDong";
+        }
+        String dingdong = "DingDong";
         System.out.println(dingdong);
         System.out.println(n);
     }
-    
     
     public boolean check(int x) {
         InvocationsTest_.bmp("xy", "yz");
@@ -33,7 +32,7 @@ public class InvocationsTest__Generated {
         System.out.println(greetingVar);
         System.out.println("Invoke Interface <-");
         System.out.println("Invoke Dynamic ->");
-        Supplier supplier2 = ()->{
+        Supplier supplier2 = () -> {
             return "BRB";
         };
         System.out.println((String)supplier2.get());
@@ -42,10 +41,12 @@ public class InvocationsTest__Generated {
         System.out.println(str);
         System.out.println("Invoke Dynamic <-");
         System.out.println("Invoke Dynamic Bootstrap ->");
-        // Dynamic::[MethodInvocationImpl(localization=JavaType[Lcom/github/jonathanxd/codeapi/test/InvocationsTest_;], arguments=[QuotedStringLiteral[name="World", type=JavaType[Ljava/lang/String;]]], spec=MethodSpecificationImpl(methodType=DYNAMIC_METHOD, methodName=helloWorld, description=TypeSpec(returnType=PredefinedType[V], parameterTypes=[PredefinedType[Ljava/lang/String;]])), invokeType=INVOKE_VIRTUAL, invokeDynamic=Bootstrap[methodTypeSpec = MethodTypeSpec(localization=JavaType[Lcom/github/jonathanxd/codeapi/test/InvocationsTest_;], methodName=myBootstrap, typeSpec=TypeSpec(returnType=JavaType[Ljava/lang/invoke/CallSite;], parameterTypes=[JavaType[Ljava/lang/invoke/MethodHandles$Lookup;], JavaType[Ljava/lang/String;], JavaType[Ljava/lang/invoke/MethodType;], LoadedArrayCodeType[[Ljava/lang/Object;]])), invokeType = INVOKE_STATIC, arguments = []], target=AccessImpl(type=STATIC, localization=null))];System.out.println("Invoke Dynamic Bootstrap <-");
-        if(x==9||(x==7)){
+        // Dynamic::[MethodInvocationImpl(localization=JavaType[Lcom/github/jonathanxd/codeapi/test/InvocationsTest_;], arguments=[QuotedStringLiteral[name="World", type=JavaType[Ljava/lang/String;]]], spec=MethodSpecificationImpl(methodType=DYNAMIC_METHOD, methodName=helloWorld, description=TypeSpec(returnType=PredefinedType[V], parameterTypes=[PredefinedType[Ljava/lang/String;]])), invokeType=INVOKE_VIRTUAL, invokeDynamic=Bootstrap[methodTypeSpec = MethodTypeSpec(localization=JavaType[Lcom/github/jonathanxd/codeapi/test/InvocationsTest_;], methodName=myBootstrap, typeSpec=TypeSpec(returnType=JavaType[Ljava/lang/invoke/CallSite;], parameterTypes=[JavaType[Ljava/lang/invoke/MethodHandles$Lookup;], JavaType[Ljava/lang/String;], JavaType[Ljava/lang/invoke/MethodType;], LoadedArrayCodeType[[Ljava/lang/Object;]])), invokeType = INVOKE_STATIC, arguments = []], target=AccessImpl(type=STATIC, localization=null))];
+        System.out.println("Invoke Dynamic Bootstrap <-");
+        if (x == 9 || x == 7) {
             return 0;
-        }System.out.println(x);
+        }
+        System.out.println(x);
         return 1;
     }
     

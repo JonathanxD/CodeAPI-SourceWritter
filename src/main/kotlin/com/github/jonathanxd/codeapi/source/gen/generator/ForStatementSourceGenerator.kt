@@ -63,8 +63,10 @@ object ForStatementSourceGenerator : ValueGenerator<ForStatement, String, PlainS
         inp.forUpdate?.let { expression -> values.add(TargetValue.create(expression, parents)) }
 
         values.add(PlainValue.create(")"))
+        values.add(PlainValue.create(" "))
 
         values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
+        values.add(PlainValue.create("\n"))
 
         return values
     }

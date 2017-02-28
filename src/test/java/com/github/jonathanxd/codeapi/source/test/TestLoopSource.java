@@ -35,9 +35,6 @@ import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
-/**
- * Created by jonathan on 03/06/16.
- */
 public class TestLoopSource {
     @Test
     public void testSource() {
@@ -45,47 +42,32 @@ public class TestLoopSource {
         SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
         test.expect("package fullName;\n" +
                 "\n" +
-                "public class LoopTest_ { \n" +
+                "public class LoopTest_ {\n" +
+                "\n" +
+                "    public LoopTest_() {\n" +
+                "        int x = 0;\n" +
+                "        while (x < 17) {\n" +
+                "            System.out.println(x);\n" +
+                "            x = x + 1;\n" +
+                "        }\n" +
+                "        for (int i = 0; (i < 100); i = i + 1) {\n" +
+                "            if (i == 5) {\n" +
+                "                continue;\n" +
+                "            }\n" +
+                "            System.out.println(i);\n" +
+                "        }\n" +
+                "        int u = 0;\n" +
+                "        do {\n" +
+                "            System.out.println(u);\n" +
+                "            u = u + 1;\n" +
+                "            if (u == 2) {\n" +
+                "                break;\n" +
+                "            }\n" +
+                "        } while (u < 5);\n" +
+                "        System.out.println(\"Hello World\");\n" +
+                "    }\n" +
                 "    \n" +
-                "    public LoopTest_ ( ) { \n" +
-                "        int x = 0 ; \n" +
-                "        while ( ( x < 17 ) ) { \n" +
-                "            System . out . println ( x ) ; \n" +
-                "            x = x + 1 ; \n" +
-                "             \n" +
-                "        } \n" +
-                "        \n" +
-                "        for ( int i = 0 ; ( i < 100 ) ; i = i + 1 ) { \n" +
-                "            if ( i == 5 ) { \n" +
-                "                continue ; \n" +
-                "                 \n" +
-                "            } \n" +
-                "            \n" +
-                "            System . out . println ( i ) ; \n" +
-                "             \n" +
-                "        } \n" +
-                "        \n" +
-                "        int u = 0 ; \n" +
-                "        do { \n" +
-                "            System . out . println ( u ) ; \n" +
-                "            u = u + 1 ; \n" +
-                "            if ( u == 2 ) { \n" +
-                "                break ; \n" +
-                "                 \n" +
-                "            } \n" +
-                "            \n" +
-                "             \n" +
-                "        } \n" +
-                "        \n" +
-                "        while ( ( u < 5 ) ) ; \n" +
-                "        System . out . println ( \"Hello World\" ) ; \n" +
-                "         \n" +
-                "    } \n" +
-                "    \n" +
-                "     \n" +
-                "} \n" +
-                "\n");
-        test.consume(System.out::println);
+                "}\n");
     }
 
 }

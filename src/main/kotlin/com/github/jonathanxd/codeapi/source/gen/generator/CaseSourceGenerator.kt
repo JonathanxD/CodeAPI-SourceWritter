@@ -52,6 +52,7 @@ object CaseSourceGenerator : ValueGenerator<Case, String, PlainSourceGenerator> 
             values.add(PlainValue.create("default"))
         } else {
             values.add(PlainValue.create("case"))
+            values.add(PlainValue.create(" "))
         }
 
         if (value != null) {
@@ -61,6 +62,7 @@ object CaseSourceGenerator : ValueGenerator<Case, String, PlainSourceGenerator> 
         values.add(PlainValue.create(": "))
 
         values.add(TargetValue.create(CodeSource::class.java, inp.body, parents))
+        values.add(PlainValue.create("\n"))
 
 
         return values

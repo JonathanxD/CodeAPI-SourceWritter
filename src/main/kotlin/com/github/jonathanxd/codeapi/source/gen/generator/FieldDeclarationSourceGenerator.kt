@@ -75,8 +75,7 @@ object FieldDeclarationSourceGenerator : ValueGenerator<FieldDeclaration, String
         } else {
 
             if (Util.isBody(parents)) {
-                values.add(PlainValue.create(";"))
-                values.add(PlainValue.create("\n"))
+                Util.close(values)
 
                 val source = Util.getBody(parents)
 

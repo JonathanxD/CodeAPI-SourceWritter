@@ -53,7 +53,6 @@ public class AnnotationTest {
                 "    int[] ns() default {1, 2};\n" +
                 "    \n" +
                 "}\n");
-        test.consume(System.out::println);
     }
 
 }

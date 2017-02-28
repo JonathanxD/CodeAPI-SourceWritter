@@ -3,7 +3,7 @@ package test;
 public class InstanceOf {
 
     public static void test(Object param) {
-        if (param instanceof String){
+        if (param instanceof String) {
             System.out.println("Object is String!");
         } else {
             System.out.println("Object is not String!");

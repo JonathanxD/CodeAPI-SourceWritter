@@ -5,23 +5,77 @@ import com.github.jonathanxd.codeapi.test.SwitchTest_.TestEnum;
 public class SwitchTestClass {
 
     public SwitchTestClass(int number, int number2, TestEnum testEnum, String str, Object o) {
-        switch(number){case1: {System.out.println("1");
-        break;}case3: {System.out.println("3");
-        }case5: {System.out.println("5");
-        break;}default: {System.out.println("default");
-        }}switch(number2){case1: {System.out.println("1");
-        break;}case10: {System.out.println("10");
-        break;}case100: {System.out.println("100");
-        break;}default: {System.out.println("default");
-        }}switch(testEnum){caseTestEnum.A: {System.out.println("A");
-        break;}caseTestEnum.B: {System.out.println("B");
-        }default: {System.out.println("B or default");
-        }}switch(str){case"AHEAD": {System.out.println("AHEAD");
-        break;}case"XM": {System.out.println("XM");
-        break;}case"AH": {System.out.println("AH");
-        break;}default: {System.out.println("default");
-        }}switch(o.hashCode()){case0: {System.out.println("Zero");
-        break;}default: {System.out.println("default");
-        }}}
+        switch (number) {
+            case 1: {
+                System.out.println("1");
+                break;
+            }
+            case 3: {
+                System.out.println("3");
+            }
+            case 5: {
+                System.out.println("5");
+                break;
+            }
+            default: {
+                System.out.println("default");
+            }
+        }
+        switch (number2) {
+            case 1: {
+                System.out.println("1");
+                break;
+            }
+            case 10: {
+                System.out.println("10");
+                break;
+            }
+            case 100: {
+                System.out.println("100");
+                break;
+            }
+            default: {
+                System.out.println("default");
+            }
+        }
+        switch (testEnum) {
+            case TestEnum.A: {
+                System.out.println("A");
+                break;
+            }
+            case TestEnum.B: {
+                System.out.println("B");
+            }
+            default: {
+                System.out.println("B or default");
+            }
+        }
+        switch (str) {
+            case "AHEAD": {
+                System.out.println("AHEAD");
+                break;
+            }
+            case "XM": {
+                System.out.println("XM");
+                break;
+            }
+            case "AH": {
+                System.out.println("AH");
+                break;
+            }
+            default: {
+                System.out.println("default");
+            }
+        }
+        switch (o.hashCode()) {
+            case 0: {
+                System.out.println("Zero");
+                break;
+            }
+            default: {
+                System.out.println("default");
+            }
+        }
+    }
     
 }

@@ -59,7 +59,6 @@ public class AnnotatedTest {
                 "    public static String field = null;\n" +
                 "    \n" +
                 "}\n");
-        System.out.println(test.result());
     }
 
 }

@@ -29,6 +29,8 @@ package com.github.jonathanxd.codeapi.source.test;
 
 import org.junit.Assert;
 
+import java.util.function.Consumer;
+
 public class SourceTest implements CATest<String> {
 
     private final String result;
@@ -40,6 +42,12 @@ public class SourceTest implements CATest<String> {
     @Override
     public void expect(String s) throws AssertionError {
         Assert.assertEquals(s, result);
+    }
+
+    @Override
+    public SourceTest consume(Consumer<String> consumer) {
+        CATest.super.consume(consumer);
+        return this;
     }
 
     @Override

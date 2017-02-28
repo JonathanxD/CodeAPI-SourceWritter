@@ -27,6 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.CodeSource
 import com.github.jonathanxd.codeapi.Types
 import com.github.jonathanxd.codeapi.base.Case
 import com.github.jonathanxd.codeapi.base.SwitchStatement
@@ -60,17 +61,25 @@ object SwitchSourceGenerator : ValueGenerator<SwitchStatement, String, PlainSour
             values.add(TargetValue.create(switchType.createGenerator(SourceSugarEnvironment).generate(inp, this), parents))
         } else {
             values.add(PlainValue.create("switch"))
+            values.add(PlainValue.create(" "))
             values.add(PlainValue.create("("))
             values.add(TargetValue.create(value, parents))
             values.add(PlainValue.create(")"))
+            values.add(PlainValue.create(" "))
 
-            values.add(PlainValue.create("{"))
+
+            val source = CodeSource.fromIterable(inp.cases)
+
+            values.add(TargetValue.create(CodeSource::class.java, source, parents))
+
+            values.add(PlainValue.create("\n"))
+            /*values.add(PlainValue.create("{"))
 
             for (aCase in inp.cases) {
                 values.add(TargetValue.create(Case::class.java, aCase, parents))
             }
 
-            values.add(PlainValue.create("}"))
+            values.add(PlainValue.create("}"))*/
         }
 
 

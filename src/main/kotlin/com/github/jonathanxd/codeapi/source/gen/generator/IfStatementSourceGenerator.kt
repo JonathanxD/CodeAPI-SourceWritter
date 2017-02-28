@@ -50,8 +50,10 @@ object IfStatementSourceGenerator : ValueGenerator<IfStatement, String, PlainSou
 
         val isElvis = !Util.isBody(parents)
 
-        if(!isElvis)
-            values.add(PlainValue.create("if "))
+        if(!isElvis) {
+            values.add(PlainValue.create("if"))
+            values.add(PlainValue.create(" "))
+        }
 
         values.add(TargetValue.create(IfExpressionHolder::class.java, inp, parents))
 
@@ -60,7 +62,9 @@ object IfStatementSourceGenerator : ValueGenerator<IfStatement, String, PlainSou
         if (elseStatement.isEmpty) {
             if(!isElvis) {
                 // Clean body
+                values.add(PlainValue.create(" "))
                 values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
+                values.add(PlainValue.create("\n"))
             } else {
                 val body = inp.body
 
@@ -72,6 +76,7 @@ object IfStatementSourceGenerator : ValueGenerator<IfStatement, String, PlainSou
         } else {
 
             if(!isElvis) {
+                values.add(PlainValue.create(" "))
                 values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
                 values.add(PlainValue.create(" else "))
                 values.add(TargetValue.create(CodeSource::class.java, elseStatement, parents))
