@@ -48,6 +48,7 @@ object ArrayConstructorSourceGenerator : ValueGenerator<ArrayConstructor, String
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
         values.add(TargetValue.create(Keyword::class.java, Keywords.NEW, parents))
+        values.add(PlainValue.create(" "))
         values.add(TargetValue.create(CodeType::class.java, inp.arrayType.arrayBaseComponent, parents))
 
         val generateSizes = inp.arguments.isEmpty()

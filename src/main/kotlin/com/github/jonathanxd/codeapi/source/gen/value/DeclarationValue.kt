@@ -34,7 +34,7 @@ import com.github.jonathanxd.codeapi.gen.Appender
 import com.github.jonathanxd.codeapi.gen.value.AbstractGenerator
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Value
-import com.github.jonathanxd.codeapi.source.gen.ImportAppender
+import com.github.jonathanxd.codeapi.source.gen.SourceAppender
 
 /**
  * Value of type declarations.
@@ -44,7 +44,7 @@ import com.github.jonathanxd.codeapi.source.gen.ImportAppender
 class DeclarationValue<TARGET, C : AbstractGenerator<TARGET, C>>(override val value: TypeDeclaration) : Value<TypeDeclaration, TARGET, C> {
 
     override fun apply(value: CodePart, generator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: Data) {
-        if (appender is ImportAppender<*>)
+        if (appender is SourceAppender<*>)
             appender.setDeclaration(this.value)
 
     }

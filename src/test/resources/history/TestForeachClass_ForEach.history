@@ -2,17 +2,12 @@ package com;
 
 import java.util.List;
 
-public class ForEach { 
-    
-    public ForEach ( List < String > strList ) { 
-        for ( String str : strList ) { 
-            System . out . println ( str ) ; 
-             
-        } 
-        
-         
-    } 
-    
-     
-} 
+public class ForEach {
 
+    
+    public ForEach(List<String> strList) {
+        for(String str:strList){
+            System.out.println(str);
+        }}
+    
+}

@@ -42,22 +42,17 @@ public class AnnotationTest {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = AnnotationTest_.$();
 
         SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
-        test.expect("public @interface MyAnnotation { \n" +
-                "    String value () ; \n" +
-                "    String id () default \"A\" ; \n" +
-                "    java.lang.String[] names () default { \n" +
-                "        \"A\" , \"B\"  \n" +
-                "    } \n" +
+        test.expect("public @interface MyAnnotation {\n" +
+                "\n" +
+                "    String value();\n" +
                 "    \n" +
-                "    ; \n" +
-                "    int[] ns () default { \n" +
-                "        1 , 2  \n" +
-                "    } \n" +
+                "    String id() default \"A\";\n" +
                 "    \n" +
-                "    ; \n" +
-                "     \n" +
-                "} \n" +
-                "\n");
+                "    String[] names() default {\"A\", \"B\"};\n" +
+                "    \n" +
+                "    int[] ns() default {1, 2};\n" +
+                "    \n" +
+                "}\n");
         test.consume(System.out::println);
     }
 

@@ -25,25 +25,44 @@
  *      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *      THE SOFTWARE.
  */
-package com.github.jonathanxd.codeapi.source.gen.generator
+package com.github.jonathanxd.codeapi.source.util
 
-import com.github.jonathanxd.codeapi.common.CodeParameter
-import com.github.jonathanxd.codeapi.common.Data
-import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
-import com.github.jonathanxd.codeapi.gen.value.Parent
-import com.github.jonathanxd.codeapi.gen.value.Value
-import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
-import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
-import com.github.jonathanxd.codeapi.type.CodeType
+/**
+ * Internal class undocumented.
+ */
+class Indent(private val indentationSize: Int) {
+    private var indent = 0
 
-object CodeParameterSourceGenerator : ValueGenerator<CodeParameter, String, PlainSourceGenerator> {
-
-    override fun gen(inp: CodeParameter, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
-        val type = inp.type
-
-        return listOf(TargetValue.create(CodeType::class.java, type, parents), PlainValue.create(" "), PlainValue.create(inp.name))
+    fun addIdent() {
+        this.addIdent(1)
     }
 
+    fun addIdent(amount: Int) {
+        if (amount < 0) {
+            throw IllegalArgumentException("Negative value!")
+        }
+        this.indent += indentationSize * amount
+    }
+
+    fun removeIdent() {
+        this.removeIdent(1)
+    }
+
+    fun removeIdent(amount: Int) {
+        if (amount < 0) {
+            throw IllegalArgumentException("Negative value!")
+        }
+        this.indent -= indentationSize * amount
+    }
+
+    val identString: String
+        get() {
+            val sb = StringBuilder()
+
+            for (i in 0..this.indent - 1) {
+                sb.append(' ')
+            }
+
+            return sb.toString()
+        }
 }

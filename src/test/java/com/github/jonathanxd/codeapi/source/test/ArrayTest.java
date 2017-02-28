@@ -44,35 +44,16 @@ public class ArrayTest {
         SourceTest test = CommonSourceTest.test(this.getClass(), new PlainCodeType(CommonGen.class.getCanonicalName() + "_Generated"), CommonGen.gen());
         test.expect("package com.github.jonathanxd.codeapi.test;\n" +
                 "\n" +
-                "public class CommonGen_Generated { \n" +
+                "public class CommonGen_Generated {\n" +
+                "\n" +
+                "    public CommonGen_Generated() {\n" +
+                "        String[][] array = new String[][]{new String[]{\"A\", \"B\", \"C\", \"D\", \"E\"}, new String[]{\"F\", \"G\", \"H\", \"I\", \"J\"}};\n" +
+                "        String[] array2 = new String[0];\n" +
+                "        Object[] array3 = new Object[]{1};\n" +
+                "        System.out.println(array[0][0]);\n" +
+                "    }\n" +
                 "    \n" +
-                "    public CommonGen_Generated ( ) { \n" +
-                "        String[][] array = new String [][] { \n" +
-                "            new String [] { \n" +
-                "                \"A\" ,  \"B\" ,  \"C\" ,  \"D\" ,  \"E\"  \n" +
-                "            } \n" +
-                "            \n" +
-                "            ,  new String [] { \n" +
-                "                \"F\" ,  \"G\" ,  \"H\" ,  \"I\" ,  \"J\"  \n" +
-                "            } \n" +
-                "            \n" +
-                "             \n" +
-                "        } \n" +
-                "        \n" +
-                "        ; \n" +
-                "        java.lang.String[] array2 = new String [ 0 ] ; \n" +
-                "        Object[] array3 = new Object [] { \n" +
-                "            1  \n" +
-                "        } \n" +
-                "        \n" +
-                "        ; \n" +
-                "        System . out . println ( array [ 0 ] [ 0 ] ) ; \n" +
-                "         \n" +
-                "    } \n" +
-                "    \n" +
-                "     \n" +
-                "} \n" +
-                "\n");
+                "}\n");
         System.out.println(test.result());
 
     }

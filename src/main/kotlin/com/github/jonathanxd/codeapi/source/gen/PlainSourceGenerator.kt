@@ -33,6 +33,7 @@ import com.github.jonathanxd.codeapi.base.*
 import com.github.jonathanxd.codeapi.base.Annotation
 import com.github.jonathanxd.codeapi.base.comment.*
 import com.github.jonathanxd.codeapi.common.CodeParameter
+import com.github.jonathanxd.codeapi.common.IfGroup
 import com.github.jonathanxd.codeapi.gen.Appender
 import com.github.jonathanxd.codeapi.gen.value.AbstractGenerator
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
@@ -40,7 +41,7 @@ import com.github.jonathanxd.codeapi.generic.GenericSignature
 import com.github.jonathanxd.codeapi.keyword.Keyword
 import com.github.jonathanxd.codeapi.literal.Literal
 import com.github.jonathanxd.codeapi.source.gen.generator.*
-import com.github.jonathanxd.codeapi.source.util.Ident
+import com.github.jonathanxd.codeapi.source.util.Indent
 import com.github.jonathanxd.codeapi.source.util.MultiString
 import com.github.jonathanxd.codeapi.sugar.SugarSyntax
 import com.github.jonathanxd.codeapi.type.CodeType
@@ -98,6 +99,7 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
         register(Return::class.java, ReturnSourceGenerator)
         register(IfExpressionHolder::class.java, IfExpressionHolderSourceGenerator)
         register(IfExpr::class.java, IfExprSourceGenerator)
+        register(IfGroup::class.java, IfGroupSourceGenerator)
         register(ArrayConstructor::class.java, ArrayConstructorSourceGenerator)
         register(ArrayLoad::class.java, ArrayLoadSourceGenerator)
         register(ArrayStore::class.java, ArrayStoreSourceGenerator)
@@ -189,13 +191,13 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
         registry.put(tClass, generator)
     }
 
-    override fun createAppender(): Appender<String> = MultiStringAppender(delimiter = " ")
+    override fun createAppender(): Appender<String> = MultiStringAppender(delimiter = "")
 
-    private class MultiStringAppender internal constructor(delimiter: String) : ImportAppender<String>(), SimpleAppender<String> {
+    private class MultiStringAppender internal constructor(delimiter: String) : SourceAppender<String>(), SimpleAppender<String> {
         override val imports = mutableListOf<CodeType>()
         private var typeDeclaration: TypeDeclaration? = null
         private var pkg: String = ""
-        private val indentation = Ident(4)
+        private val indentation = Indent(4)
         private val multiString: MultiString
         private var isAnnotation = false
         private var brackets = 0
@@ -219,6 +221,14 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
                 outer = outer.outerClass
 
             return outer?.`is`(type) ?: false
+        }
+
+        override fun addIndent() {
+            this.indentation.addIdent()
+        }
+
+        override fun removeIndent() {
+            this.indentation.removeIdent()
         }
 
         override fun appendImport(codeType: CodeType) {
@@ -247,7 +257,7 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
             val found = imports.any { it != type && it.simpleName == simple }
 
             if (!found)
-                imports += codeType
+                imports += type
         }
 
         override fun setPrefix(t: String) {
@@ -293,8 +303,8 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
 
             if (elem.startsWith("}") && elem.endsWith("{")) {
                 if (!this.isAnnotation) {
-                    this.multiString.newLine()
-                    this.indentation.removeIdent()
+                    //this.multiString.newLine()
+                    //this.indentation.removeIdent()
                 }
             }
 
@@ -304,7 +314,7 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
             if (elem == ")")
                 --brackets
 
-            if (elem != "\n")
+            if (elem != "\n" && !elem.isEmpty())
                 this.multiString.add(elem)
 
             if (elem == "@")
@@ -316,14 +326,14 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
 
             if (endsWithSemi) {
                 if (!this.isAnnotation && !this.isInBrackets) {
-                    this.multiString.newLine()
+                    //this.multiString.newLine()
                 }
             }
 
             if (endsWithOpenBr
                     || endsWithCloseBr) {
                 if (!this.isAnnotation) {
-                    this.multiString.newLine()
+                    //this.multiString.newLine()
                 }
             }
 
@@ -336,16 +346,16 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
 
             if (endsWithOpenBr) {
                 if (!this.isAnnotation) {
-                    this.indentation.addIdent()
+                    //this.indentation.addIdent()
                 }
             }
 
             if (endsWithCloseBr) {
                 if (!this.isAnnotation) {
-                    this.indentation.removeIdent()
+                    //this.indentation.removeIdent()
                     this.multiString.add("}")
-                    this.multiString.newLine()
-                    this.multiString.newLine()
+                    //this.multiString.newLine()
+                    //this.multiString.newLine()
                 } else {
                     this.multiString.add("}")
                 }

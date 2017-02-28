@@ -51,13 +51,14 @@ object ForEachSourceGenerator : ValueGenerator<ForEachStatement, String, PlainSo
         val iterationType = inp.iterationType
 
         if (iterationType === IterationTypes.ITERABLE_ELEMENT || iterationType === IterationTypes.ARRAY) {
-            values.add(PlainValue.create("for"))
+            values.add(PlainValue.create("for "))
             values.add(PlainValue.create("("))
             values.add(TargetValue.create(variableDeclaration::class.java, variableDeclaration, parents))
-            values.add(PlainValue.create(":"))
+            values.add(PlainValue.create(" : "))
             values.add(TargetValue.create(iterableElement::class.java, iterableElement, parents))
             values.add(PlainValue.create(")"))
             values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
+            values.add(PlainValue.create("\n"))
         } else {
             val start = iterationType.createGenerator(SourceSugarEnvironment)
 

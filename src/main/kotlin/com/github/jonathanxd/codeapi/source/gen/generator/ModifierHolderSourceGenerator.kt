@@ -40,7 +40,11 @@ import com.github.jonathanxd.codeapi.util.toString
 object ModifierHolderSourceGenerator : ValueGenerator<ModifiersHolder, String, PlainSourceGenerator> {
 
     override fun gen(inp: ModifiersHolder, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
-        return listOf(PlainValue.create(toString(inp.modifiers)))
+
+        if(inp.modifiers.isEmpty())
+            return emptyList()
+
+        return listOf(PlainValue.create("${toString(inp.modifiers)} "))
     }
 
 }

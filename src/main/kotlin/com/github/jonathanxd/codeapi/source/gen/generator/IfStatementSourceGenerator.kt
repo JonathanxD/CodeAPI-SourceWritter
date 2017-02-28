@@ -27,6 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.CodeSource
 import com.github.jonathanxd.codeapi.base.BodyHolder
 import com.github.jonathanxd.codeapi.base.IfExpressionHolder
 import com.github.jonathanxd.codeapi.base.IfStatement
@@ -36,7 +37,7 @@ import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
-import com.github.jonathanxd.codeapi.source.gen.value.CodeSourceValue
+import com.github.jonathanxd.codeapi.source.gen.value.CodePartValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 import java.util.*
@@ -47,21 +48,53 @@ object IfStatementSourceGenerator : ValueGenerator<IfStatement, String, PlainSou
 
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(PlainValue.create("if"))
+        val isElvis = !Util.isBody(parents)
+
+        if(!isElvis)
+            values.add(PlainValue.create("if "))
 
         values.add(TargetValue.create(IfExpressionHolder::class.java, inp, parents))
 
         val elseStatement = inp.elseStatement
 
         if (elseStatement.isEmpty) {
-            // Clean body
-            values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
+            if(!isElvis) {
+                // Clean body
+                values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
+            } else {
+                val body = inp.body
+
+                if(body.size != 1)
+                    throw IllegalStateException("Elvis if expression must have only one element in the body!");
+
+                values.add(CodePartValue.create(body.single(), parents))
+            }
         } else {
-            values.add(PlainValue.create("{"))
-            values.add(CodeSourceValue.create(inp.body, parents))
-            values.add(PlainValue.create("} else {"))
-            values.add(CodeSourceValue.create(elseStatement, parents))
-            values.add(PlainValue.create("}"))
+
+            if(!isElvis) {
+                values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
+                values.add(PlainValue.create(" else "))
+                values.add(TargetValue.create(CodeSource::class.java, elseStatement, parents))
+                values.add(PlainValue.create("\n"))
+            } else {
+                val body = inp.body
+
+                if(body.size != 1)
+                    throw IllegalStateException("Elvis if expression must have only one element in the body!")
+
+                if(elseStatement.size != 1)
+                    throw IllegalStateException("Elvis else expression must have only one element in the body!")
+
+                values.add(PlainValue.create(" ? "))
+
+                values.add(CodePartValue.create(body.single(), parents))
+
+                values.add(PlainValue.create(" : "))
+
+                values.add(CodePartValue.create(elseStatement.single(), parents))
+
+            }
+
         }
 
         return values

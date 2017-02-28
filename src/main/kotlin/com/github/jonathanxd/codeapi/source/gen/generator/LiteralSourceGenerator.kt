@@ -65,6 +65,7 @@ object LiteralSourceGenerator : ValueGenerator<Literal, String, PlainSourceGener
 
         if (Util.isBody(parents)) {
             values.add(PlainValue.create(";"))
+            values.add(PlainValue.create("\n"))
         }
 
         return values

@@ -46,18 +46,30 @@ object EntryHolderSourceGenerator : ValueGenerator<EntryHolder, String, PlainSou
 
         val entries = inp.entries
 
-        val iterator = entries.iterator()
+        val iterator = entries.listIterator()
 
         while (iterator.hasNext()) {
             val enumEntry = iterator.next()
 
             values.add(TargetValue.create(EnumEntry::class.java, enumEntry, parents))
 
-            if (iterator.hasNext())
-                values.add(PlainValue.create(","))
+            if (iterator.hasNext()) {
+                values.add(PlainValue.create(", "))
+
+                val next = iterator.next()
+
+                // Go back
+                iterator.previous()
+
+                if(next.body.isNotEmpty) {
+                    values.add(PlainValue.create("\n"))
+                }
+            }
         }
 
         values.add(PlainValue.create(";"))
+        values.add(PlainValue.create("\n"))
+        values.add(PlainValue.create("\n"))
 
         return values
     }

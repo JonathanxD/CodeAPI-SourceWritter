@@ -41,14 +41,14 @@ import java.util.*
 
 object CaseSourceGenerator : ValueGenerator<Case, String, PlainSourceGenerator> {
 
-    override fun gen(aCase: Case, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: Case, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        val value = aCase.value
+        val value = inp.value
 
 
-        if (aCase.isDefault) {
+        if (inp.isDefault) {
             values.add(PlainValue.create("default"))
         } else {
             values.add(PlainValue.create("case"))
@@ -58,9 +58,9 @@ object CaseSourceGenerator : ValueGenerator<Case, String, PlainSourceGenerator> 
             values.add(TargetValue.create(value, parents))
         }
 
-        values.add(PlainValue.create(":"))
+        values.add(PlainValue.create(": "))
 
-        values.add(TargetValue.create(CodeSource::class.java, aCase.body, parents))
+        values.add(TargetValue.create(CodeSource::class.java, inp.body, parents))
 
 
         return values

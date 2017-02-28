@@ -35,6 +35,7 @@ import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 
 object AnnotableSourceGenerator : ValueGenerator<Annotable, String, PlainSourceGenerator> {
@@ -47,8 +48,14 @@ object AnnotableSourceGenerator : ValueGenerator<Annotable, String, PlainSourceG
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        for (annotation in annotations) {
+        val iterator = annotations.iterator()
+
+        while(iterator.hasNext()) {
+            val annotation = iterator.next()
             values.add(TargetValue.create(Annotation::class.java, annotation, parents))
+
+            if(iterator.hasNext())
+                values.add(PlainValue.create("\n"))
         }
 
         return values

@@ -53,13 +53,13 @@ object CatchBlockSourceGenerator : ValueGenerator<CatchStatement, String, PlainS
             return i
         }
 
-    override fun gen(catchBlock: CatchStatement, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+    override fun gen(inp: CatchStatement, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(PlainValue.create("catch"))
+        values.add(PlainValue.create(" catch "))
 
-        val parameters = catchBlock.exceptionTypes
+        val parameters = inp.exceptionTypes
 
         val sj = StringJoiner(" | ")
 
@@ -72,11 +72,11 @@ object CatchBlockSourceGenerator : ValueGenerator<CatchStatement, String, PlainS
             }
         }
 
-        val catchName = catchBlock.variable.name
+        val catchName = inp.variable.name
 
-        values.add(PlainValue.create("(" + sj.toString() + " " + catchName + ")"))
+        values.add(PlainValue.create(" (" + sj.toString() + " " + catchName + ")"))
 
-        val codeSource = catchBlock.body
+        val codeSource = inp.body
 
         val source2 = MutableCodeSource()
 

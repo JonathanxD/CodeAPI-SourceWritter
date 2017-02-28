@@ -44,16 +44,17 @@ object VariableSourceGenerator : ValueGenerator<VariableDeclaration, String, Pla
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
         values.add(TargetValue.create(inp.type::class.java, inp.type, parents))
-
+        values.add(PlainValue.create(" "))
         values.add(PlainValue.create(inp.name))
 
         inp.value?.let { value ->
-            values.add(PlainValue.create("="))
+            values.add(PlainValue.create(" = "))
             values.add(TargetValue.create(value::class.java, value, parents))
         }
 
         if (Util.isBody(parents)) {
             values.add(PlainValue.create(";"))
+            values.add(PlainValue.create("\n"))
         }
 
 

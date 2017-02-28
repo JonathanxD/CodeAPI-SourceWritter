@@ -25,19 +25,27 @@
  *      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *      THE SOFTWARE.
  */
-package com.github.jonathanxd.codeapi.source.gen
+package com.github.jonathanxd.codeapi.source.gen.generator
 
-import com.github.jonathanxd.codeapi.base.TypeDeclaration
-import com.github.jonathanxd.codeapi.gen.Appender
-import com.github.jonathanxd.codeapi.type.CodeType
+import com.github.jonathanxd.codeapi.base.IfExpressionHolder
+import com.github.jonathanxd.codeapi.common.Data
+import com.github.jonathanxd.codeapi.common.IfGroup
+import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Parent
+import com.github.jonathanxd.codeapi.gen.value.Value
+import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
+import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
+import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 
-/**
- * Support type appending
- */
-abstract class ImportAppender<T> : Appender<T>() {
-    abstract val imports: List<CodeType>
+object IfGroupSourceGenerator : ValueGenerator<IfGroup, String, PlainSourceGenerator> {
 
-    abstract fun setDeclaration(typeDeclaration: TypeDeclaration)
-    abstract fun appendImport(codeType: CodeType)
+    override fun gen(inp: IfGroup, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
+
+        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
+
+        values.add(TargetValue.create(IfExpressionHolder::class.java, inp, parents))
+
+        return values
+    }
 
 }

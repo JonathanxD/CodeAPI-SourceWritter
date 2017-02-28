@@ -54,7 +54,11 @@ object ParametersHolderSourceGenerator : ValueGenerator<ParametersHolder, String
         while (iterator.hasNext()) {
             val next = iterator.next()
 
-            values.add(TargetValue.create(Annotable::class.java, next, parents))
+            if(next.annotations.isNotEmpty()) {
+                values.add(TargetValue.create(Annotable::class.java, next, parents))
+                values.add(PlainValue.create(" "))
+            }
+
             values.add(TargetValue.create(CodeParameter::class.java, next, parents))
 
             if (iterator.hasNext())

@@ -44,12 +44,13 @@ object VariableDefinitionSourceGenerator : ValueGenerator<VariableDefinition, St
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
         values.add(PlainValue.create(inp.name))
-        values.add(PlainValue.create("="))
+        values.add(PlainValue.create(" = "))
         values.add(TargetValue.create(inp.value, parents))
 
 
         if (Util.isBody(parents)) {
             values.add(PlainValue.create(";"))
+            values.add(PlainValue.create("\n"))
         }
         return values
     }

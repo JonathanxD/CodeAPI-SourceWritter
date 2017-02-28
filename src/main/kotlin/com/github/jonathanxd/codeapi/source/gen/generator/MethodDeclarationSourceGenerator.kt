@@ -44,14 +44,20 @@ object MethodDeclarationSourceGenerator : ValueGenerator<MethodDeclaration, Stri
     override fun gen(inp: MethodDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(PlainValue.create("\n"))
+        //values.add(PlainValue.create("\n"))
+
         values.add(TargetValue.create(CommentHolder::class.java, inp, parents))
         values.add(TargetValue.create(Annotable::class.java, inp, parents))
         values.add(TargetValue.create(ModifiersHolder::class.java, inp, parents))
-        values.add(TargetValue.create(GenericSignatureHolder::class.java, inp, parents))
+
+        if(inp.genericSignature.isNotEmpty) {
+            values.add(TargetValue.create(GenericSignatureHolder::class.java, inp, parents))
+            values.add(PlainValue.create(" "))
+        }
 
         if (inp !is ConstructorDeclaration) {
             values.add(TargetValue.create(ReturnTypeHolder::class.java, inp, parents))
+            values.add(PlainValue.create(" "))
         }
 
         if (inp is ConstructorDeclaration) {
@@ -73,7 +79,10 @@ object MethodDeclarationSourceGenerator : ValueGenerator<MethodDeclaration, Stri
         }
 
         values.add(TargetValue.create(ParametersHolder::class.java, inp, parents))
+        values.add(PlainValue.create(" "))
         values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
+        values.add(PlainValue.create("\n"))
+        values.add(PlainValue.create("\n"))
 
         return values
 

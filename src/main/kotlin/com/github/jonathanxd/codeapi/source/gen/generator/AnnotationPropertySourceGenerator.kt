@@ -50,6 +50,7 @@ object AnnotationPropertySourceGenerator : ValueGenerator<AnnotationProperty, St
                 Arrays.asList(
                         TargetValue.create(Annotable::class.java, inp, parents),
                         TargetValue.create(ReturnTypeHolder::class.java, inp, parents),
+                        PlainValue.create(" "),
                         TargetValue.create(Named::class.java, inp, parents),
                         PlainValue.create("()")
                 ))
@@ -58,11 +59,15 @@ object AnnotationPropertySourceGenerator : ValueGenerator<AnnotationProperty, St
         val value = inp.value
 
         if (value != null) {
+            values.add(PlainValue.create(" "))
             values.add(PlainValue.create("default"))
+            values.add(PlainValue.create(" "))
             AnnotationSourceGenerator.addType(value, values, parents)
         }
 
         values.add(PlainValue.create(";"))
+        values.add(PlainValue.create("\n"))
+        values.add(PlainValue.create("\n"))
 
         return values
 

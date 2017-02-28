@@ -44,42 +44,35 @@ public class InnerTest {
         SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
         test.expect("package test;\n" +
                 "\n" +
-                "public class InnerClass { \n" +
-                "    private String field = \"XSD\" ; \n" +
+                "public class InnerClass {\n" +
+                "\n" +
+                "    private String field = \"XSD\";\n" +
                 "    \n" +
-                "    public InnerClass ( ) { \n" +
-                "        new Inner ( ) . call ( ) ; \n" +
-                "         \n" +
-                "    } \n" +
+                "    public InnerClass() {\n" +
+                "        new Inner().call();\n" +
+                "    }\n" +
                 "    \n" +
+                "    private InnerClass(String str) {\n" +
+                "        System.out.println(str);\n" +
+                "    }\n" +
                 "    \n" +
-                "    private InnerClass ( String str ) { \n" +
-                "        System . out . println ( str ) ; \n" +
-                "         \n" +
-                "    } \n" +
+                "    public void mm() {\n" +
+                "        System.out.println(\"A\");\n" +
+                "    }\n" +
                 "    \n" +
+                "    public class Inner {\n" +
                 "    \n" +
-                "    public void mm ( ) { \n" +
-                "        System . out . println ( \"A\" ) ; \n" +
-                "         \n" +
-                "    } \n" +
-                "    \n" +
-                "    public class Inner { \n" +
-                "        public InnerClass a = new InnerClass ( \"Hello\" ) ; \n" +
+                "        public InnerClass a = new InnerClass(\"Hello\");\n" +
                 "        \n" +
-                "        private String call ( ) { \n" +
-                "            System . out . println ( InnerClass . this . field ) ; \n" +
-                "            InnerClass . this . mm ( ) ; \n" +
-                "            return \"A\" ; \n" +
-                "             \n" +
-                "        } \n" +
+                "        private String call() {\n" +
+                "            System.out.println(InnerClass.this.field);\n" +
+                "            InnerClass.this.mm();\n" +
+                "            return \"A\";\n" +
+                "        }\n" +
                 "        \n" +
-                "         \n" +
-                "    } \n" +
+                "    }\n" +
                 "    \n" +
-                "     \n" +
-                "} \n" +
-                "\n");
+                "}\n");
         test.consume(System.out::println);
     }
 }

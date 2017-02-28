@@ -1,15 +1,12 @@
 package com;
 
-public class ConcatTest { 
-    
-    public ConcatTest ( String av ) { 
-        System . out . println ( "Hello" + " " + av + " :D" ) ; 
-        System . out . println ( "" ) ; 
-        System . out . println ( "A" ) ; 
-        System . out . println ( "A" + "B" ) ; 
-         
-    } 
-    
-     
-} 
+public class ConcatTest {
 
+    public ConcatTest(String av) {
+        System.out.println("Hello" + " " + av + " :D");
+        System.out.println("");
+        System.out.println("A");
+        System.out.println("A" + "B");
+    }
+    
+}

@@ -27,6 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.CodeSource
+import com.github.jonathanxd.codeapi.base.BodyHolder
 import com.github.jonathanxd.codeapi.base.ImplementationHolder
 import com.github.jonathanxd.codeapi.base.SuperClassHolder
 import com.github.jonathanxd.codeapi.base.TypeDeclaration
@@ -60,6 +62,27 @@ object Util {
         val parent = parents.parent
 
         return parent != null && (BodyHolderSourceGenerator::class.java.isAssignableFrom(parent.current::class.java) || CodeSourceSourceGenerator::class.java.isAssignableFrom(parent.current::class.java))
+    }
+
+    fun getBody(parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>): CodeSource {
+        val parent = parents.parent
+
+        if (parent != null) {
+
+            if (BodyHolderSourceGenerator::class.java.isAssignableFrom(parent.current::class.java))
+                return (parent.target as BodyHolder).body
+            else if (CodeSourceSourceGenerator::class.java.isAssignableFrom(parent.current::class.java))
+                return parent.target as CodeSource
+
+        }
+
+        throw IllegalStateException("Cannot find source, parents: '$parents'")
+    }
+
+    fun isType(parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>): Boolean {
+        val parent = parents.parent
+
+        return parent != null && TypeDeclarationSourceGenerator::class.java.isAssignableFrom(parent.current::class.java)
     }
 
 }

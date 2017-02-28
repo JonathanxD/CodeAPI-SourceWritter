@@ -111,6 +111,7 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
 
         if (isCtr && !isRef && !isSuper) {
             values.add(TargetValue.create(Keywords.NEW, parents))
+            values.add(PlainValue.create(" "))
         }
 
         if (!isSuper) {
@@ -123,6 +124,7 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
 
         if (isCtr && isRef && !isSuper) {
             values.add(TargetValue.create(Keywords.NEW, parents))
+            values.add(PlainValue.create(" "))
         }
 
         if (inp.spec.methodType == MethodType.METHOD || inp.spec.methodType == MethodType.DYNAMIC_METHOD) {
@@ -144,6 +146,7 @@ object MethodInvocationSourceGenerator : ValueGenerator<MethodInvocation, String
 
         if (Util.isBody(parents)) {
             values.add(PlainValue.create(";"))
+            values.add(PlainValue.create("\n"))
         }
 
         return values

@@ -50,9 +50,17 @@ object ImplementationHolderSourceGenerator : ValueGenerator<ImplementationHolder
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
         values.add(PlainValue.create(Keywords.IMPLEMENTS.name))
+        values.add(PlainValue.create(" "))
 
-        for (codeType in inp.implementations) {
+        val iter = inp.implementations.iterator()
+
+        while (iter.hasNext()) {
+            val codeType = iter.next()
+
             values.add(TargetValue.create(codeType::class.java, codeType, parents))
+
+            if (iter.hasNext())
+                values.add(PlainValue.create(" "))
         }
 
         return values

@@ -46,7 +46,7 @@ object InstanceOfSourceGenerator : ValueGenerator<InstanceOfCheck, String, Plain
 
         return listOf(
                 TargetValue.create(part::class.java, part, parents),
-                PlainValue.create("instanceof"),
+                PlainValue.create(" instanceof "),
                 TargetValue.create(CodeType::class.java, type, parents)
         )
     }

@@ -27,6 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.gen.generator
 
+import com.github.jonathanxd.codeapi.Types
 import com.github.jonathanxd.codeapi.base.*
 import com.github.jonathanxd.codeapi.base.comment.CommentHolder
 import com.github.jonathanxd.codeapi.common.Data
@@ -52,17 +53,18 @@ object TypeDeclarationSourceGenerator : ValueGenerator<TypeDeclaration, String, 
 
                 PlainValue.create(
                         when (inp) {
-                            is InterfaceDeclaration -> "interface"
-                            is AnnotationDeclaration -> "@interface"
-                            is ClassDeclaration -> "class"
-                            is EnumDeclaration -> "enum"
+                            is InterfaceDeclaration -> "interface "
+                            is AnnotationDeclaration -> "@interface "
+                            is ClassDeclaration -> "class "
+                            is EnumDeclaration -> "enum "
                             else -> ""
                         }
                 ),
 
                 TargetValue.create(Named::class.java, inp, parents),
 
-                TargetValue.create(GenericSignatureHolder::class.java, inp, parents)
+                TargetValue.create(GenericSignatureHolder::class.java, inp, parents),
+                PlainValue.create(" ")
         )
 
         val packageName = inp.packageName
@@ -71,15 +73,31 @@ object TypeDeclarationSourceGenerator : ValueGenerator<TypeDeclaration, String, 
             values.add(0, PlainValue.create("package $packageName;"))
         }
 
+        var superOrItfs = false
+
         if (inp is SuperClassHolder) {
-            values.add(TargetValue.create(SuperClassHolder::class.java, inp, parents))
+            if(!inp.superClass.`is`(Types.OBJECT)) {
+                values.add(TargetValue.create(SuperClassHolder::class.java, inp, parents))
+                superOrItfs = true
+            }
         }
 
         if (inp is ImplementationHolder) {
-            values.add(TargetValue.create(ImplementationHolder::class.java, inp, parents))
+            if(inp.implementations.isNotEmpty()) {
+                values.add(TargetValue.create(ImplementationHolder::class.java, inp, parents))
+                superOrItfs = true
+            }
         }
 
+        if(superOrItfs)
+            values.add(PlainValue.create(" "))
+
         values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
+
+        values.add(PlainValue.create("\n"))
+
+        if(inp.outerClass != null)
+            values.add(PlainValue.create("\n"))
 
         return values
     }

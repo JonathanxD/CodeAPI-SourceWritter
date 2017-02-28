@@ -25,25 +25,20 @@
  *      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *      THE SOFTWARE.
  */
-package com.github.jonathanxd.codeapi.source.gen.generator
+package com.github.jonathanxd.codeapi.source.gen
 
-import com.github.jonathanxd.codeapi.common.CodeParameter
-import com.github.jonathanxd.codeapi.common.Data
-import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
-import com.github.jonathanxd.codeapi.gen.value.Parent
-import com.github.jonathanxd.codeapi.gen.value.Value
-import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
-import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
-import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
-import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import com.github.jonathanxd.codeapi.base.TypeDeclaration
+import com.github.jonathanxd.codeapi.gen.Appender
 import com.github.jonathanxd.codeapi.type.CodeType
 
-object CodeParameterSourceGenerator : ValueGenerator<CodeParameter, String, PlainSourceGenerator> {
+/**
+ * Support type appending
+ */
+abstract class SourceAppender<T> : Appender<T>() {
+    abstract val imports: List<CodeType>
 
-    override fun gen(inp: CodeParameter, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
-        val type = inp.type
-
-        return listOf(TargetValue.create(CodeType::class.java, type, parents), PlainValue.create(" "), PlainValue.create(inp.name))
-    }
-
+    abstract fun setDeclaration(typeDeclaration: TypeDeclaration)
+    abstract fun appendImport(codeType: CodeType)
+    abstract fun addIndent()
+    abstract fun removeIndent()
 }

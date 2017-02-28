@@ -34,9 +34,8 @@ import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
-import com.github.jonathanxd.codeapi.source.gen.value.PrefixPlainValue
-import com.github.jonathanxd.codeapi.source.gen.value.SimplePlainValue
-import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
+import com.github.jonathanxd.codeapi.source.gen.value.*
+import com.github.jonathanxd.codeapi.type.PlainCodeType
 
 object CommentHolderSourceGenerator : ValueGenerator<CommentHolder, String, PlainSourceGenerator> {
 
@@ -130,20 +129,62 @@ object LinkCommentSourceGenerator : ValueGenerator<Link, String, PlainSourceGene
             is Link.LinkTarget.URL -> values.add(SimplePlainValue.create("""<a href="${target.url}">${name ?: target.url}</a>"""))
             is Link.LinkTarget.Element -> {
 
-                val strb = StringBuilder("{@link ")
+                values.add(PlainValue.create("{@link "))
+
 
                 when (target) {
-                    is Link.LinkTarget.Element.Class -> strb.append(target.canonicalName)
-                    is Link.LinkTarget.Element.Field -> strb.append("${target.declaringClass}#${target.name}")
+                    is Link.LinkTarget.Element.Class -> {
+                        target.let {
+                            val it = PlainCodeType(it.canonicalName)
+                            values.add(ImportValue.create(it))
+                            values.add(CodeTypeValue.create(it))
+                        }
+                    }
+                    is Link.LinkTarget.Element.Field -> {
+
+                        target.let {
+                            val declaring = PlainCodeType(it.declaringClass)
+                            values.add(ImportValue.create(declaring))
+                            values.add(CodeTypeValue.create(declaring))
+                        }
+
+                        values.add(PlainValue.create("#"))
+                        values.add(PlainValue.create(target.name))
+
+                    }
                     is Link.LinkTarget.Element.Method -> {
-                        val methodStr = target.spec.typeSpec.parameterTypes.map { it.canonicalName }.joinToString(separator = ", ")
-                        strb.append("${target.spec.localization.canonicalName}#${target.spec.methodName}(${methodStr})")
+
+                        target.spec.localization.let {
+                            values.add(ImportValue.create(it))
+                            values.add(CodeTypeValue.create(it))
+                        }
+
+                        values.add(PlainValue.create("#"))
+                        values.add(PlainValue.create(target.spec.methodName))
+                        values.add(PlainValue.create("("))
+
+                        target.spec.typeSpec.parameterTypes.let { parameterTypes ->
+                            parameterTypes.forEachIndexed { i, it ->
+                                values.add(ImportValue.create(it))
+                                values.add(CodeTypeValue.create(it))
+
+                                if (i + 1 < parameterTypes.size)
+                                    values.add(PlainValue.create(", "))
+                            }
+                        }
+
+                        values.add(PlainValue.create(")"))
+
                     }
                 }
 
-                name?.let { strb.append(" $it") }
-                strb.append("}")
-                values.add(SimplePlainValue.create(strb.toString()))
+                if(name != null) {
+                    values.add(PlainValue.create(" "))
+                    values.add(PlainValue.create(name))
+                }
+
+                values.add(PlainValue.create("}"))
+
             }
         }
 

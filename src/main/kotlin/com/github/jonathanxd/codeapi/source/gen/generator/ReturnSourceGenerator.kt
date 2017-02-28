@@ -51,10 +51,11 @@ object ReturnSourceGenerator : ValueGenerator<Return, String, PlainSourceGenerat
             return Arrays.asList(PlainValue.create("return"), PlainValue.create(";"))
         }
 
-        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>(PlainValue.create("return"), TargetValue.create(value, parents))
+        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>(PlainValue.create("return"), PlainValue.create(" "), TargetValue.create(value, parents))
 
         if (Util.isBody(parents)) {
             values.add(PlainValue.create(";"))
+            values.add(PlainValue.create("\n"))
         }
 
         return values

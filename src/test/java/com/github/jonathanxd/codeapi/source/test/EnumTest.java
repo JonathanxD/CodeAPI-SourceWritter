@@ -44,33 +44,24 @@ public class EnumTest {
         SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
         test.expect("import com.github.jonathanxd.codeapi.test.EnumTest_.MyItf;\n" +
                 "\n" +
-                "public enum MyEnum implements MyItf { \n" +
-                "    A { \n" +
-                "        \n" +
-                "        @ Override ( ) \n" +
-                "        public void v ( ) { \n" +
-                "            System . out . println ( \"A\" ) ; \n" +
-                "             \n" +
-                "        } \n" +
-                "        \n" +
-                "         \n" +
-                "    } \n" +
+                "public enum MyEnum implements MyItf {\n" +
                 "    \n" +
-                "    , B { \n" +
+                "    A {\n" +
+                "        @Override()\n" +
+                "        public void v() {\n" +
+                "            System.out.println(\"A\");\n" +
+                "        }\n" +
                 "        \n" +
-                "        @ Override ( ) \n" +
-                "        public void v ( ) { \n" +
-                "            System . out . println ( \"B\" ) ; \n" +
-                "             \n" +
-                "        } \n" +
+                "    }, \n" +
+                "    B {\n" +
+                "        @Override()\n" +
+                "        public void v() {\n" +
+                "            System.out.println(\"B\");\n" +
+                "        }\n" +
                 "        \n" +
-                "         \n" +
-                "    } \n" +
+                "    };\n" +
                 "    \n" +
-                "    ; \n" +
-                "     \n" +
-                "} \n" +
-                "\n");
+                "}\n");
         test.consume(System.out::println);
     }
 

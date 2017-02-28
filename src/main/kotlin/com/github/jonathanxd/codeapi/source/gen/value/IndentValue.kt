@@ -1,3 +1,4 @@
+
 /*
  *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
@@ -25,44 +26,50 @@
  *      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *      THE SOFTWARE.
  */
-package com.github.jonathanxd.codeapi.source.util
+package com.github.jonathanxd.codeapi.source.gen.value
+
+import com.github.jonathanxd.codeapi.CodePart
+import com.github.jonathanxd.codeapi.common.Data
+import com.github.jonathanxd.codeapi.gen.Appender
+import com.github.jonathanxd.codeapi.gen.value.AbstractGenerator
+import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
+import com.github.jonathanxd.codeapi.gen.value.Value
+import com.github.jonathanxd.codeapi.source.gen.SourceAppender
 
 /**
- * Internal class undocumented.
+ * Value of indentation.
+ *
+ * @param C        Generator type.
  */
-class Ident(private val indentationSize: Int) {
-    private var ident = 0
+class IndentValue<TARGET, C : AbstractGenerator<TARGET, C>>(override val value: Operation) : Value<IndentValue.Operation, TARGET, C> {
 
-    fun addIdent() {
-        this.addIdent(1)
-    }
-
-    fun addIdent(amount: Int) {
-        if (amount < 0) {
-            throw IllegalArgumentException("Negative value!")
-        }
-        this.ident += indentationSize * amount
-    }
-
-    fun removeIdent() {
-        this.removeIdent(1)
-    }
-
-    fun removeIdent(amount: Int) {
-        if (amount < 0) {
-            throw IllegalArgumentException("Negative value!")
-        }
-        this.ident -= indentationSize * amount
-    }
-
-    val identString: String
-        get() {
-            val sb = StringBuilder()
-
-            for (i in 0..this.ident - 1) {
-                sb.append(' ')
+    override fun apply(value: CodePart, generator: C, appender: Appender<TARGET>, codeSourceData: CodeSourceData, data: Data) {
+        if (appender is SourceAppender<*>) {
+            if(this.value == Operation.ADD) {
+                appender.addIndent()
+            } else {
+                appender.removeIndent()
             }
-
-            return sb.toString()
         }
+
+
+    }
+
+    companion object {
+
+        /**
+         * Create [IndentValue].
+         *
+         * @param C        Generator type.
+         * @return [IndentValue]
+         */
+        fun <TARGET, C : AbstractGenerator<TARGET, C>> create(operation: Operation): Value<Operation, TARGET, C> {
+            return IndentValue(operation)
+        }
+    }
+
+    enum class Operation {
+        ADD,
+        REMOVE
+    }
 }

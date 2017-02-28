@@ -29,37 +29,43 @@ package com.github.jonathanxd.codeapi.source.test;
 
 import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
-import com.github.jonathanxd.codeapi.test.AnnotatedTest_;
+import com.github.jonathanxd.codeapi.test.ComplexIfTest_;
+import com.github.jonathanxd.codeapi.test.InstanceOf_;
 import com.github.jonathanxd.iutils.annotation.Named;
 import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
-public class AnnotatedTest {
+public class ComplexIfTest {
 
     @Test
-    public void annotatedTest() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = AnnotatedTest_.$();
+    public void instanceOfTest() {
+        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = ComplexIfTest_.$();
         SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+
+        System.out.println(test.result());
+
         test.expect("package test;\n" +
                 "\n" +
-                "import com.github.jonathanxd.codeapi.test.AnnotatedTest_.Simple;\n" +
-                "import com.github.jonathanxd.codeapi.test.AnnotatedTest_.MyEnum;\n" +
-                "import java.lang.invoke.MethodHandle.PolymorphicSignature;\n" +
-                "\n" +
-                "@Simple({MyEnum.A, MyEnum.B, MyEnum.C})\n" +
-                "public class AnnotatedTestClass {\n" +
-                "\n" +
-                "    @PolymorphicSignature()\n" +
-                "    public static Object polymorphic(@Deprecated() Object first) {\n" +
-                "        return null;\n" +
-                "    }\n" +
+                "public class InstanceOf { \n" +
                 "    \n" +
-                "    @Simple({MyEnum.A})\n" +
-                "    public static String field = null;\n" +
+                "    public static void test ( Object param ) { \n" +
+                "        if ( param instanceof String ) { \n" +
+                "            System . out . println ( \"Object is String!\" ) \n" +
+                "        } else { \n" +
+                "            System . out . println ( \"Object is not String!\" )  \n" +
+                "        } \n" +
+                "        \n" +
+                "        boolean b = param instanceof String ; \n" +
+                "        boolean b2 = ! b ; \n" +
+                "        Integer ab = new Integer ( 9 ) ; \n" +
+                "        boolean b9 = ab == 9 ; \n" +
+                "         \n" +
+                "    } \n" +
                 "    \n" +
-                "}\n");
-        System.out.println(test.result());
+                "     \n" +
+                "} \n" +
+                "\n");
     }
 
 }

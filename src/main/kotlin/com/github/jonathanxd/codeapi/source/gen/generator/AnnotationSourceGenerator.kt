@@ -61,12 +61,12 @@ object AnnotationSourceGenerator : ValueGenerator<Annotation, String, PlainSourc
 
             entries.forEachIndexed { index, (key, value) ->
                 values.add(PlainValue.create<String, PlainSourceGenerator>(key))
-                values.add(PlainValue.create<String, PlainSourceGenerator>("="))
+                values.add(PlainValue.create<String, PlainSourceGenerator>(" = "))
 
                 addType(value, values, parents)
 
                 if(index + 1 < entries.size)
-                    values.add(PlainValue.create<String, PlainSourceGenerator>(","))
+                    values.add(PlainValue.create<String, PlainSourceGenerator>(", "))
             }
         }
 
@@ -95,7 +95,7 @@ object AnnotationSourceGenerator : ValueGenerator<Annotation, String, PlainSourc
                 AnnotationSourceGenerator.addType(o, values, parents)
 
                 if (i + 1 < valuesObj.size) {
-                    values.add(PlainValue.create(","))
+                    values.add(PlainValue.create(", "))
                 }
             }
 

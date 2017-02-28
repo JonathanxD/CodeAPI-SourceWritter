@@ -1,31 +1,12 @@
 package com.github.jonathanxd.codeapi.test;
 
-public class CommonGen_Generated { 
-    
-    public CommonGen_Generated ( ) { 
-        String[][] array = new String [][] { 
-            new String [] { 
-                "A" ,  "B" ,  "C" ,  "D" ,  "E"  
-            } 
-            
-            ,  new String [] { 
-                "F" ,  "G" ,  "H" ,  "I" ,  "J"  
-            } 
-            
-             
-        } 
-        
-        ; 
-        java.lang.String[] array2 = new String [ 0 ] ; 
-        Object[] array3 = new Object [] { 
-            1  
-        } 
-        
-        ; 
-        System . out . println ( array [ 0 ] [ 0 ] ) ; 
-         
-    } 
-    
-     
-} 
+public class CommonGen_Generated {
 
+    public CommonGen_Generated() {
+        String[][] array = new String[][]{new String[]{"A", "B", "C", "D", "E"}, new String[]{"F", "G", "H", "I", "J"}};
+        String[] array2 = new String[0];
+        Object[] array3 = new Object[]{1};
+        System.out.println(array[0][0]);
+    }
+    
+}

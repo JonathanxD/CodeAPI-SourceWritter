@@ -34,6 +34,8 @@ import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
+import com.github.jonathanxd.codeapi.inspect.SourceInspect
+import com.github.jonathanxd.codeapi.inspect.SourceInspectBuilder
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
@@ -43,18 +45,19 @@ object FieldDeclarationSourceGenerator : ValueGenerator<FieldDeclaration, String
 
     override fun gen(inp: FieldDeclaration, c: PlainSourceGenerator, parents: Parent<ValueGenerator<*, String, PlainSourceGenerator>>, codeSourceData: CodeSourceData, data: Data): List<Value<*, String, PlainSourceGenerator>> {
 
-        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>(
-                TargetValue.create(CommentHolder::class.java, inp, parents),
-                TargetValue.create(Annotable::class.java, inp, parents),
-                TargetValue.create(ModifiersHolder::class.java, inp, parents)
-        )
+        val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
+
+        values.add(TargetValue.create(CommentHolder::class.java, inp, parents))
+        values.add(TargetValue.create(Annotable::class.java, inp, parents))
+        values.add(TargetValue.create(ModifiersHolder::class.java, inp, parents))
+
 
         values.add(TargetValue.create(CodeType::class.java, inp.type, parents))
-
+        values.add(PlainValue.create(" "))
         values.add(PlainValue.create(inp.name))
 
         inp.value?.let { value ->
-            values.add(PlainValue.create("="))
+            values.add(PlainValue.create(" = "))
             values.add(TargetValue.create(value::class.java, value, parents))
         }
 
@@ -73,6 +76,39 @@ object FieldDeclarationSourceGenerator : ValueGenerator<FieldDeclaration, String
 
             if (Util.isBody(parents)) {
                 values.add(PlainValue.create(";"))
+                values.add(PlainValue.create("\n"))
+
+                val source = Util.getBody(parents)
+
+                var cancel = false
+                var found = false
+                var foundAt = -1
+
+                source.forEachIndexed { i, it ->
+
+                    if(found)
+                        return@forEachIndexed
+
+                    if(it === inp) {
+                        cancel = true
+                        foundAt = i
+                    } else if(cancel) {
+                        if(it is FieldDeclaration) {
+                            if (it.annotations.isNotEmpty() || it.comments.isNotAbsent()) {
+                                values.add(PlainValue.create("\n"))
+                            }
+                        } else {
+                            values.add(PlainValue.create("\n"))
+                        }
+
+                        found = true
+                    }
+
+                }
+
+                if(!found && foundAt + 1 == source.size)
+                    values.add(PlainValue.create("\n"))
+
             }
         }
 

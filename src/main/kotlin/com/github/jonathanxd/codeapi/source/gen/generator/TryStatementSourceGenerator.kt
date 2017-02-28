@@ -47,7 +47,7 @@ object TryStatementSourceGenerator : ValueGenerator<TryStatement, String, PlainS
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
         if (inp !is TryWithResources) {
-            values.add(PlainValue.create("try"))
+            values.add(PlainValue.create("try "))
         }
 
         val finallyStatement = inp.finallyStatement
@@ -58,9 +58,11 @@ object TryStatementSourceGenerator : ValueGenerator<TryStatement, String, PlainS
         }
 
         if (finallyStatement.isNotEmpty) {
-            values.add(PlainValue.create("finally"))
+            values.add(PlainValue.create(" finally "))
             values.add(TargetValue.create(CodeSource::class.java, finallyStatement, parents))
         }
+
+        values.add(PlainValue.create("\n"))
 
         return values
     }

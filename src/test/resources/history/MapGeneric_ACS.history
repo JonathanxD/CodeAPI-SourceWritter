@@ -2,8 +2,7 @@ package com;
 
 import java.util.Map;
 
-public class ACS { 
-    Map < String ,  Integer > upo = null ; 
-     
-} 
+public class ACS {
 
+    Map<String, Integer> upo = null;
+}

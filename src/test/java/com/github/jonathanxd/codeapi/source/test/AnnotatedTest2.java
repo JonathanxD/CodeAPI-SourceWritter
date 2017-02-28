@@ -28,11 +28,14 @@
 package com.github.jonathanxd.codeapi.source.test;
 
 import com.github.jonathanxd.codeapi.CodeSource;
+import com.github.jonathanxd.codeapi.Types;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.builder.ClassDeclarationBuilder;
+import com.github.jonathanxd.codeapi.common.CodeModifier;
+import com.github.jonathanxd.codeapi.factory.CommentsFactory;
+import com.github.jonathanxd.codeapi.factory.FieldFactory;
 import com.github.jonathanxd.codeapi.generic.GenericSignature;
 import com.github.jonathanxd.codeapi.test.AnnotatedTest_;
-import com.github.jonathanxd.codeapi.type.PlainCodeType;
 import com.github.jonathanxd.codeapi.util.Modifiers;
 import com.github.jonathanxd.iutils.annotation.Named;
 import com.github.jonathanxd.iutils.object.Pair;
@@ -40,6 +43,7 @@ import com.github.jonathanxd.iutils.object.Pair;
 import org.junit.Test;
 
 import java.lang.reflect.Modifier;
+import java.util.EnumSet;
 
 import kotlin.collections.CollectionsKt;
 
@@ -51,8 +55,6 @@ import static com.github.jonathanxd.codeapi.CodeAPI.visibleAnnotation;
 public class AnnotatedTest2 {
 
     public static Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $() {
-
-        PlainCodeType plainCodeType = new PlainCodeType("java.lang.invoke.MethodHandle.PolymorphicSignature", true);
 
         TypeDeclaration typeDeclaration = new ClassDeclarationBuilder()
                 .withModifiers(Modifiers.fromJavaModifiers(Modifier.PUBLIC))
@@ -81,10 +83,8 @@ public class AnnotatedTest2 {
                 "import com.github.jonathanxd.codeapi.test.AnnotatedTest_.Simple;\n" +
                 "import com.github.jonathanxd.codeapi.test.AnnotatedTest_.MyEnum;\n" +
                 "\n" +
-                "@ Simple ( myEnum = MyEnum . B , value = { MyEnum . A , MyEnum . B , MyEnum . C  } ) \n" +
-                "public class AnnotatedTestClass { \n" +
-                "     \n" +
-                "} \n" +
-                "\n");
+                "@Simple(myEnum = MyEnum.B, value = {MyEnum.A, MyEnum.B, MyEnum.C})\n" +
+                "public class AnnotatedTestClass {\n" +
+                "}\n");
     }
 }

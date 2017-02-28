@@ -54,6 +54,7 @@ object EntrySourceGenerator : ValueGenerator<EnumEntry, String, PlainSourceGener
         }
 
         if (inp.body.isNotEmpty) {
+            values.add(PlainValue.create(" "))
             values.add(TargetValue.create(BodyHolder::class.java, inp, parents))
         }
 

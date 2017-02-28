@@ -38,10 +38,36 @@ import org.junit.Test;
 public class CommentTest {
 
     @Test
-    public void innerTest() {
+    public void commentTest() {
         Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = CommentClassTest_.$();
 
         SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
-        test.consume(System.out::println);
+        test.expect("package com;\n" +
+                "\n" +
+                "/**\n" +
+                " * Comment test class. {@link String#indexOf(int, int) Test Method Link}\n" +
+                " */\n" +
+                "public class MyClass {\n" +
+                "\n" +
+                "    /**\n" +
+                "     * <pre>\n" +
+                "     * @{code\n" +
+                "     * System.out.println(\"Hello world\")\n" +
+                "     * }\n" +
+                "     * </pre>\n" +
+                "     */\n" +
+                "    private final String fieldi = \"field\";\n" +
+                "    \n" +
+                "    /**\n" +
+                "     * Print {@link MyClass#fieldi 'fieldi' value} to {@link System#out}.\n" +
+                "     */\n" +
+                "    public void printFieldi() {\n" +
+                "        /*\n" +
+                "         Prints 'fieldi' value\n" +
+                "        */\n" +
+                "        System.out.println(this.fieldi);\n" +
+                "    }\n" +
+                "    \n" +
+                "}\n");
     }
 }

@@ -35,6 +35,7 @@ import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.CodePartValue
+import com.github.jonathanxd.codeapi.source.gen.value.IndentValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import java.util.*
 
@@ -45,9 +46,12 @@ object CodeSourceSourceGenerator : ValueGenerator<CodeSource, String, PlainSourc
         val values = ArrayList<Value<*, String, PlainSourceGenerator>>()
 
         values.add(PlainValue.create("{"))
+        values.add(PlainValue.create("\n"))
+        values.add(IndentValue.create(IndentValue.Operation.ADD))
 
         inp.forEach { codePart -> values.add(CodePartValue.create(codePart, parents)) }
 
+        values.add(IndentValue.create(IndentValue.Operation.REMOVE))
         values.add(PlainValue.create("}"))
 
         return values

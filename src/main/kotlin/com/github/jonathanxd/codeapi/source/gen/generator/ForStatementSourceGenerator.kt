@@ -45,12 +45,12 @@ object ForStatementSourceGenerator : ValueGenerator<ForStatement, String, PlainS
 
         val values = mutableListOf<Value<*, String, PlainSourceGenerator>>()
 
-        values.add(PlainValue.create("for"))
+        values.add(PlainValue.create("for "))
         values.add(PlainValue.create("("))
 
         inp.forInit?.let { expression -> values.add(TargetValue.create(expression, parents)) }
 
-        values.add(PlainValue.create(";"))
+        values.add(PlainValue.create("; "))
 
         val forExpressionOpt = inp.forExpression
 
@@ -58,7 +58,7 @@ object ForStatementSourceGenerator : ValueGenerator<ForStatement, String, PlainS
             values.add(TargetValue.create(IfExpressionHolder::class.java, inp, parents))
         }
 
-        values.add(PlainValue.create(";"))
+        values.add(PlainValue.create("; "))
 
         inp.forUpdate?.let { expression -> values.add(TargetValue.create(expression, parents)) }
 

@@ -38,6 +38,7 @@ import com.github.jonathanxd.codeapi.gen.value.Value
 import com.github.jonathanxd.codeapi.gen.value.ValueGenerator
 import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator
 import com.github.jonathanxd.codeapi.source.gen.value.CodeSourceValue
+import com.github.jonathanxd.codeapi.source.gen.value.IndentValue
 import com.github.jonathanxd.codeapi.source.gen.value.PlainValue
 import com.github.jonathanxd.codeapi.source.gen.value.TargetValue
 import java.util.*
@@ -52,20 +53,32 @@ object BodyHolderSourceGenerator : ValueGenerator<BodyHolder, String, PlainSourc
         val genBody = inp !is ModifiersHolder || !inp.modifiers.contains(CodeModifier.ABSTRACT)
 
         if (genBody) {
+
             values.add(PlainValue.create("{"))
+
+            if(Util.isType(parents) && body.isNotEmpty)
+                values.add(PlainValue.create("\n"))
+
+            values.add(PlainValue.create("\n"))
+            values.add(IndentValue.create(IndentValue.Operation.ADD))
         }
 
         if (inp is EntryHolder) {
+            if(inp.entries.isNotEmpty())
+                values.add(PlainValue.create("\n"))
             values.add(TargetValue.create(EntryHolder::class.java, inp, parents))
         }
 
         if (!genBody) {
             values.add(PlainValue.create(";"))
+            values.add(PlainValue.create("\n"))
         }
 
         values.add(CodeSourceValue.create(body, parents))
 
         if (genBody) {
+            values.add(IndentValue.create(IndentValue.Operation.REMOVE))
+            //values.add(PlainValue.create("\n"))
             values.add(PlainValue.create("}"))
         }
 

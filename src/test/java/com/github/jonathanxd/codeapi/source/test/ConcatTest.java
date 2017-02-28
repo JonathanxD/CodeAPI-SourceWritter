@@ -44,19 +44,16 @@ public class ConcatTest {
         SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
         test.expect("package com;\n" +
                 "\n" +
-                "public class ConcatTest { \n" +
+                "public class ConcatTest {\n" +
+                "\n" +
+                "    public ConcatTest(String av) {\n" +
+                "        System.out.println(\"Hello\" + \" \" + av + \" :D\");\n" +
+                "        System.out.println(\"\");\n" +
+                "        System.out.println(\"A\");\n" +
+                "        System.out.println(\"A\" + \"B\");\n" +
+                "    }\n" +
                 "    \n" +
-                "    public ConcatTest ( String av ) { \n" +
-                "        System . out . println ( \"Hello\" + \" \" + av + \" :D\" ) ; \n" +
-                "        System . out . println ( \"\" ) ; \n" +
-                "        System . out . println ( \"A\" ) ; \n" +
-                "        System . out . println ( \"A\" + \"B\" ) ; \n" +
-                "         \n" +
-                "    } \n" +
-                "    \n" +
-                "     \n" +
-                "} \n" +
-                "\n");
+                "}\n");
         test.consume(System.out::println);
     }
 

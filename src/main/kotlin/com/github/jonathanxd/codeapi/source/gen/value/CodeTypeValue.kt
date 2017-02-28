@@ -33,7 +33,7 @@ import com.github.jonathanxd.codeapi.gen.Appender
 import com.github.jonathanxd.codeapi.gen.value.AbstractGenerator
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Value
-import com.github.jonathanxd.codeapi.source.gen.ImportAppender
+import com.github.jonathanxd.codeapi.source.gen.SourceAppender
 import com.github.jonathanxd.codeapi.type.CodeType
 
 /**
@@ -46,9 +46,11 @@ import com.github.jonathanxd.codeapi.type.CodeType
 class CodeTypeValue<C : AbstractGenerator<String, C>>(override val value: CodeType) : Value<CodeType, String, C> {
 
     override fun apply(value: CodePart, generator: C, appender: Appender<String>, codeSourceData: CodeSourceData, data: Data) {
-        if (this.value is CodeType && appender is ImportAppender<*>) {
+        if (this.value is CodeType && appender is SourceAppender<*>) {
 
-            if(appender.imports.contains(this.value)) {
+            val type = if(this.value.isArray) this.value.arrayBaseComponent else this.value
+
+            if(appender.imports.any { type.`is`(it) }) {
                 appender.add(this.value.simpleName)
                 return
             }

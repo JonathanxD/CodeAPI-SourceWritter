@@ -58,7 +58,7 @@ object ConcatSourceGenerator : ValueGenerator<Concat, String, PlainSourceGenerat
             values.add(CodePartValue.create(part, parents))
 
             if (hasNext) {
-                values.add(PlainValue.create("+"))
+                values.add(PlainValue.create(" + "))
             }
         }
 

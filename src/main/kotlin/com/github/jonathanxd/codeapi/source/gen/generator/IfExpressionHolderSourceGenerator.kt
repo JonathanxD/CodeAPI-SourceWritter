@@ -30,6 +30,7 @@ package com.github.jonathanxd.codeapi.source.gen.generator
 import com.github.jonathanxd.codeapi.base.IfExpr
 import com.github.jonathanxd.codeapi.base.IfExpressionHolder
 import com.github.jonathanxd.codeapi.common.Data
+import com.github.jonathanxd.codeapi.common.IfGroup
 import com.github.jonathanxd.codeapi.gen.value.CodeSourceData
 import com.github.jonathanxd.codeapi.gen.value.Parent
 import com.github.jonathanxd.codeapi.gen.value.Value
@@ -53,17 +54,19 @@ object IfExpressionHolderSourceGenerator : ValueGenerator<IfExpressionHolder, St
         expressions.forEachIndexed { i, codePart ->
             if (codePart is IfExpr) {
 
-                if (i > 0)
-                    values.add(PlainValue.create("("))
+                /*if (i > 0)
+                    values.add(PlainValue.create("("))*/
 
                 values.add(TargetValue.create(IfExpr::class.java, codePart, parents))
 
-                if (i > 0)
-                    values.add(PlainValue.create(")"))
+                /*if (i > 0)
+                    values.add(PlainValue.create(")"))*/
             } else if (codePart === Operators.OR) {
-                values.add(PlainValue.create("||"))
+                values.add(PlainValue.create(" || "))
             } else if (codePart === Operators.AND) {
-                values.add(PlainValue.create("&&"))
+                values.add(PlainValue.create(" && "))
+            } else if (codePart is IfGroup) {
+                values.add(TargetValue.create(IfExpressionHolder::class.java, codePart, parents))
             }
         }
 

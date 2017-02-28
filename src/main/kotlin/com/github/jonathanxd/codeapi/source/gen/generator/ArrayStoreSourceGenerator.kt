@@ -49,7 +49,7 @@ object ArrayStoreSourceGenerator : ValueGenerator<ArrayStore, String, PlainSourc
         values.add(TargetValue.create(inp.index, parents))
         values.add(PlainValue.create("]"))
 
-        values.add(PlainValue.create("="))
+        values.add(PlainValue.create(" = "))
 
         values.add(TargetValue.create(inp.valueToStore, parents))
 

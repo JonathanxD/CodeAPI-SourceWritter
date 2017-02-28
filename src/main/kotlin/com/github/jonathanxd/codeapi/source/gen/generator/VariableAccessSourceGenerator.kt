@@ -46,6 +46,7 @@ object VariableAccessSourceGenerator : ValueGenerator<VariableAccess, String, Pl
 
         if (Util.isBody(parents)) {
             values.add(PlainValue.create(";"))
+            values.add(PlainValue.create("\n"))
         }
 
         return values
