@@ -1,0 +1,27 @@
+package com;
+
+/**
+ * Comment test class. {@link String#indexOf(int, int) Test Method Link}
+ */
+public class MyClass {
+
+    /**
+     * <pre>
+     * @{code
+     * System.out.println("Hello world")
+     * }
+     * </pre>
+     */
+    private final String fieldi = "field";
+    
+    /**
+     * Print {@link MyClass#fieldi 'fieldi' value} to {@link System#out}.
+     */
+    public void printFieldi() {
+        /*
+         Prints 'fieldi' value
+        */
+        System.out.println(this.fieldi);
+    }
+    
+}
