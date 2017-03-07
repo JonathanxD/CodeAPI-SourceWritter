@@ -295,19 +295,10 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
             if (elem.isEmpty())
                 return
 
-            val endsWithSemi = elem.endsWith(";")
-            val endsWithOpenBr = elem.endsWith("{")
             val endsWithCloseBr = elem.endsWith("}")
 
             if (endsWithCloseBr) {
                 elem = elem.substring(0, elem.length - 1)
-            }
-
-            if (elem.startsWith("}") && elem.endsWith("{")) {
-                if (!this.isAnnotation) {
-                    //this.multiString.newLine()
-                    //this.indentation.removeIdent()
-                }
             }
 
             if (elem == "(")
@@ -326,19 +317,6 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
                 this.isAnnotation = false
             }
 
-            if (endsWithSemi) {
-                if (!this.isAnnotation && !this.isInBrackets) {
-                    //this.multiString.newLine()
-                }
-            }
-
-            if (endsWithOpenBr
-                    || endsWithCloseBr) {
-                if (!this.isAnnotation) {
-                    //this.multiString.newLine()
-                }
-            }
-
             if (elem == "\n") {
                 if (!this.isAnnotation && !isInBrackets) { // Don't strip lines if element is in brackets
                     this.multiString.newLine()
@@ -346,18 +324,9 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
             }
 
 
-            if (endsWithOpenBr) {
-                if (!this.isAnnotation) {
-                    //this.indentation.addIdent()
-                }
-            }
-
             if (endsWithCloseBr) {
                 if (!this.isAnnotation) {
-                    //this.indentation.removeIdent()
                     this.multiString.add("}")
-                    //this.multiString.newLine()
-                    //this.multiString.newLine()
                 } else {
                     this.multiString.add("}")
                 }
@@ -366,7 +335,7 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
 
         val importsStr
             get() = imports.filter {
-                if(it.packageName == "java.lang")
+                if(it.canonicalName.startsWith("java.lang"))
                     return@filter false
                 if(this.typeDeclaration == null)
                     return@filter true
