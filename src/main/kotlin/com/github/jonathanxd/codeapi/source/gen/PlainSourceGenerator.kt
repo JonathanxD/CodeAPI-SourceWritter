@@ -335,7 +335,13 @@ class PlainSourceGenerator : AbstractGenerator<String, PlainSourceGenerator>() {
 
         val importsStr
             get() = imports.filter {
-                if(it.canonicalName.startsWith("java.lang"))
+                if(it.canonicalName.startsWith("java.lang")
+                        && !it.canonicalName.startsWith("java.lang.annotation")
+                        && !it.canonicalName.startsWith("java.lang.instrument")
+                        && !it.canonicalName.startsWith("java.lang.invoke")
+                        && !it.canonicalName.startsWith("java.lang.management")
+                        && !it.canonicalName.startsWith("java.lang.ref")
+                        && !it.canonicalName.startsWith("java.lang.reflect"))
                     return@filter false
                 if(this.typeDeclaration == null)
                     return@filter true
