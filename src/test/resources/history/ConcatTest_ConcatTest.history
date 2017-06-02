@@ -8,5 +8,4 @@ public class ConcatTest {
         System.out.println("A");
         System.out.println("A" + "B");
     }
-    
 }

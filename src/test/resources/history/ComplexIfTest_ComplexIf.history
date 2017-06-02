@@ -5,12 +5,10 @@ public class ComplexIf {
     public ComplexIf(boolean h, boolean x, boolean y, boolean z) {
         boolean a = 9 < 5;
         String b = (9 < 5) ? "9 < 5" : "9 >= 5";
-        String b = (9 < 5) ? "9 < 5" : "9 >= 5";
         if (h && x && (y || z)) {
             System.out.println("true");
         } else {
             System.out.println("false");
         }
     }
-    
 }

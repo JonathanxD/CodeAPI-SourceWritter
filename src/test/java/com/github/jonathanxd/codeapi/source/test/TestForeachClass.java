@@ -27,11 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.ForEach_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
@@ -39,8 +36,9 @@ public class TestForeachClass {
 
     @Test
     public void genericClass() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = ForEach_.$();
-        CommonSourceTest.test(this.getClass(), $._1(), $._2()).expect("package com;\n" +
+        TypeDeclaration $ = ForEach_.$();
+        CommonSourceTest.test(this.getClass(), $)
+                .expect("package com;\n" +
                 "\n" +
                 "import java.util.List;\n" +
                 "\n" +
@@ -51,7 +49,6 @@ public class TestForeachClass {
                 "            System.out.println(str);\n" +
                 "        }\n" +
                 "    }\n" +
-                "    \n" +
                 "}\n");
     }
 

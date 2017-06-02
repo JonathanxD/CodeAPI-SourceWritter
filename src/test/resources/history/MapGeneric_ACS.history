@@ -4,6 +4,5 @@ import java.util.Map;
 
 public class ACS {
 
-    Map<String, Integer> upo = null;
-    
+    public Map<String, Integer> upo = null;
 }

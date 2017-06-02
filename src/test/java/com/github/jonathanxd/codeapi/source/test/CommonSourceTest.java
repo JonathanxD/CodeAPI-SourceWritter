@@ -27,18 +27,15 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
-import com.github.jonathanxd.codeapi.source.gen.PlainSourceGenerator;
-import com.github.jonathanxd.codeapi.type.CodeType;
-
-import org.junit.Assert;
+import com.github.jonathanxd.codeapi.base.TypeDeclaration;
+import com.github.jonathanxd.codeapi.source.process.PlainSourceGenerator;
 
 public class CommonSourceTest {
 
-    public static SourceTest test(Class<?> ofClass, CodeType theClass, CodeSource source) {
+    public static SourceTest test(Class<?> ofClass, TypeDeclaration theClass) {
         PlainSourceGenerator plainSourceGenerator = new PlainSourceGenerator();
 
-        String gen = plainSourceGenerator.gen(source);
+        String gen = plainSourceGenerator.process(theClass);
 
         HistorySaver.save(ofClass, theClass, gen);
 

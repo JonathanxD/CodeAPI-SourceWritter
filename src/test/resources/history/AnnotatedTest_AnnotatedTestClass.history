@@ -3,16 +3,16 @@ package test;
 import com.github.jonathanxd.codeapi.test.AnnotatedTest_.Simple;
 import com.github.jonathanxd.codeapi.test.AnnotatedTest_.MyEnum;
 import java.lang.invoke.MethodHandle.PolymorphicSignature;
+import kotlin.Deprecated;
 
 @Simple({MyEnum.A, MyEnum.B, MyEnum.C})
 public class AnnotatedTestClass {
+
+    @Simple({MyEnum.A})
+    public static String field = null;
 
     @PolymorphicSignature()
     public static Object polymorphic(@Deprecated() Object first) {
         return null;
     }
-    
-    @Simple({MyEnum.A})
-    public static String field = null;
-    
 }

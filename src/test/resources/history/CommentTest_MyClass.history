@@ -7,13 +7,13 @@ public class MyClass {
 
     /**
      * <pre>
-     * @{code
+     * {@code
      * System.out.println("Hello world")
      * }
      * </pre>
      */
     private final String fieldi = "field";
-    
+
     /**
      * Print {@link MyClass#fieldi 'fieldi' value} to {@link System#out}.
      */
@@ -23,5 +23,4 @@ public class MyClass {
         */
         System.out.println(this.fieldi);
     }
-    
 }

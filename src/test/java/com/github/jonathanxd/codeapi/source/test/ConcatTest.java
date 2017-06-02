@@ -27,11 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.ConcatTest_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
@@ -39,9 +36,9 @@ public class ConcatTest {
 
     @Test
     public void concatTest() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = ConcatTest_.$();
+        TypeDeclaration $ = ConcatTest_.$();
 
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
         test.expect("package com;\n" +
                 "\n" +
                 "public class ConcatTest {\n" +
@@ -52,7 +49,6 @@ public class ConcatTest {
                 "        System.out.println(\"A\");\n" +
                 "        System.out.println(\"A\" + \"B\");\n" +
                 "    }\n" +
-                "    \n" +
                 "}\n");
     }
 

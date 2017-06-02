@@ -27,19 +27,16 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.InvocationsTest_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
 public class TestSource_Invocations {
     @Test
     public void testSource() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = InvocationsTest_.$();
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        TypeDeclaration $ = InvocationsTest_.$();
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
         test.expect("package fullName;\n" +
                 "\n" +
                 "import com.github.jonathanxd.codeapi.test.InvocationsTest_;\n" +
@@ -51,12 +48,12 @@ public class TestSource_Invocations {
                 "\n" +
                 "    public final String FIELD = \"AVD\";\n" +
                 "    public final int n = 15;\n" +
-                "    \n" +
+                "\n" +
                 "    public InvocationsTest__Generated() {\n" +
                 "        System.out.println(\"Hello\");\n" +
                 "        this.printIt(\"Oi\");\n" +
                 "    }\n" +
-                "    \n" +
+                "\n" +
                 "    public void printIt(Object n) {\n" +
                 "        if (n != null) {\n" +
                 "            System.out.println(\"Hello :D\");\n" +
@@ -65,7 +62,7 @@ public class TestSource_Invocations {
                 "        System.out.println(dingdong);\n" +
                 "        System.out.println(n);\n" +
                 "    }\n" +
-                "    \n" +
+                "\n" +
                 "    public boolean check(int x) {\n" +
                 "        InvocationsTest_.bmp(\"xy\", \"yz\");\n" +
                 "        System.out.println(\"Invoke Interface ->\");\n" +
@@ -74,16 +71,14 @@ public class TestSource_Invocations {
                 "        System.out.println(greetingVar);\n" +
                 "        System.out.println(\"Invoke Interface <-\");\n" +
                 "        System.out.println(\"Invoke Dynamic ->\");\n" +
-                "        Supplier supplier2 = () -> {\n" +
-                "            return \"BRB\";\n" +
-                "        };\n" +
+                "        Supplier supplier2 = () -> \"BRB\";\n" +
                 "        System.out.println((String)supplier2.get());\n" +
                 "        Supplier supplier = greeter::hello;\n" +
                 "        String str = (String)supplier.get();\n" +
                 "        System.out.println(str);\n" +
                 "        System.out.println(\"Invoke Dynamic <-\");\n" +
                 "        System.out.println(\"Invoke Dynamic Bootstrap ->\");\n" +
-                "        // Dynamic::[MethodInvocationImpl(localization=JavaType[Lcom/github/jonathanxd/codeapi/test/InvocationsTest_;], arguments=[QuotedStringLiteral[name=\"World\", type=JavaType[Ljava/lang/String;]]], spec=MethodSpecificationImpl(methodType=DYNAMIC_METHOD, methodName=helloWorld, description=TypeSpec(returnType=PredefinedType[V], parameterTypes=[PredefinedType[Ljava/lang/String;]])), invokeType=INVOKE_VIRTUAL, invokeDynamic=Bootstrap[methodTypeSpec = MethodTypeSpec(localization=JavaType[Lcom/github/jonathanxd/codeapi/test/InvocationsTest_;], methodName=myBootstrap, typeSpec=TypeSpec(returnType=JavaType[Ljava/lang/invoke/CallSite;], parameterTypes=[JavaType[Ljava/lang/invoke/MethodHandles$Lookup;], JavaType[Ljava/lang/String;], JavaType[Ljava/lang/invoke/MethodType;], LoadedArrayCodeType[[Ljava/lang/Object;]])), invokeType = INVOKE_STATIC, arguments = []], target=AccessImpl(type=STATIC, localization=null))];\n" +
+                "        // Unsupported: InvokeDynamic(type=PredefinedType[V], bootstrap=MethodInvokeSpec(invokeType=INVOKE_STATIC, methodTypeSpec=MethodTypeSpec(localization=JavaType[Lcom/github/jonathanxd/codeapi/test/InvocationsTest_;], methodName=myBootstrap, typeSpec=TypeSpec(returnType=class java.lang.invoke.CallSite, parameterTypes=[class java.lang.invoke.MethodHandles$Lookup, class java.lang.String, class java.lang.invoke.MethodType, class [Ljava.lang.Object;]))), invocation=MethodInvocation(invokeType=INVOKE_VIRTUAL, target=STATIC, spec=MethodTypeSpec(localization=JavaType[Lcom/github/jonathanxd/codeapi/test/InvocationsTest_;], methodName=helloWorld, typeSpec=TypeSpec(returnType=PredefinedType[V], parameterTypes=[PredefinedType[Ljava/lang/String;]])), arguments=[StringLiteral[name=\"World\", type=JavaType[Ljava/lang/String;]]]), args=[]);\n" +
                 "        System.out.println(\"Invoke Dynamic Bootstrap <-\");\n" +
                 "        if (x == 9 || x == 7) {\n" +
                 "            return 0;\n" +
@@ -91,7 +86,6 @@ public class TestSource_Invocations {
                 "        System.out.println(x);\n" +
                 "        return 1;\n" +
                 "    }\n" +
-                "    \n" +
                 "}\n");
 
     }

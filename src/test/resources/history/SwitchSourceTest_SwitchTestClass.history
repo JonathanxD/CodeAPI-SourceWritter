@@ -67,15 +67,5 @@ public class SwitchTestClass {
                 System.out.println("default");
             }
         }
-        switch (o.hashCode()) {
-            case 0: {
-                System.out.println("Zero");
-                break;
-            }
-            default: {
-                System.out.println("default");
-            }
-        }
     }
-    
 }

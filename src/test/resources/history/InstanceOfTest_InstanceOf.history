@@ -13,5 +13,4 @@ public class InstanceOf {
         Integer ab = new Integer(9);
         boolean b9 = ab == 9;
     }
-    
 }

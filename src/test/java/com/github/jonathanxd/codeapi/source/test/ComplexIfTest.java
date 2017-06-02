@@ -27,12 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.ComplexIfTest_;
-import com.github.jonathanxd.codeapi.test.InstanceOf_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
@@ -40,8 +36,8 @@ public class ComplexIfTest {
 
     @Test
     public void complexIfTest() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = ComplexIfTest_.$();
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        TypeDeclaration $ = ComplexIfTest_.$();
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
 
         test.expect("package test;\n" +
                 "\n" +
@@ -50,14 +46,12 @@ public class ComplexIfTest {
                 "    public ComplexIf(boolean h, boolean x, boolean y, boolean z) {\n" +
                 "        boolean a = 9 < 5;\n" +
                 "        String b = (9 < 5) ? \"9 < 5\" : \"9 >= 5\";\n" +
-                "        String b = (9 < 5) ? \"9 < 5\" : \"9 >= 5\";\n" +
                 "        if (h && x && (y || z)) {\n" +
                 "            System.out.println(\"true\");\n" +
                 "        } else {\n" +
                 "            System.out.println(\"false\");\n" +
                 "        }\n" +
                 "    }\n" +
-                "    \n" +
                 "}\n");
     }
 

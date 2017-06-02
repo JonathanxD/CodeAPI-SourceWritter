@@ -27,44 +27,40 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeAPI;
-import com.github.jonathanxd.codeapi.MutableCodeSource;
-import com.github.jonathanxd.codeapi.Types;
-import com.github.jonathanxd.codeapi.common.CodeModifier;
-import com.github.jonathanxd.codeapi.factory.ClassFactory;
-import com.github.jonathanxd.codeapi.factory.FieldFactory;
-import com.github.jonathanxd.codeapi.factory.MethodFactory;
-import com.github.jonathanxd.codeapi.helper.Predefined;
+import com.github.jonathanxd.codeapi.base.ClassDeclaration;
+import com.github.jonathanxd.codeapi.base.CodeModifier;
+import com.github.jonathanxd.codeapi.base.FieldDeclaration;
+import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.literal.Literals;
-import com.github.jonathanxd.codeapi.type.CodeType;
 import com.github.jonathanxd.codeapi.type.Generic;
 
 import org.junit.Test;
 
-import java.util.EnumSet;
 import java.util.Map;
 
 public class MapGeneric {
     @Test
     public void arrayTest() {
 
-        MutableCodeSource cs = new MutableCodeSource();
+        TypeDeclaration type = ClassDeclaration.Builder.builder()
+                .modifiers(CodeModifier.PUBLIC)
+                .name("com.ACS")
+                .fields(FieldDeclaration.Builder.builder()
+                        .name("upo")
+                        .type(Generic.type(Map.class).of(String.class).of(Integer.class))
+                        .value(Literals.NULL)
+                        .build())
+                .build();
 
-        CodeType type;
 
-        cs.add(type = ClassFactory.aClass(EnumSet.of(CodeModifier.PUBLIC), "com.ACS", CodeAPI.sourceOfParts(
-                FieldFactory.field(Generic.type(CodeAPI.getJavaType(Map.class)).of(Types.STRING).of(Types.INTEGER_WRAPPER), "upo", Literals.NULL)
-        )));
-
-        CommonSourceTest.test(this.getClass(), type, cs)
+        CommonSourceTest.test(this.getClass(), type)
                 .expect("package com;\n" +
                         "\n" +
                         "import java.util.Map;\n" +
                         "\n" +
                         "public class ACS {\n" +
                         "\n" +
-                        "    Map<String, Integer> upo = null;\n" +
-                        "    \n" +
+                        "    public Map<String, Integer> upo = null;\n" +
                         "}\n");
 
     }

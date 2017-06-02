@@ -27,11 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.CommentClassTest_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
@@ -39,9 +36,9 @@ public class CommentTest {
 
     @Test
     public void commentTest() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = CommentClassTest_.$();
+        TypeDeclaration $ = CommentClassTest_.$();
 
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
         test.expect("package com;\n" +
                 "\n" +
                 "/**\n" +
@@ -51,13 +48,13 @@ public class CommentTest {
                 "\n" +
                 "    /**\n" +
                 "     * <pre>\n" +
-                "     * @{code\n" +
+                "     * {@code\n" +
                 "     * System.out.println(\"Hello world\")\n" +
                 "     * }\n" +
                 "     * </pre>\n" +
                 "     */\n" +
                 "    private final String fieldi = \"field\";\n" +
-                "    \n" +
+                "\n" +
                 "    /**\n" +
                 "     * Print {@link MyClass#fieldi 'fieldi' value} to {@link System#out}.\n" +
                 "     */\n" +
@@ -67,7 +64,6 @@ public class CommentTest {
                 "        */\n" +
                 "        System.out.println(this.fieldi);\n" +
                 "    }\n" +
-                "    \n" +
                 "}\n");
     }
 }

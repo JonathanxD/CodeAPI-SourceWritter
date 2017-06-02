@@ -1,20 +1,21 @@
+package com;
+
 import com.github.jonathanxd.codeapi.test.EnumTest_.MyItf;
 
 public enum MyEnum implements MyItf {
-    
+
     A {
+
         @Override()
         public void v() {
             System.out.println("A");
         }
-        
-    }, 
+    },
     B {
+
         @Override()
         public void v() {
             System.out.println("B");
         }
-        
     };
-    
 }

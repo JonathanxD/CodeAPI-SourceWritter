@@ -27,19 +27,16 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.LoopTest_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
 public class TestLoopSource {
     @Test
     public void testSource() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = LoopTest_.$();
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        TypeDeclaration $ = LoopTest_.$();
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
         test.expect("package fullName;\n" +
                 "\n" +
                 "public class LoopTest_ {\n" +
@@ -66,7 +63,6 @@ public class TestLoopSource {
                 "        } while (u < 5);\n" +
                 "        System.out.println(\"Hello World\");\n" +
                 "    }\n" +
-                "    \n" +
                 "}\n");
     }
 

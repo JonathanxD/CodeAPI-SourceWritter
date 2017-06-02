@@ -27,11 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.GenericClass_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
@@ -39,20 +36,19 @@ public class TestGenericClass {
 
     @Test
     public void genericClass() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = GenericClass_.$();
-        CommonSourceTest.test(this.getClass(), $._1(), $._2())
+        TypeDeclaration $ = GenericClass_.$();
+        CommonSourceTest.test(this.getClass(), $)
                 .expect("package com;\n" +
                         "\n" +
                         "import java.util.List;\n" +
                         "\n" +
                         "public class Generic<T extends List<T>> implements List<T> {\n" +
                         "\n" +
+                        "    public T test;\n" +
+                        "\n" +
                         "    public static <T extends List<T>> void test(T val) {\n" +
                         "        T fieldi = null;\n" +
                         "    }\n" +
-                        "    \n" +
-                        "    public T test;\n" +
-                        "    \n" +
                         "}\n");
     }
 

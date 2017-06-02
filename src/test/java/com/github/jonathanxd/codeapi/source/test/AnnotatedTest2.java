@@ -27,56 +27,46 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
-import com.github.jonathanxd.codeapi.Types;
+import com.github.jonathanxd.codeapi.base.ClassDeclaration;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
-import com.github.jonathanxd.codeapi.builder.ClassDeclarationBuilder;
-import com.github.jonathanxd.codeapi.common.CodeModifier;
-import com.github.jonathanxd.codeapi.factory.CommentsFactory;
-import com.github.jonathanxd.codeapi.factory.FieldFactory;
 import com.github.jonathanxd.codeapi.generic.GenericSignature;
 import com.github.jonathanxd.codeapi.test.AnnotatedTest_;
 import com.github.jonathanxd.codeapi.util.Modifiers;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
+import com.github.jonathanxd.iutils.map.MapUtils;
 
 import org.junit.Test;
 
 import java.lang.reflect.Modifier;
-import java.util.EnumSet;
 
 import kotlin.collections.CollectionsKt;
 
-import static com.github.jonathanxd.codeapi.CodeAPI.enumValue;
-import static com.github.jonathanxd.codeapi.CodeAPI.sourceOfParts;
-import static com.github.jonathanxd.codeapi.CodeAPI.values;
-import static com.github.jonathanxd.codeapi.CodeAPI.visibleAnnotation;
+import static com.github.jonathanxd.codeapi.factory.Factories.enumValue;
+import static com.github.jonathanxd.codeapi.factory.Factories.visibleAnnotation;
 
 public class AnnotatedTest2 {
 
-    public static Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $() {
+    public static TypeDeclaration $() {
 
-        TypeDeclaration typeDeclaration = new ClassDeclarationBuilder()
-                .withModifiers(Modifiers.fromJavaModifiers(Modifier.PUBLIC))
-                .withGenericSignature(GenericSignature.empty())
-                .withAnnotations(CollectionsKt.listOf(
+        TypeDeclaration typeDeclaration = ClassDeclaration.Builder.builder()
+                .modifiers(Modifiers.fromJavaModifiers(Modifier.PUBLIC))
+                .genericSignature(GenericSignature.empty())
+                .annotations(CollectionsKt.listOf(
                         visibleAnnotation(AnnotatedTest_.Simple.class,
-                                values("value", new Object[]{
+                                MapUtils.mapOf("value", new Object[]{
                                         enumValue(AnnotatedTest_.MyEnum.class, "A"), enumValue(AnnotatedTest_.MyEnum.class, "B"), enumValue(AnnotatedTest_.MyEnum.class, "C")
                                 }, "myEnum", enumValue(AnnotatedTest_.MyEnum.class, "B"))
                         ))
                 )
-                .withQualifiedName("test.AnnotatedTestClass")
-                .withBody(CodeSource.empty())
+                .qualifiedName("test.AnnotatedTestClass")
                 .build();
 
-        return Pair.of(typeDeclaration, sourceOfParts(typeDeclaration));
+        return typeDeclaration;
     }
 
     @Test
     public void annotatedTest() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = AnnotatedTest2.$();
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        TypeDeclaration $ = AnnotatedTest2.$();
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
         test.expect("package test;\n" +
                 "\n" +
                 "import com.github.jonathanxd.codeapi.test.AnnotatedTest_.Simple;\n" +

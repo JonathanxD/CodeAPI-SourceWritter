@@ -2,30 +2,34 @@ package test;
 
 public class InnerClass {
 
-    private String field = "XSD";
-    
+    protected String field = "XSD";
+
     public InnerClass() {
-        new Inner().call();
+        new Inner(this).call();
     }
-    
-    private InnerClass(String str) {
+
+    protected InnerClass(String str) {
         System.out.println(str);
     }
-    
+
     public void mm() {
         System.out.println("A");
     }
-    
+
     public class Inner {
-    
+
+        private final InnerClass outer;
         public InnerClass a = new InnerClass("Hello");
-        
-        private String call() {
-            System.out.println(InnerClass.this.field);
-            InnerClass.this.mm();
+
+        public Inner(InnerClass outer) {
+            this.outer = outer;
+        }
+
+        protected String call() {
+            System.out.println(this.outer.field);
+            this.outer.mm();
             return "A";
         }
-        
     }
-    
+
 }

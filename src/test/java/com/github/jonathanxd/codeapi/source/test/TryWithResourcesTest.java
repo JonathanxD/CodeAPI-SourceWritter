@@ -27,19 +27,16 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.TryWithResourcesTest_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
 public class TryWithResourcesTest {
     @Test
     public void testSource() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = TryWithResourcesTest_.$();
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        TypeDeclaration $ = TryWithResourcesTest_.$();
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
         test.expect("package test;\n" +
                 "\n" +
                 "import com.github.jonathanxd.codeapi.test.TryWithResourcesTest_.Trm;\n" +
@@ -51,7 +48,6 @@ public class TryWithResourcesTest {
                 "            trm.read();\n" +
                 "        }\n" +
                 "    }\n" +
-                "    \n" +
                 "}\n");
     }
 }

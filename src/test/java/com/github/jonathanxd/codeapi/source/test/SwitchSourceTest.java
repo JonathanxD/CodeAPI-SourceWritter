@@ -39,9 +39,9 @@ public class SwitchSourceTest {
 
     @Test
     public void switchTest() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = SwitchTest_.$();
+        TypeDeclaration $ = SwitchTest_.$();
 
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
 
         test.expect("package com;\n" +
                 "\n" +
@@ -112,17 +112,7 @@ public class SwitchSourceTest {
                 "                System.out.println(\"default\");\n" +
                 "            }\n" +
                 "        }\n" +
-                "        switch (o.hashCode()) {\n" +
-                "            case 0: {\n" +
-                "                System.out.println(\"Zero\");\n" +
-                "                break;\n" +
-                "            }\n" +
-                "            default: {\n" +
-                "                System.out.println(\"default\");\n" +
-                "            }\n" +
-                "        }\n" +
                 "    }\n" +
-                "    \n" +
                 "}\n");
     }
 

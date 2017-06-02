@@ -27,11 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.InstanceOf_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
@@ -39,8 +36,8 @@ public class InstanceOfTest {
 
     @Test
     public void instanceOfTest() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = InstanceOf_.$();
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        TypeDeclaration $ = InstanceOf_.$();
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
 
         test.expect("package test;\n" +
                 "\n" +
@@ -57,7 +54,6 @@ public class InstanceOfTest {
                 "        Integer ab = new Integer(9);\n" +
                 "        boolean b9 = ab == 9;\n" +
                 "    }\n" +
-                "    \n" +
                 "}\n");
     }
 

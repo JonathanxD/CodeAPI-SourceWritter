@@ -27,11 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.AnnotationTest_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
@@ -39,19 +36,20 @@ public class AnnotationTest {
 
     @Test
     public void annotationTest() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = AnnotationTest_.$();
+        TypeDeclaration $ = AnnotationTest_.$();
 
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
-        test.expect("public @interface MyAnnotation {\n" +
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
+        test.expect("package com;\n" +
                 "\n" +
+                "public @interface MyAnnotation {\n" +
                 "    String value();\n" +
-                "    \n" +
+                "\n" +
                 "    String id() default \"A\";\n" +
-                "    \n" +
+                "\n" +
                 "    String[] names() default {\"A\", \"B\"};\n" +
-                "    \n" +
+                "\n" +
                 "    int[] ns() default {1, 2};\n" +
-                "    \n" +
+                "\n" +
                 "}\n");
     }
 

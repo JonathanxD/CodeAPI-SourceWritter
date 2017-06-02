@@ -27,11 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.OperateTest_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
@@ -39,9 +36,9 @@ public class OperateTest {
 
     @Test
     public void operateTest() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = OperateTest_.$();
+        TypeDeclaration $ = OperateTest_.$();
 
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
 
         test.expect("package com;\n" +
                 "\n" +
@@ -49,10 +46,9 @@ public class OperateTest {
                 "\n" +
                 "    public OperateTest(int num) {\n" +
                 "        System.out.println(String.valueOf(9 + num + (num * 2)));\n" +
-                "        System.out.println(String.valueOf(9 - ));\n" +
+                "        System.out.println(String.valueOf(-9));\n" +
                 "        System.out.println(String.valueOf(9 ~ 10));\n" +
                 "    }\n" +
-                "    \n" +
                 "}\n");
     }
 

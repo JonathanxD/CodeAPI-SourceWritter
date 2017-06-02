@@ -27,11 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.AnnotatedTest_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
@@ -39,25 +36,25 @@ public class AnnotatedTest {
 
     @Test
     public void annotatedTest() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = AnnotatedTest_.$();
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        TypeDeclaration $ = AnnotatedTest_.$();
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
         test.expect("package test;\n" +
                 "\n" +
                 "import com.github.jonathanxd.codeapi.test.AnnotatedTest_.Simple;\n" +
                 "import com.github.jonathanxd.codeapi.test.AnnotatedTest_.MyEnum;\n" +
                 "import java.lang.invoke.MethodHandle.PolymorphicSignature;\n" +
+                "import kotlin.Deprecated;\n" +
                 "\n" +
                 "@Simple({MyEnum.A, MyEnum.B, MyEnum.C})\n" +
                 "public class AnnotatedTestClass {\n" +
+                "\n" +
+                "    @Simple({MyEnum.A})\n" +
+                "    public static String field = null;\n" +
                 "\n" +
                 "    @PolymorphicSignature()\n" +
                 "    public static Object polymorphic(@Deprecated() Object first) {\n" +
                 "        return null;\n" +
                 "    }\n" +
-                "    \n" +
-                "    @Simple({MyEnum.A})\n" +
-                "    public static String field = null;\n" +
-                "    \n" +
                 "}\n");
     }
 

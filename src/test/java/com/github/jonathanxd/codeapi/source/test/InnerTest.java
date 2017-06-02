@@ -27,11 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.InnerClassTest_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
@@ -39,39 +36,43 @@ public class InnerTest {
 
     @Test
     public void innerTest() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = InnerClassTest_.$();
-
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        TypeDeclaration $ = InnerClassTest_.$();
+        // WILL FAIL
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
         test.expect("package test;\n" +
                 "\n" +
                 "public class InnerClass {\n" +
                 "\n" +
-                "    private String field = \"XSD\";\n" +
-                "    \n" +
+                "    protected String field = \"XSD\";\n" +
+                "\n" +
                 "    public InnerClass() {\n" +
-                "        new Inner().call();\n" +
+                "        new Inner(this).call();\n" +
                 "    }\n" +
-                "    \n" +
-                "    private InnerClass(String str) {\n" +
+                "\n" +
+                "    protected InnerClass(String str) {\n" +
                 "        System.out.println(str);\n" +
                 "    }\n" +
-                "    \n" +
+                "\n" +
                 "    public void mm() {\n" +
                 "        System.out.println(\"A\");\n" +
                 "    }\n" +
-                "    \n" +
+                "\n" +
                 "    public class Inner {\n" +
-                "    \n" +
+                "\n" +
+                "        private final InnerClass outer;\n" +
                 "        public InnerClass a = new InnerClass(\"Hello\");\n" +
-                "        \n" +
-                "        private String call() {\n" +
-                "            System.out.println(InnerClass.this.field);\n" +
-                "            InnerClass.this.mm();\n" +
+                "\n" +
+                "        public Inner(InnerClass outer) {\n" +
+                "            this.outer = outer;\n" +
+                "        }\n" +
+                "\n" +
+                "        protected String call() {\n" +
+                "            System.out.println(this.outer.field);\n" +
+                "            this.outer.mm();\n" +
                 "            return \"A\";\n" +
                 "        }\n" +
-                "        \n" +
                 "    }\n" +
-                "    \n" +
+                "\n" +
                 "}\n");
     }
 }

@@ -27,11 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
 import com.github.jonathanxd.codeapi.test.ForEachArray_;
-import com.github.jonathanxd.iutils.annotation.Named;
-import com.github.jonathanxd.iutils.object.Pair;
 
 import org.junit.Test;
 
@@ -40,22 +37,21 @@ public class ForEachArrayClassTest {
 
     @Test
     public void test() {
-        Pair<@Named("Main class") TypeDeclaration, @Named("Source") CodeSource> $ = ForEachArray_.$();
-        SourceTest test = CommonSourceTest.test(this.getClass(), $._1(), $._2());
+        TypeDeclaration $ = ForEachArray_.$();
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
 
         test.expect("package com;\n" +
                 "\n" +
                 "public class ForEach {\n" +
                 "\n" +
                 "    public static String stra = \"XA\";\n" +
-                "    \n" +
+                "\n" +
                 "    public ForEach(String[] strArray) {\n" +
                 "        String v = ForEach.stra;\n" +
                 "        for (String str : strArray){\n" +
                 "            System.out.println(str);\n" +
                 "        }\n" +
                 "    }\n" +
-                "    \n" +
                 "}\n");
     }
 }
