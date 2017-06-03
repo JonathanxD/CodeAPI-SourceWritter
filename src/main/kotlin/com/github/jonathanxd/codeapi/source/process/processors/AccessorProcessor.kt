@@ -46,8 +46,6 @@ object AccessorProcessor : AppendingProcessor<Accessor> {
     }
 
     fun process(accessor: Accessor, separator: Boolean, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
-        val appender = APPENDER.require(data)
-
         var anySeparator = false
 
         val target = accessor.target
