@@ -47,11 +47,11 @@ object ReturnProcessor : AppendingProcessor<Return> {
         if (type.type == "void" || type.javaSpecName == "V" || part.value.safeForComparison is Void) {
             appender += "return"
             appender += ";"
+        } else {
+            appender += "return"
+            appender += " "
+            codeProcessor.processAs<ValueHolder>(part, data)
         }
-
-        appender += "return"
-        appender += " "
-        codeProcessor.processAs<ValueHolder>(part, data)
 
 
         /*if (Util.isBody(parents)) {
