@@ -31,6 +31,7 @@ import com.github.jonathanxd.codeapi.CodeInstruction
 import com.github.jonathanxd.codeapi.base.IfExpr
 import com.github.jonathanxd.codeapi.base.InstanceOfCheck
 import com.github.jonathanxd.codeapi.literal.Literals
+import com.github.jonathanxd.codeapi.operator.Operators
 import com.github.jonathanxd.codeapi.processor.CodeProcessor
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
@@ -65,24 +66,24 @@ object IfExprProcessor : AppendingProcessor<IfExpr> {
         // true == expr2
         // expr1 != true
         // true != expr1
-        val boolValue1 = if (safeExpr1.isBoolean()) safeExpr1.toBoolStr() else null
-        val boolValue2 = if (safeExpr2.isBoolean()) safeExpr2.toBoolStr() else null
+        val isEq = operation == Operators.EQUAL_TO
+        val boolValue1 = if (safeExpr1.isBoolean()) isEq == safeExpr1.toBoolStr().toBoolean() else null
+        val boolValue2 = if (safeExpr2.isBoolean()) isEq == safeExpr2.toBoolStr().toBoolean() else null
 
         if ((boolValue1 == null && boolValue2 == null)
                 || (boolValue1 != null && boolValue2 != null)) {
             codeProcessor.processAs(expr1, data)
             codeProcessor.process(operation, data)
             codeProcessor.processAs(expr2, data)
-        } else if (boolValue1 == "true" && boolValue2 == null) {
+        } else if (boolValue1 == true && boolValue2 == null) {
             codeProcessor.processAs(expr2, data)
-        } else if (boolValue1 == "false" && boolValue2 == null) {
+        } else if (boolValue1 == false && boolValue2 == null) {
             processNegate(expr2)
-        } else if (boolValue1 == null && boolValue2 == "true") {
+        } else if (boolValue1 == null && boolValue2 == true) {
             codeProcessor.processAs(expr1, data)
-        } else if (boolValue1 == null && boolValue2 == "false") {
+        } else if (boolValue1 == null && boolValue2 == false) {
             processNegate(expr1)
         }
-
 
     }
 }
