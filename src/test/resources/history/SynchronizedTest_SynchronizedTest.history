@@ -1,0 +1,10 @@
+package test;
+
+public class SynchronizedTest {
+
+    public SynchronizedTest() {
+        synchronized (this) {
+            System.out.println("Synchronized");
+        }
+    }
+}

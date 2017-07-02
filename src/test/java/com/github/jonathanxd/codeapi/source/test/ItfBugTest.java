@@ -27,31 +27,37 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
-import com.github.jonathanxd.codeapi.CodeSource;
-import com.github.jonathanxd.codeapi.base.IfExpr;
-import com.github.jonathanxd.codeapi.base.IfStatement;
-import com.github.jonathanxd.codeapi.factory.Factories;
-import com.github.jonathanxd.codeapi.literal.Literals;
-import com.github.jonathanxd.codeapi.operator.Operators;
+import com.github.jonathanxd.codeapi.base.CodeModifier;
+import com.github.jonathanxd.codeapi.base.InterfaceDeclaration;
+import com.github.jonathanxd.codeapi.base.MethodDeclaration;
 import com.github.jonathanxd.codeapi.source.process.PlainSourceGenerator;
 
 import org.junit.Test;
 
-public class IfBugTest {
+public class ItfBugTest {
 
     @Test
-    public void ifBugTest() {
-        IfStatement x = IfStatement.Builder.builder()
-                .expressions(new IfExpr(Factories.accessVariable(Boolean.TYPE, "b"), Operators.NOT_EQUAL_TO, Literals.FALSE))
-                .body(CodeSource.empty())
-                .elseStatement(CodeSource.empty())
+    public void itfBugTest() {
+        InterfaceDeclaration test = InterfaceDeclaration.Builder.builder()
+                .modifiers(CodeModifier.PUBLIC)
+                .name("com.Itf")
+                .methods(MethodDeclaration.Builder.builder()
+                        .modifiers(CodeModifier.PUBLIC)
+                        .returnType(String.class)
+                        .name("test")
+                        .build())
                 .build();
+
 
         PlainSourceGenerator generator = new PlainSourceGenerator();
 
-        String process = generator.process(x);
+        String process = generator.process(test);
         new SourceTest(process)
-                .expect("if (b) {\n" +
+                .expect("package com;\n" +
+                        "\n" +
+                        "public interface Itf {\n" +
+                        "\n" +
+                        "    public String test();\n" +
                         "}\n");
     }
 

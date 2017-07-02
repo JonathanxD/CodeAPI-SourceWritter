@@ -61,8 +61,16 @@ object MethodDeclarationProcessor : AppendingProcessor<MethodDeclarationBase> {
         }
 
         codeProcessor.processAs<ParametersHolder>(part, data)
-        appender += " "
-        codeProcessor.processAs<BodyHolder>(part, data)
-        appender += "\n"
+
+        if (part.body.isEmpty &&
+                (part.modifiers.contains(CodeModifier.ABSTRACT)
+                        || (DECLARATION.require(data).isInterface && !part.modifiers.contains(CodeModifier.DEFAULT)))) {
+            appender += ";"
+            appender += "\n"
+        } else {
+            appender += " "
+            codeProcessor.processAs<BodyHolder>(part, data)
+            appender += "\n"
+        }
     }
 }

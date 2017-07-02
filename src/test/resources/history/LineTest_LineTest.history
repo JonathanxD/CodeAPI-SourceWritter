@@ -1,0 +1,8 @@
+package test;
+
+public class LineTest {
+
+    public LineTest() {
+        /* 4 */ String b = /* 5 */ (9 < 5) ? "9 < 5" : "9 >= 5";
+    }
+}
