@@ -44,6 +44,7 @@ class MultiString(private val delimiter: String, private val preparer: (String) 
     }
 
     private fun add(str: String, appendDelimiter: Boolean) {
+        @Suppress("NAME_SHADOWING")
         var str = str
         if (strings.size <= line) {
             this.strings.add("")

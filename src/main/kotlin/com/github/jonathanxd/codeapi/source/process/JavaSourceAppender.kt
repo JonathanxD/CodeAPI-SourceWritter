@@ -86,6 +86,7 @@ class JavaSourceAppender internal constructor(delimiter: String) {
         if (this.declarations.isEmpty())
             return
 
+        @Suppress("NAME_SHADOWING")
         val type = codeType.run {
             if (isArray)
                 arrayBaseComponent
