@@ -48,18 +48,11 @@ object IfExpressionHolderProcessor : AppendingProcessor<IfExpressionHolder> {
 
         expressions.forEach { codePart ->
             val safe = codePart.safeForComparison
-            if (safe is IfExpr) {
-
-                codeProcessor.processAs(codePart, data) // No problem, no safe cast expected
-
-            } else if (safe === Operators.OR) {
-                appender += " || "
-            } else if (safe === Operators.AND) {
-                appender += " && "
-            } else if (safe is IfGroup) {
-                codeProcessor.processAs(codePart, data) // No problem
-            } else if (safe is Operator) {
-                codeProcessor.processAs(codePart, data) // No problem
+            when (safe) {
+                is IfExpr -> codeProcessor.processAs(codePart, data) // No problem, no safe cast expected
+                is Operator -> appender += " ${safe.name} "
+                is IfGroup -> codeProcessor.processAs(codePart, data) // No problem
+                else -> appender.simpleAppend("/* Skipped $safe in if translation */")
             }
         }
 
