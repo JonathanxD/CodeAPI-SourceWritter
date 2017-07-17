@@ -149,7 +149,7 @@ public class ElvisExpandTest {
                 "\n" +
                 "public class FakeElvisTest {\n" +
                 "\n" +
-                "    public void test(String a) {\n" +
+                "    public TestClass test(String a) {\n" +
                 "        String stack_var$ = null;\n" +
                 "        if (a == null) {\n" +
                 "            TestClass.noti();\n" +
@@ -158,7 +158,7 @@ public class ElvisExpandTest {
                 "            TestClass.noti2();\n" +
                 "            stack_var$ = a;\n" +
                 "        }\n" +
-                "        new TestClass(stack_var$);\n" +
+                "        return new TestClass(stack_var$);\n" +
                 "    }\n" +
                 "}\n");
     }

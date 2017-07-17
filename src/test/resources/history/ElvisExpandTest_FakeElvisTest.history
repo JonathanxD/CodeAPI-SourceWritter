@@ -4,7 +4,7 @@ import com.github.jonathanxd.codeapi.test.FakeElvisTest_.TestClass;
 
 public class FakeElvisTest {
 
-    public void test(String a) {
+    public TestClass test(String a) {
         String stack_var$ = null;
         if (a == null) {
             TestClass.noti();
@@ -13,6 +13,6 @@ public class FakeElvisTest {
             TestClass.noti2();
             stack_var$ = a;
         }
-        new TestClass(stack_var$);
+        return new TestClass(stack_var$);
     }
 }
