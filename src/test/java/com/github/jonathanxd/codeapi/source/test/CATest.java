@@ -27,10 +27,14 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
+import com.github.jonathanxd.codeapi.source.process.PlainSourceGenerator;
+
 import java.util.function.Consumer;
 
 public interface CATest<T> {
     void expect(T t) throws AssertionError;
+
+    CATest<T> applyToGenerator(Consumer<PlainSourceGenerator> generatorConsumer);
 
     default CATest<T> consume(Consumer<T> consumer) {
         consumer.accept(this.result());

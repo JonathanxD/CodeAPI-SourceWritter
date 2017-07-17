@@ -28,6 +28,7 @@
 package com.github.jonathanxd.codeapi.source.test;
 
 import com.github.jonathanxd.codeapi.base.TypeDeclaration;
+import com.github.jonathanxd.codeapi.source.process.JavaSourceGeneratorOptionsKt;
 import com.github.jonathanxd.codeapi.test.FakeElvisTest_;
 
 import org.junit.Test;

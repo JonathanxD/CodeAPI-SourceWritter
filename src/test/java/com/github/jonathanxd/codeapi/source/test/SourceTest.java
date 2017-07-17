@@ -27,21 +27,34 @@
  */
 package com.github.jonathanxd.codeapi.source.test;
 
+import com.github.jonathanxd.codeapi.source.process.PlainSourceGenerator;
+import com.github.jonathanxd.iutils.object.Lazy;
+
 import org.junit.Assert;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class SourceTest implements CATest<String> {
 
-    private final String result;
+    private final PlainSourceGenerator generator;
+    private final Lazy<String> result;
 
-    SourceTest(String result) {
-        this.result = result;
+    SourceTest(PlainSourceGenerator generator,
+               Function<PlainSourceGenerator, String> generatorApply) {
+        this.generator = generator;
+        this.result = Lazy.lazy(() -> generatorApply.apply(generator));
     }
 
     @Override
     public void expect(String s) throws AssertionError {
-        Assert.assertEquals(s, result);
+        Assert.assertEquals(s, result.get());
+    }
+
+    @Override
+    public CATest<String> applyToGenerator(Consumer<PlainSourceGenerator> generatorConsumer) {
+        generatorConsumer.accept(this.generator);
+        return this;
     }
 
     @Override
@@ -52,6 +65,6 @@ public class SourceTest implements CATest<String> {
 
     @Override
     public String result() {
-        return this.result;
+        return this.result.get();
     }
 }

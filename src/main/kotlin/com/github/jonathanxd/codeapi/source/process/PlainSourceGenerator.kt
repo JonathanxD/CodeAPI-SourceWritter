@@ -180,8 +180,20 @@ class PlainSourceGenerator : AbstractProcessor<String>() {
 
     override fun <T> process(type: Class<out T>, part: T, data: TypedData): String {
         val processor = getProcessorOf(type, part, data)
-        processor.process(part, data, this)
-        processor.endProcess(part, data, this)
+
+        try {
+            processor.process(part, data, this)
+        } catch (t: Throwable) {
+            t.addSuppressed(IllegalStateException("Failed to process part '$part' with type '${type.simpleName}' during 'process' phase. Data map: '${data.typedDataMap}'"))
+            throw t
+        }
+
+        try {
+            processor.endProcess(part, data, this)
+        } catch (t: Throwable) {
+            t.addSuppressed(IllegalStateException("Failed to process part '$part' with type '${type.simpleName}' during 'endProcess' phase. Data map: '${data.typedDataMap}'"))
+            throw t
+        }
 
         return APPENDER.require(data).toString()
     }

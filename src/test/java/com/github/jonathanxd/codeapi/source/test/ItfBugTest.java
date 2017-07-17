@@ -51,8 +51,7 @@ public class ItfBugTest {
 
         PlainSourceGenerator generator = new PlainSourceGenerator();
 
-        String process = generator.process(test);
-        new SourceTest(process)
+        new SourceTest(generator, localGenerator -> localGenerator.process(test))
                 .expect("package com;\n" +
                         "\n" +
                         "public interface Itf {\n" +

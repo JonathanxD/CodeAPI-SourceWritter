@@ -45,8 +45,13 @@ object CodeSourceProcessor : AppendingProcessor<CodeSource> {
         appender += "\n"
         appender.addIndent()
 
-        part.forEach {
-            codeProcessor.process(it::class.java, it, data)
+        part.forEachIndexed { index, it ->
+            try {
+                codeProcessor.process(it::class.java, it, data)
+            } catch (t: Throwable) {
+                t.addSuppressed(IllegalStateException("Failed to process part '$it' inside CodeSource[index=$index]!"))
+                throw t
+            }
 
             if (this.genSemiColon(it)) {
                 appender += ";"
@@ -59,7 +64,7 @@ object CodeSourceProcessor : AppendingProcessor<CodeSource> {
 
     }
 
-    fun genSemiColon(insn: CodeInstruction) = insn.safeForComparison.let {
+    private fun genSemiColon(insn: CodeInstruction) = insn.safeForComparison.let {
         it !is BodyHolder && it !is SwitchStatement && it !is Comments
     }
 

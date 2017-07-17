@@ -35,11 +35,11 @@ public class CommonSourceTest {
     public static SourceTest test(Class<?> ofClass, TypeDeclaration theClass) {
         PlainSourceGenerator plainSourceGenerator = new PlainSourceGenerator();
 
-        String gen = plainSourceGenerator.process(theClass);
-
-        HistorySaver.save(ofClass, theClass, gen);
-
-        return new SourceTest(gen);
+        return new SourceTest(plainSourceGenerator, gen -> {
+            String str = gen.process(theClass);
+            HistorySaver.save(ofClass, theClass, str);
+            return str;
+        });
     }
 
 }

@@ -49,8 +49,7 @@ public class IfBugTest {
 
         PlainSourceGenerator generator = new PlainSourceGenerator();
 
-        String process = generator.process(x);
-        new SourceTest(process)
+        new SourceTest(generator, localGenerator -> localGenerator.process(x))
                 .expect("if (b) {\n" +
                         "}\n");
     }

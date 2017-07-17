@@ -35,4 +35,5 @@ import com.github.jonathanxd.iutils.option.Option
  *
  * Expand Elvis is a relative new feature and may not be correct, please report any inconsistency.
  */
+@JvmField
 val EXPAND_ELVIS = Option(true)
