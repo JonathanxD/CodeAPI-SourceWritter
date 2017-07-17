@@ -27,11 +27,12 @@
  */
 package com.github.jonathanxd.codeapi.source.process.processors
 
-import com.github.jonathanxd.codeapi.base.ImplementationHolder
-import com.github.jonathanxd.codeapi.base.SuperClassHolder
+import com.github.jonathanxd.codeapi.CodeInstruction
+import com.github.jonathanxd.codeapi.base.*
 import com.github.jonathanxd.codeapi.source.process.DECLARATION
 import com.github.jonathanxd.codeapi.util.Alias
 import com.github.jonathanxd.codeapi.util.require
+import com.github.jonathanxd.codeapi.util.safeForComparison
 import com.github.jonathanxd.iutils.data.TypedData
 import java.lang.reflect.Type
 
@@ -52,4 +53,18 @@ object Util {
         }
     }
 
+
 }
+
+fun CodeInstruction.isExit() =
+        this.safeForComparison.let {
+            it is Return
+                    || it is ThrowException
+        }
+
+fun CodeInstruction.isFlow() =
+        this.safeForComparison.let {
+            it is ControlFlow
+        }
+
+fun CodeInstruction.isExitOrFlow() = this.isExit() || this.isFlow()

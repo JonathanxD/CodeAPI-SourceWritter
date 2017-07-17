@@ -28,23 +28,114 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.CodeInstruction
-import com.github.jonathanxd.codeapi.base.IfStatement
+import com.github.jonathanxd.codeapi.CodeSource
+import com.github.jonathanxd.codeapi.MutableCodeSource
+import com.github.jonathanxd.codeapi.Types
+import com.github.jonathanxd.codeapi.base.*
 import com.github.jonathanxd.codeapi.common.CodeNothing
+import com.github.jonathanxd.codeapi.factory.accessVariable
+import com.github.jonathanxd.codeapi.factory.cast
+import com.github.jonathanxd.codeapi.factory.setVariableValue
+import com.github.jonathanxd.codeapi.literal.Literals
 import com.github.jonathanxd.codeapi.processor.CodeProcessor
 import com.github.jonathanxd.codeapi.processor.Processor
-import com.github.jonathanxd.codeapi.processor.processAs
-import com.github.jonathanxd.codeapi.source.process.ELVIS
-import com.github.jonathanxd.codeapi.util.safeForComparison
+import com.github.jonathanxd.codeapi.source.process.*
+import com.github.jonathanxd.codeapi.util.*
 import com.github.jonathanxd.iutils.data.TypedData
+import java.lang.reflect.Type
 
 object ValueProcessor : Processor<CodeInstruction> {
 
     override fun process(part: CodeInstruction, data: TypedData, codeProcessor: CodeProcessor<*>) {
         val safePart = part.safeForComparison
 
-        if(safePart != CodeNothing) {
-            if(safePart is IfStatement) {
-                ELVIS.set(data, Unit, true)
+        if (safePart != CodeNothing) {
+            if (safePart is IfStatement) {
+                if (codeProcessor.options[EXPAND_ELVIS] && !IfStatementProcessor.isValidElvis(safePart)) {
+                    val origin = APPENDER.require(data)
+
+                    val newAppender = origin.createNew()
+
+                    APPENDER.set(data, newAppender)
+
+                    if (part is Line)
+                        codeProcessor.process(Line::class.java, part.builder().value(CodeNothing).build(), data)
+
+                    // Expand
+
+                    val stm = safePart
+
+                    val indexer = VARIABLE_INDEXER.requireIndexer(data)
+                    val name = indexer
+                            .createUniqueName("stack_var$")
+
+                    var inferredType: Type = Types.OBJECT
+
+                    val declaration = VariableDeclaration.Builder.builder()
+                            .name(name)
+                            .type(Types.OBJECT)
+                            .value(Literals.NULL)
+                            .build()
+
+                    fun expand(source: CodeSource): CodeSource {
+
+                        if (source.isNotEmpty) {
+                            val newBody = MutableCodeSource.create()
+                            val bodyLast = source.last()
+
+                            if (!bodyLast.isExitOrFlow()) {
+                                val sub = source.subSource(0, source.size - 1)
+
+                                newBody += sub
+
+                                val type = bodyLast.safeForComparison.typeOrNull
+
+                                val frag: CodeInstruction = bodyLast
+
+                                if (type != null && !inferredType.`is`(type)) {
+                                    inferredType = type
+                                }
+
+                                newBody += setVariableValue(Types.OBJECT, name, frag)
+                            } else {
+                                newBody += source
+                            }
+
+                            return newBody
+                        }
+
+                        return source
+                    }
+
+                    val newStm = stm.builder()
+                            .body(expand(stm.body))
+                            .elseStatement(expand(stm.elseStatement))
+                            .build()
+
+                    codeProcessor.process(VariableDeclaration::class.java,
+                            declaration.builder().type(inferredType).build(),
+                            data)
+
+                    newAppender.append(";")
+                    newAppender.append("\n")
+
+                    // /Expand
+
+                    codeProcessor.process(newStm::class.java, newStm, data)
+
+                    origin.appendBefore(newAppender.getStrings())
+
+                    APPENDER.set(data, origin)
+
+                    codeProcessor.process(VariableAccess::class.java,
+                            accessVariable(inferredType, name),
+                            data
+                    )
+
+                    return
+                } else {
+                    ELVIS.set(data, Unit, true)
+                }
             }
 
             codeProcessor.process(part::class.java, part, data)

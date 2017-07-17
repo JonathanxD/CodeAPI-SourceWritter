@@ -1,0 +1,18 @@
+package com;
+
+import com.github.jonathanxd.codeapi.test.FakeElvisTest_.TestClass;
+
+public class FakeElvisTest {
+
+    public void test(String a) {
+        String stack_var$ = null;
+        if (a == null) {
+            TestClass.noti();
+            stack_var$ = "";
+        } else {
+            TestClass.noti2();
+            stack_var$ = a;
+        }
+        new TestClass(stack_var$);
+    }
+}

@@ -30,6 +30,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 import com.github.jonathanxd.codeapi.base.IfExpr
 import com.github.jonathanxd.codeapi.base.IfExpressionHolder
 import com.github.jonathanxd.codeapi.base.IfGroup
+import com.github.jonathanxd.codeapi.operator.Operator
 import com.github.jonathanxd.codeapi.operator.Operators
 import com.github.jonathanxd.codeapi.processor.CodeProcessor
 import com.github.jonathanxd.codeapi.processor.processAs
@@ -56,6 +57,8 @@ object IfExpressionHolderProcessor : AppendingProcessor<IfExpressionHolder> {
             } else if (safe === Operators.AND) {
                 appender += " && "
             } else if (safe is IfGroup) {
+                codeProcessor.processAs(codePart, data) // No problem
+            } else if (safe is Operator) {
                 codeProcessor.processAs(codePart, data) // No problem
             }
         }

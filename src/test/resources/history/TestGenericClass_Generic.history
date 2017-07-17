@@ -8,5 +8,7 @@ public class Generic<T extends List<T>> implements List<T> {
 
     public static <T extends List<T>> void test(T val) {
         T fieldi = null;
+        Object field2 = null;
+        List<String> field3 = null;
     }
 }

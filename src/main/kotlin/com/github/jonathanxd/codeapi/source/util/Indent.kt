@@ -33,6 +33,8 @@ package com.github.jonathanxd.codeapi.source.util
 class Indent(private val indentationSize: Int) {
     private var indent = 0
 
+    val indentCount get() = indent / indentationSize
+
     fun addIdent() {
         this.addIdent(1)
     }
@@ -59,7 +61,7 @@ class Indent(private val indentationSize: Int) {
         get() {
             val sb = StringBuilder()
 
-            for (i in 0..this.indent - 1) {
+            for (i in 0 until this.indent) {
                 sb.append(' ')
             }
 

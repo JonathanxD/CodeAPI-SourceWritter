@@ -33,6 +33,7 @@ import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.CodeTypeHelper
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.codeapi.type.GenericType
+import com.github.jonathanxd.codeapi.util.concreteType
 import com.github.jonathanxd.iutils.data.TypedData
 import java.lang.reflect.Type
 
@@ -42,12 +43,12 @@ object TypeProcessor : AppendingProcessor<Type> {
 
         val codeType = Util.localizationResolve(part, data)
 
-        appender.appendImport(codeType)
+        appender.appendImport(codeType.concreteType)
 
         if (codeType is GenericType) {
             codeProcessor.processAs(codeType, data)
         } else {
-            CodeTypeHelper.appendName(codeType, appender)
+            CodeTypeHelper.appendName(codeType.concreteType, appender)
         }
 
     }

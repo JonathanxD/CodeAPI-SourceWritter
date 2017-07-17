@@ -30,10 +30,12 @@ package com.github.jonathanxd.codeapi.source.util
 /**
  * Internal undocumented.
  */
-class MultiString(private val delimiter: String, private val preparer: (String) -> String) {
+class MultiString(val delimiter: String, private val preparer: (String) -> String) {
 
     private val strings = mutableListOf<String>()
     private var line = 0
+
+    fun getStrings() = strings.toMutableList()
 
     fun add(str: String) {
         this.add(str, true)
@@ -41,6 +43,16 @@ class MultiString(private val delimiter: String, private val preparer: (String) 
 
     fun addND(str: String) {
         this.add(str, false)
+    }
+
+    fun appendBefore(strs: List<String>) {
+        if (strings.size == 0) {
+            strings.addAll(strs)
+        } else {
+            val index = strings.lastIndex
+            strings.addAll(index, strs)
+        }
+        line += strs.size
     }
 
     private fun add(str: String, appendDelimiter: Boolean) {

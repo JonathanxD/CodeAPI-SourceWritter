@@ -112,6 +112,11 @@ class JavaSourceAppender internal constructor(delimiter: String) {
         this.prefix = str
     }
 
+    /**
+     * Returns an appender which appends to string before the last new line.
+     */
+    fun getLastLineAppender(): Nothing = TODO()
+
     fun simpleAppend(str: String) {
 
         if (str == "\n")
@@ -124,6 +129,17 @@ class JavaSourceAppender internal constructor(delimiter: String) {
     }
 
     operator fun plusAssign(str: String) = append(str)
+
+    fun createNew(): JavaSourceAppender {
+        val appender = JavaSourceAppender(this.multiString.delimiter)
+        appender.indentation.addIdent(this.indentation.indentCount)
+        appender.imports += this.imports
+        return appender
+    }
+
+    fun getStrings() = this.multiString.getStrings()
+
+    fun appendBefore(strs: List<String>) = this.multiString.appendBefore(strs)
 
     fun append(str: String) {
 

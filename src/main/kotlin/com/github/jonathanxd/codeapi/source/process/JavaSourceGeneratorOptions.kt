@@ -25,33 +25,14 @@
  *      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *      THE SOFTWARE.
  */
-package com.github.jonathanxd.codeapi.source.test;
+package com.github.jonathanxd.codeapi.source.process
 
-import com.github.jonathanxd.codeapi.base.TypeDeclaration;
-import com.github.jonathanxd.codeapi.test.GenericClass_;
+import com.github.jonathanxd.iutils.option.Option
 
-import org.junit.Test;
-
-public class TestGenericClass {
-
-    @Test
-    public void genericClass() {
-        TypeDeclaration $ = GenericClass_.$();
-        CommonSourceTest.test(this.getClass(), $)
-                .expect("package com;\n" +
-                        "\n" +
-                        "import java.util.List;\n" +
-                        "\n" +
-                        "public class Generic<T extends List<T>> implements List<T> {\n" +
-                        "\n" +
-                        "    public T test;\n" +
-                        "\n" +
-                        "    public static <T extends List<T>> void test(T val) {\n" +
-                        "        T fieldi = null;\n" +
-                        "        Object field2 = null;\n" +
-                        "        List<String> field3 = null;\n" +
-                        "    }\n" +
-                        "}\n");
-    }
-
-}
+/**
+ * Expand the elvis expression when it cannot be translated to valid Java,
+ * if false, the processor will fail when elvis cannot be expressed in Java.
+ *
+ * Expand Elvis is a relative new feature and may not be correct, please report any inconsistency.
+ */
+val EXPAND_ELVIS = Option(true)

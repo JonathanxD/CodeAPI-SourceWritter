@@ -27,12 +27,12 @@
  */
 package com.github.jonathanxd.codeapi.source.process.processors
 
-import com.github.jonathanxd.codeapi.base.BodyHolder
-import com.github.jonathanxd.codeapi.base.IfExpressionHolder
-import com.github.jonathanxd.codeapi.base.IfStatement
+import com.github.jonathanxd.codeapi.CodeInstruction
+import com.github.jonathanxd.codeapi.base.*
 import com.github.jonathanxd.codeapi.processor.CodeProcessor
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.*
+import com.github.jonathanxd.codeapi.util.safeForComparison
 import com.github.jonathanxd.iutils.data.TypedData
 
 object IfStatementProcessor : AppendingProcessor<IfStatement> {
@@ -79,13 +79,11 @@ object IfStatementProcessor : AppendingProcessor<IfStatement> {
                 }
                 appender += "\n"
             } else {
+
+                if (!isValidElvis(part))
+                    throw IllegalStateException("Invalid elvis if expression.")
+
                 val body = part.body
-
-                if (body.size != 1)
-                    throw IllegalStateException("Elvis if expression must have only one element in the body!")
-
-                if (elseStatement.size != 1)
-                    throw IllegalStateException("Elvis else expression must have only one element in the body!")
 
                 appender += " ? "
 
@@ -102,5 +100,21 @@ object IfStatementProcessor : AppendingProcessor<IfStatement> {
             }
 
         }
+    }
+
+    fun isValidElvis(stm: IfStatement): Boolean {
+        val body = stm.body
+        val elseStatement = stm.elseStatement
+
+        if (body.size != 1 || elseStatement.size != 1)
+            return false
+
+        val f = { it: CodeInstruction ->
+            it.isExitOrFlow()
+                    || it.safeForComparison is BodyHolder
+            // Anything else? I bet I'm missing some expressions
+        }
+
+        return body.none(f) && elseStatement.none(f)
     }
 }

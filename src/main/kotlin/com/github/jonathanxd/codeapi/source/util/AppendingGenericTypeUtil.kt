@@ -31,6 +31,7 @@ import com.github.jonathanxd.codeapi.generic.GenericSignature
 import com.github.jonathanxd.codeapi.source.process.CodeTypeHelper
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.codeapi.type.GenericType
+import com.github.jonathanxd.codeapi.util.concreteType
 
 /**
  * Convert generic signature to string.
@@ -63,8 +64,8 @@ fun toSourceString(genericSignature: GenericSignature, appender: JavaSourceAppen
 fun toSourceString(genericType: GenericType, appender: JavaSourceAppender) {
 
     if (genericType.isType) {
-        appender.appendImport(genericType)
-        CodeTypeHelper.appendName(genericType, appender)
+        appender.appendImport(genericType.concreteType)
+        CodeTypeHelper.appendName(genericType.concreteType, appender)
     } else {
         if (!genericType.isWildcard) {
             appender += genericType.name
@@ -101,8 +102,8 @@ fun toSourceString(genericType: GenericType, appender: JavaSourceAppender) {
             if (type is GenericType) {
                 toSourceString(type, appender)
             } else {
-                appender.appendImport(type)
-                CodeTypeHelper.appendName(type, appender)
+                appender.appendImport(type.concreteType)
+                CodeTypeHelper.appendName(type.concreteType, appender)
             }
 
             if (!extendsOrSuper && !hasNext) {

@@ -36,6 +36,7 @@ import com.github.jonathanxd.codeapi.source.process.CodeTypeHelper
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.codeapi.type.PlainCodeType
 import com.github.jonathanxd.codeapi.util.canonicalName
+import com.github.jonathanxd.codeapi.util.concreteType
 import com.github.jonathanxd.iutils.data.TypedData
 
 object CommentHolderProcessor : Processor<CommentHolder> {
@@ -157,8 +158,8 @@ object LinkCommentProcessor : AppendingProcessor<Link> {
 
                         target.spec.typeSpec.parameterTypes.let { parameterTypes ->
                             parameterTypes.forEachIndexed { i, it ->
-                                appender.appendImport(it)
-                                CodeTypeHelper.appendName(it, appender)
+                                appender.appendImport(it.concreteType)
+                                CodeTypeHelper.appendName(it.concreteType, appender)
 
                                 if (i + 1 < parameterTypes.size)
                                     appender += ", "
