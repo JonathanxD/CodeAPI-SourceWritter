@@ -29,7 +29,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.CodeParameter
 import com.github.jonathanxd.codeapi.base.ModifiersHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -37,9 +37,9 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object CodeParameterProcessor : AppendingProcessor<CodeParameter> {
 
-    override fun process(part: CodeParameter, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
-        codeProcessor.processAs<ModifiersHolder>(part, data)
-        codeProcessor.processAs(part.type, data)
+    override fun process(part: CodeParameter, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+        processorManager.processAs<ModifiersHolder>(part, data)
+        processorManager.processAs(part.type, data)
         appender += " "
         appender += part.name
 

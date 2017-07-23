@@ -31,22 +31,19 @@ import com.github.jonathanxd.codeapi.base.Annotable
 import com.github.jonathanxd.codeapi.base.AnnotationProperty
 import com.github.jonathanxd.codeapi.base.Named
 import com.github.jonathanxd.codeapi.base.ReturnTypeHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
-import com.github.jonathanxd.codeapi.processor.Processor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
-import com.github.jonathanxd.codeapi.source.process.APPENDER
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
-import com.github.jonathanxd.codeapi.util.require
 import com.github.jonathanxd.iutils.data.TypedData
 
 object AnnotationPropertyProcessor : AppendingProcessor<AnnotationProperty> {
 
-    override fun process(part: AnnotationProperty, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
-        codeProcessor.processAs<Annotable>(part, data)
-        codeProcessor.processAs<ReturnTypeHolder>(part, data)
+    override fun process(part: AnnotationProperty, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+        processorManager.processAs<Annotable>(part, data)
+        processorManager.processAs<ReturnTypeHolder>(part, data)
         appender += " "
-        codeProcessor.processAs<Named>(part, data)
+        processorManager.processAs<Named>(part, data)
         appender += "()"
 
         val value = part.defaultValue
@@ -55,7 +52,7 @@ object AnnotationPropertyProcessor : AppendingProcessor<AnnotationProperty> {
             appender += " "
             appender += "default"
             appender += " "
-            AnnotationProcessor.addType(value, data, codeProcessor)
+            AnnotationProcessor.addType(value, data, processorManager)
         }
 
         appender += ";"

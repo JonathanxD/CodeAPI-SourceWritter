@@ -28,20 +28,20 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.GenericSignatureHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.iutils.data.TypedData
 
 object GenericSignatureHolderProcessor : AppendingProcessor<GenericSignatureHolder> {
 
-    override fun process(part: GenericSignatureHolder, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: GenericSignatureHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         if (part.genericSignature.types.isEmpty())
             return
 
         appender += "<"
 
-        codeProcessor.process(part.genericSignature, data)
+        processorManager.process(part.genericSignature, data)
 
         appender += ">"
 

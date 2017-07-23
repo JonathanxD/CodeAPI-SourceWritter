@@ -29,7 +29,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.Case
 import com.github.jonathanxd.codeapi.common.CodeNothing
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -38,7 +38,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object CaseProcessor : AppendingProcessor<Case> {
 
-    override fun process(part: Case, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Case, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
 
         val value = part.value.safeForComparison
 
@@ -50,12 +50,12 @@ object CaseProcessor : AppendingProcessor<Case> {
         }
 
         if (value !== CodeNothing) {
-            codeProcessor.processAs(part.value, data)
+            processorManager.processAs(part.value, data)
         }
 
         appender += ": "
 
-        codeProcessor.processAs(part.body, data)
+        processorManager.processAs(part.body, data)
 
         appender += "\n"
     }

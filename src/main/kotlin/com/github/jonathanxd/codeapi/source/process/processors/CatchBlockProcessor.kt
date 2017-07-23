@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.CatchStatement
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -37,7 +37,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object CatchBlockProcessor : AppendingProcessor<CatchStatement> {
 
-    override fun process(part: CatchStatement, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: CatchStatement, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender += " catch "
 
         val parameters = part.exceptionTypes
@@ -48,7 +48,7 @@ object CatchBlockProcessor : AppendingProcessor<CatchStatement> {
 
         appender += " ($sj $catchName)"
 
-        codeProcessor.processAs(part.body, data)
+        processorManager.processAs(part.body, data)
     }
 
 }

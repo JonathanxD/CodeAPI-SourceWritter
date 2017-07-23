@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.New
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -36,9 +36,9 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object NewProcessor : AppendingProcessor<New> {
 
-    override fun process(part: New, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: New, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender += "new "
-        codeProcessor.processAs(part.localization, data)
+        processorManager.processAs(part.localization, data)
     }
 
 }

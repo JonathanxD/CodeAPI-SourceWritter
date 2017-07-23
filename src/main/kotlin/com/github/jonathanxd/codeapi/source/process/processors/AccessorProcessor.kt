@@ -29,23 +29,20 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.Access
 import com.github.jonathanxd.codeapi.base.Accessor
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
-import com.github.jonathanxd.codeapi.processor.Processor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
-import com.github.jonathanxd.codeapi.source.process.APPENDER
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
-import com.github.jonathanxd.codeapi.util.require
 import com.github.jonathanxd.codeapi.util.safeForComparison
 import com.github.jonathanxd.iutils.data.TypedData
 
 object AccessorProcessor : AppendingProcessor<Accessor> {
 
-    override fun process(part: Accessor, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
-        process(part, true, data, codeProcessor, appender)
+    override fun process(part: Accessor, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+        process(part, true, data, processorManager, appender)
     }
 
-    fun process(accessor: Accessor, separator: Boolean, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    fun process(accessor: Accessor, separator: Boolean, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         var anySeparator = false
 
         val target = accessor.target
@@ -54,14 +51,14 @@ object AccessorProcessor : AppendingProcessor<Accessor> {
         val targetIsAccess = target is Access
 
         if (!targetIsAccess && safeTarget !== localization) {
-            codeProcessor.processAs(target, data)
+            processorManager.processAs(target, data)
 
             if (separator) {
                 appender.append(".")
                 anySeparator = true
             }
         } else if (!targetIsAccess && safeTarget === localization) {
-            codeProcessor.processAs(localization, data)
+            processorManager.processAs(localization, data)
 
             if (separator) {
                 appender.append(".")
@@ -73,11 +70,11 @@ object AccessorProcessor : AppendingProcessor<Accessor> {
             safeTarget as Access
 
             if (safeTarget == Access.STATIC) {
-                codeProcessor.processAs(localization, data)
-                codeProcessor.processAs(target, data)
+                processorManager.processAs(localization, data)
+                processorManager.processAs(target, data)
                 if (!anySeparator && separator) appender.append(".")
             } else if (safeTarget == Access.THIS || safeTarget != Access.LOCAL) {
-                codeProcessor.processAs(target, data)
+                processorManager.processAs(target, data)
                 if (!anySeparator && separator) appender.append(".")
             }
         }

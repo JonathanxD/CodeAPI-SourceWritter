@@ -29,7 +29,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.TryStatementBase
 import com.github.jonathanxd.codeapi.base.TryWithResources
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -37,7 +37,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object TryWithResourcesProcessor : AppendingProcessor<TryWithResources> {
 
-    override fun process(part: TryWithResources, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: TryWithResources, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val variable = part.variable
 
         appender += "try"
@@ -45,13 +45,13 @@ object TryWithResourcesProcessor : AppendingProcessor<TryWithResources> {
 
         appender += "("
 
-        codeProcessor.processAs(variable, data)
+        processorManager.processAs(variable, data)
 
         appender += ")"
 
         appender += " "
 
-        codeProcessor.processAs<TryStatementBase>(part, data)
+        processorManager.processAs<TryStatementBase>(part, data)
 
     }
 

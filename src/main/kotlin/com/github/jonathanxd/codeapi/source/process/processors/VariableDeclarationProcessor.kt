@@ -30,7 +30,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 import com.github.jonathanxd.codeapi.base.ValueHolder
 import com.github.jonathanxd.codeapi.base.VariableDeclaration
 import com.github.jonathanxd.codeapi.common.CodeNothing
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -41,8 +41,8 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object VariableDeclarationProcessor : AppendingProcessor<VariableDeclaration> {
 
-    override fun process(part: VariableDeclaration, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
-        codeProcessor.processAs(part.type, data)
+    override fun process(part: VariableDeclaration, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+        processorManager.processAs(part.type, data)
 
         VARIABLE_INDEXER.requireIndexer(data).addVariable(part.name)
 
@@ -51,7 +51,7 @@ object VariableDeclarationProcessor : AppendingProcessor<VariableDeclaration> {
 
         if (part.value.safeForComparison != CodeNothing) {
             appender += " = "
-            codeProcessor.processAs<ValueHolder>(part, data)
+            processorManager.processAs<ValueHolder>(part, data)
         }
 
         /*if (Util.isBody(parents)) {

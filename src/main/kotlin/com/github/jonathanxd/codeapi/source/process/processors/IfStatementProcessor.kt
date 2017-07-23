@@ -28,8 +28,10 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.CodeInstruction
-import com.github.jonathanxd.codeapi.base.*
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.base.BodyHolder
+import com.github.jonathanxd.codeapi.base.IfExpressionHolder
+import com.github.jonathanxd.codeapi.base.IfStatement
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.*
 import com.github.jonathanxd.codeapi.util.safeForComparison
@@ -37,7 +39,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object IfStatementProcessor : AppendingProcessor<IfStatement> {
 
-    override fun process(part: IfStatement, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: IfStatement, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val isElvis = ELVIS.getOrNull(data) != null
 
         if (!isElvis) {
@@ -45,7 +47,7 @@ object IfStatementProcessor : AppendingProcessor<IfStatement> {
             appender += " "
         }
 
-        codeProcessor.processAs<IfExpressionHolder>(part, data)
+        processorManager.processAs<IfExpressionHolder>(part, data)
 
         val elseStatement = part.elseStatement
 
@@ -54,7 +56,7 @@ object IfStatementProcessor : AppendingProcessor<IfStatement> {
                 // Clean body
                 appender += " "
                 VARIABLE_INDEXER.requireIndexer(data).tempFrame {
-                    codeProcessor.processAs<BodyHolder>(part, data)
+                    processorManager.processAs<BodyHolder>(part, data)
                 }
                 appender += "\n"
             } else {
@@ -63,7 +65,7 @@ object IfStatementProcessor : AppendingProcessor<IfStatement> {
                 if (body.size != 1)
                     throw IllegalStateException("Elvis if expression must have only one element in the body!");
                 VARIABLE_INDEXER.requireIndexer(data).tempFrame {
-                    codeProcessor.processAs(body.single(), data)
+                    processorManager.processAs(body.single(), data)
                 }
             }
         } else {
@@ -71,11 +73,11 @@ object IfStatementProcessor : AppendingProcessor<IfStatement> {
             if (!isElvis) {
                 appender += " "
                 VARIABLE_INDEXER.requireIndexer(data).tempFrame {
-                    codeProcessor.processAs<BodyHolder>(part, data)
+                    processorManager.processAs<BodyHolder>(part, data)
                 }
                 appender += " else "
                 VARIABLE_INDEXER.requireIndexer(data).tempFrame {
-                    codeProcessor.processAs(elseStatement, data)
+                    processorManager.processAs(elseStatement, data)
                 }
                 appender += "\n"
             } else {
@@ -88,13 +90,13 @@ object IfStatementProcessor : AppendingProcessor<IfStatement> {
                 appender += " ? "
 
                 VARIABLE_INDEXER.requireIndexer(data).tempFrame {
-                    codeProcessor.processAs(body.single(), data)
+                    processorManager.processAs(body.single(), data)
                 }
 
                 appender += " : "
 
                 VARIABLE_INDEXER.requireIndexer(data).tempFrame {
-                    codeProcessor.processAs(elseStatement.single(), data)
+                    processorManager.processAs(elseStatement.single(), data)
                 }
 
             }

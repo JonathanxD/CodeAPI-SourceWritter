@@ -27,7 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.process.processors
 
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.codeapi.source.util.toSourceString
@@ -36,7 +36,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object GenericTypeProcessor : AppendingProcessor<GenericType> {
 
-    override fun process(part: GenericType, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: GenericType, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         toSourceString(part, appender)
     }
 

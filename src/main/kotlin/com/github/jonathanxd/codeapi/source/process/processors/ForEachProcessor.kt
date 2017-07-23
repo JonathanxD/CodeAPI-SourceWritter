@@ -34,14 +34,14 @@ import com.github.jonathanxd.codeapi.common.CodeNothing
 import com.github.jonathanxd.codeapi.factory.*
 import com.github.jonathanxd.codeapi.literal.Literals
 import com.github.jonathanxd.codeapi.operator.Operators
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.*
 import com.github.jonathanxd.iutils.data.TypedData
 
 object ForEachProcessor : AppendingProcessor<ForEachStatement> {
 
-    override fun process(part: ForEachStatement, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: ForEachStatement, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val variableDeclaration = part.variable
         val iterableElement = part.iterableElement
         val iterationType = part.iterationType
@@ -49,12 +49,12 @@ object ForEachProcessor : AppendingProcessor<ForEachStatement> {
         if (iterationType === IterationType.ITERABLE_ELEMENT || iterationType === IterationType.ARRAY) {
             appender += "for "
             appender += "("
-            codeProcessor.processAs(variableDeclaration, data)
+            processorManager.processAs(variableDeclaration, data)
             appender += " : "
-            codeProcessor.processAs(iterableElement, data)
+            processorManager.processAs(iterableElement, data)
             appender += ")"
             VARIABLE_INDEXER.requireIndexer(data).tempFrame {
-                codeProcessor.processAs<BodyHolder>(part, data)
+                processorManager.processAs<BodyHolder>(part, data)
             }
             appender += "\n"
         } else {
@@ -110,7 +110,7 @@ object ForEachProcessor : AppendingProcessor<ForEachStatement> {
                     )
                     .build()
 
-            codeProcessor.process(stm, data)
+            processorManager.process(stm, data)
         }
     }
 

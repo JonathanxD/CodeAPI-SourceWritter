@@ -31,27 +31,32 @@ import com.github.jonathanxd.codeapi.CodeInstruction
 import com.github.jonathanxd.codeapi.CodeSource
 import com.github.jonathanxd.codeapi.MutableCodeSource
 import com.github.jonathanxd.codeapi.Types
-import com.github.jonathanxd.codeapi.base.*
+import com.github.jonathanxd.codeapi.base.IfStatement
+import com.github.jonathanxd.codeapi.base.Line
+import com.github.jonathanxd.codeapi.base.VariableAccess
+import com.github.jonathanxd.codeapi.base.VariableDeclaration
 import com.github.jonathanxd.codeapi.common.CodeNothing
 import com.github.jonathanxd.codeapi.factory.accessVariable
-import com.github.jonathanxd.codeapi.factory.cast
 import com.github.jonathanxd.codeapi.factory.setVariableValue
 import com.github.jonathanxd.codeapi.literal.Literals
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
 import com.github.jonathanxd.codeapi.processor.Processor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.source.process.*
-import com.github.jonathanxd.codeapi.util.*
+import com.github.jonathanxd.codeapi.util.`is`
+import com.github.jonathanxd.codeapi.util.require
+import com.github.jonathanxd.codeapi.util.safeForComparison
+import com.github.jonathanxd.codeapi.util.typeOrNull
 import com.github.jonathanxd.iutils.data.TypedData
 import java.lang.reflect.Type
 
 object ValueProcessor : Processor<CodeInstruction> {
 
-    override fun process(part: CodeInstruction, data: TypedData, codeProcessor: CodeProcessor<*>) {
+    override fun process(part: CodeInstruction, data: TypedData, processorManager: ProcessorManager<*>) {
         val safePart = part.safeForComparison
 
         if (safePart != CodeNothing) {
             if (safePart is IfStatement) {
-                if (codeProcessor.options[EXPAND_ELVIS] && !IfStatementProcessor.isValidElvis(safePart)) {
+                if (processorManager.options[EXPAND_ELVIS] && !IfStatementProcessor.isValidElvis(safePart)) {
                     val origin = APPENDER.require(data)
 
                     val newAppender = origin.createNew()
@@ -59,7 +64,7 @@ object ValueProcessor : Processor<CodeInstruction> {
                     APPENDER.set(data, newAppender)
 
                     if (part is Line)
-                        codeProcessor.process(Line::class.java, part.builder().value(CodeNothing).build(), data)
+                        processorManager.process(Line::class.java, part.builder().value(CodeNothing).build(), data)
 
                     // Expand
 
@@ -112,7 +117,7 @@ object ValueProcessor : Processor<CodeInstruction> {
                             .elseStatement(expand(stm.elseStatement))
                             .build()
 
-                    codeProcessor.process(VariableDeclaration::class.java,
+                    processorManager.process(VariableDeclaration::class.java,
                             declaration.builder().type(inferredType).build(),
                             data)
 
@@ -121,13 +126,13 @@ object ValueProcessor : Processor<CodeInstruction> {
 
                     // /Expand
 
-                    codeProcessor.process(newStm::class.java, newStm, data)
+                    processorManager.process(newStm::class.java, newStm, data)
 
                     origin.appendBefore(newAppender.getStrings())
 
                     APPENDER.set(data, origin)
 
-                    codeProcessor.process(VariableAccess::class.java,
+                    processorManager.process(VariableAccess::class.java,
                             accessVariable(inferredType, name),
                             data
                     )
@@ -138,7 +143,7 @@ object ValueProcessor : Processor<CodeInstruction> {
                 }
             }
 
-            codeProcessor.process(part::class.java, part, data)
+            processorManager.process(part::class.java, part, data)
         }
     }
 }

@@ -29,7 +29,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.Types
 import com.github.jonathanxd.codeapi.base.SuperClassHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -38,7 +38,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object SuperClassHolderProcessor : AppendingProcessor<SuperClassHolder> {
 
-    override fun process(part: SuperClassHolder, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: SuperClassHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val superType = part.superClass
 
         if (superType.`is`(Types.OBJECT))
@@ -46,7 +46,7 @@ object SuperClassHolderProcessor : AppendingProcessor<SuperClassHolder> {
 
         appender += "extends "
 
-        codeProcessor.processAs(superType, data)
+        processorManager.processAs(superType, data)
     }
 
 }

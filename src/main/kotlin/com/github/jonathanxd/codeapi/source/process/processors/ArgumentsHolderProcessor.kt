@@ -28,12 +28,10 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.ArgumentsHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
-import com.github.jonathanxd.codeapi.source.process.APPENDER
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
-import com.github.jonathanxd.codeapi.util.require
 import com.github.jonathanxd.iutils.data.TypedData
 
 object ArgumentsHolderProcessor : AppendingProcessor<ArgumentsHolder> {
@@ -44,7 +42,7 @@ object ArgumentsHolderProcessor : AppendingProcessor<ArgumentsHolder> {
     private const val ARRAY_OPEN_TAG = "{"
     private const val ARRAY_CLOSE_TAG = "}"
 
-    override fun process(part: ArgumentsHolder, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: ArgumentsHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val OPEN_TOKEN = if (part.array) ARRAY_OPEN_TAG else NORMAL_OPEN_TAG
         val CLOSE_TOKEN = if (part.array) ARRAY_CLOSE_TAG else NORMAL_CLOSE_TAG
 
@@ -57,7 +55,7 @@ object ArgumentsHolderProcessor : AppendingProcessor<ArgumentsHolder> {
         while (iterator.hasNext()) {
             val argument = iterator.next()
 
-            codeProcessor.processAs(argument, data)
+            processorManager.processAs(argument, data)
 
             if (iterator.hasNext())
                 appender += ", "

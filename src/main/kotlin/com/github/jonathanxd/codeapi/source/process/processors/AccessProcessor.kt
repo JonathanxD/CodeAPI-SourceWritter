@@ -28,17 +28,14 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.Access
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
-import com.github.jonathanxd.codeapi.processor.Processor
-import com.github.jonathanxd.codeapi.source.process.APPENDER
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
-import com.github.jonathanxd.codeapi.util.require
 import com.github.jonathanxd.iutils.data.TypedData
 
 object AccessProcessor : AppendingProcessor<Access> {
 
-    override fun process(part: Access, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Access, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         when (part) {
             Access.THIS -> appender.append("this")
             Access.SUPER -> appender.append("super")

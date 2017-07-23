@@ -29,8 +29,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.Annotation
 import com.github.jonathanxd.codeapi.base.EnumValue
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
-import com.github.jonathanxd.codeapi.processor.Processor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.APPENDER
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
@@ -42,9 +41,9 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object AnnotationProcessor : AppendingProcessor<Annotation> {
 
-    override fun process(part: Annotation, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Annotation, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender += "@"
-        codeProcessor.processAs(part.type, data)
+        processorManager.processAs(part.type, data)
 
         val valuesMap = part.values
 
@@ -53,7 +52,7 @@ object AnnotationProcessor : AppendingProcessor<Annotation> {
         if (valuesMap.size == 1 && valuesMap.containsKey("value")) {
             val value = valuesMap["value"]!!
 
-            AnnotationProcessor.addType(value, data, codeProcessor)
+            AnnotationProcessor.addType(value, data, processorManager)
         } else {
             val entries = valuesMap.entries
 
@@ -61,7 +60,7 @@ object AnnotationProcessor : AppendingProcessor<Annotation> {
                 appender += key
                 appender += " = "
 
-                AnnotationProcessor.addType(value, data, codeProcessor)
+                AnnotationProcessor.addType(value, data, processorManager)
 
                 if (index + 1 < entries.size)
                     appender += ", "
@@ -72,35 +71,34 @@ object AnnotationProcessor : AppendingProcessor<Annotation> {
         appender += "\n"
     }
 
-    fun addType(value: Any, data: TypedData, codeProcessor: CodeProcessor<*>) {
+    fun addType(value: Any, data: TypedData, processorManager: ProcessorManager<*>) {
         val appender = APPENDER.require(data)
-        if (value is CodeType) {
-            codeProcessor.processAs(value, data)
-            appender += ".class"
-        } else if (value is EnumValue) {
-            codeProcessor.processAs(value, data)
-        } else if (value is Annotation) {
-            codeProcessor.processAs(value, data)
-        } else if (value::class.java.isArray) {
-            val valuesObj = ArrayUtils.toObjectArray(value)
-
-            appender += "{"
-
-            for (i in valuesObj.indices) {
-                val o = valuesObj[i]
-
-                AnnotationProcessor.addType(o, data, codeProcessor)
-
-                if (i + 1 < valuesObj.size) {
-                    appender += ", "
-                }
+        when {
+            value is CodeType -> {
+                processorManager.processAs(value, data)
+                appender += ".class"
             }
+            value is EnumValue -> processorManager.processAs(value, data)
+            value is Annotation -> processorManager.processAs(value, data)
+            value::class.java.isArray -> {
+                val valuesObj = ArrayUtils.toObjectArray(value)
 
-            appender += "}"
-        } else if (value is String) {
-            appender += "\"$value\""
-        } else {
-            appender += value.toString()
+                appender += "{"
+
+                for (i in valuesObj.indices) {
+                    val o = valuesObj[i]
+
+                    AnnotationProcessor.addType(o, data, processorManager)
+
+                    if (i + 1 < valuesObj.size) {
+                        appender += ", "
+                    }
+                }
+
+                appender += "}"
+            }
+            value is String -> appender += "\"$value\""
+            else -> appender += value.toString()
         }
     }
 }

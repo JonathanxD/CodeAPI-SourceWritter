@@ -32,7 +32,7 @@ import com.github.jonathanxd.codeapi.base.FieldDeclaration
 import com.github.jonathanxd.codeapi.base.ModifiersHolder
 import com.github.jonathanxd.codeapi.base.comment.CommentHolder
 import com.github.jonathanxd.codeapi.common.CodeNothing
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -41,18 +41,18 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object FieldDeclarationProcessor : AppendingProcessor<FieldDeclaration> {
 
-    override fun process(part: FieldDeclaration, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
-        codeProcessor.processAs<CommentHolder>(part, data)
-        codeProcessor.processAs<Annotable>(part, data)
-        codeProcessor.processAs<ModifiersHolder>(part, data)
+    override fun process(part: FieldDeclaration, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+        processorManager.processAs<CommentHolder>(part, data)
+        processorManager.processAs<Annotable>(part, data)
+        processorManager.processAs<ModifiersHolder>(part, data)
 
-        codeProcessor.processAs(part.type, data)
+        processorManager.processAs(part.type, data)
         appender += " "
         appender += part.name
 
         if (part.value.safeForComparison != CodeNothing) {
             appender += " = "
-            codeProcessor.processAs(part.value, data)
+            processorManager.processAs(part.value, data)
         }
 
         appender += ";"

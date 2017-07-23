@@ -35,9 +35,9 @@ import com.github.jonathanxd.codeapi.base.comment.*
 import com.github.jonathanxd.codeapi.generic.GenericSignature
 import com.github.jonathanxd.codeapi.literal.Literal
 import com.github.jonathanxd.codeapi.operator.Operator
-import com.github.jonathanxd.codeapi.processor.AbstractProcessor
-import com.github.jonathanxd.codeapi.processor.CodeValidator
-import com.github.jonathanxd.codeapi.processor.VoidValidator
+import com.github.jonathanxd.codeapi.processor.AbstractProcessorManager
+import com.github.jonathanxd.codeapi.processor.ValidatorManager
+import com.github.jonathanxd.codeapi.processor.VoidValidatorManager
 import com.github.jonathanxd.codeapi.source.process.processors.*
 import com.github.jonathanxd.codeapi.type.CodeType
 import com.github.jonathanxd.codeapi.type.GenericType
@@ -51,11 +51,10 @@ import java.lang.reflect.Type
 /**
  * Generates Java Source from CodeAPI-Base structures
  */
-class PlainSourceGenerator : AbstractProcessor<String>() {
-
+class PlainSourceGenerator : AbstractProcessorManager<String>() {
 
     override val options: Options = Options()
-    override val validator: CodeValidator = VoidValidator
+    override val validatorManager: ValidatorManager = VoidValidatorManager
 
     init {
         registerProcessor(AccessorProcessor, Accessor::class.java)
@@ -78,6 +77,7 @@ class PlainSourceGenerator : AbstractProcessor<String>() {
         registerProcessor(CommentHolderProcessor, CommentHolder::class.java)
         registerProcessor(CommentsProcessor, Comments::class.java)
         registerProcessor(ConcatProcessor, Concat::class.java)
+        registerProcessor(ConstructorsHolderProcessor, ConstructorsHolder::class.java)
         registerProcessor(ControlFlowProcessor, ControlFlow::class.java)
         registerProcessor(ElementsHolderProcessor, ElementsHolder::class.java)
         registerProcessor(EntryHolderProcessor, EntryHolder::class.java)
@@ -137,6 +137,7 @@ class PlainSourceGenerator : AbstractProcessor<String>() {
         registerProcessor(RepCodeNodeProcessor, Code.CodeNode.CodeRepresentation::class.java)
         registerProcessor(ReturnProcessor, Return::class.java)
         registerProcessor(ReturnTypeHolderProcessor, ReturnTypeHolder::class.java)
+        registerProcessor(ScopeAccessProcessor, ScopeAccess::class.java)
         registerProcessor(StaticBlockProcessor, StaticBlock::class.java)
         registerProcessor(SuperClassHolderProcessor, SuperClassHolder::class.java)
         registerProcessor(SwitchProcessor, SwitchStatement::class.java)
@@ -183,18 +184,26 @@ class PlainSourceGenerator : AbstractProcessor<String>() {
 
         try {
             processor.process(part, data, this)
-        } catch (t: Throwable) {
+        } catch (t: Exception) {
             t.addSuppressed(IllegalStateException("Failed to process part '$part' with type '${type.simpleName}' during 'process' phase. Data map: '${data.typedDataMap}'"))
             throw t
         }
 
         try {
             processor.endProcess(part, data, this)
-        } catch (t: Throwable) {
+        } catch (t: Exception) {
             t.addSuppressed(IllegalStateException("Failed to process part '$part' with type '${type.simpleName}' during 'endProcess' phase. Data map: '${data.typedDataMap}'"))
             throw t
         }
 
+        return APPENDER.require(data).toString()
+    }
+
+    override fun printFailMessage(message: String) {
+
+    }
+
+    override fun getFinalValue(data: TypedData): String {
         return APPENDER.require(data).toString()
     }
 

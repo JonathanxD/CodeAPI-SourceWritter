@@ -29,7 +29,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.BodyHolder
 import com.github.jonathanxd.codeapi.base.StaticBlock
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -37,9 +37,9 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object StaticBlockProcessor : AppendingProcessor<StaticBlock> {
 
-    override fun process(part: StaticBlock, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: StaticBlock, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender += "static "
-        codeProcessor.processAs<BodyHolder>(part, data)
+        processorManager.processAs<BodyHolder>(part, data)
         appender += "\n"
     }
 

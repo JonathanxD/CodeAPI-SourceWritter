@@ -27,17 +27,17 @@
  */
 package com.github.jonathanxd.codeapi.source.process
 
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
 import com.github.jonathanxd.codeapi.processor.Processor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.util.require
 import com.github.jonathanxd.iutils.data.TypedData
 
 interface AppendingProcessor<in P> : Processor<P> {
 
-    fun process(part: P, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender)
+    fun process(part: P, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender)
 
-    override fun process(part: P, data: TypedData, codeProcessor: CodeProcessor<*>) {
-        this.process(part, data, codeProcessor, APPENDER.require(data))
+    override fun process(part: P, data: TypedData, processorManager: ProcessorManager<*>) {
+        this.process(part, data, processorManager, APPENDER.require(data))
     }
 
 }

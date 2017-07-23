@@ -46,7 +46,7 @@ public class InnerTest {
                 "    protected String field = \"XSD\";\n" +
                 "\n" +
                 "    public InnerClass() {\n" +
-                "        new Inner(this).call();\n" +
+                "        new Inner().call();\n" +
                 "    }\n" +
                 "\n" +
                 "    protected InnerClass(String str) {\n" +
@@ -59,16 +59,11 @@ public class InnerTest {
                 "\n" +
                 "    public class Inner {\n" +
                 "\n" +
-                "        private final InnerClass outer;\n" +
                 "        public InnerClass a = new InnerClass(\"Hello\");\n" +
                 "\n" +
-                "        public Inner(InnerClass outer) {\n" +
-                "            this.outer = outer;\n" +
-                "        }\n" +
-                "\n" +
                 "        protected String call() {\n" +
-                "            System.out.println(this.outer.field);\n" +
-                "            this.outer.mm();\n" +
+                "            System.out.println(InnerClass.this.field);\n" +
+                "            InnerClass.this.mm();\n" +
                 "            return \"A\";\n" +
                 "        }\n" +
                 "    }\n" +

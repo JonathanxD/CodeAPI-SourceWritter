@@ -29,7 +29,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.BodyHolder
 import com.github.jonathanxd.codeapi.base.Synchronized
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -37,14 +37,14 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object SynchronizedProcessor : AppendingProcessor<Synchronized> {
 
-    override fun process(part: Synchronized, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Synchronized, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender += "synchronized"
         appender += " "
         appender += "("
-        codeProcessor.processAs(part.instruction, data)
+        processorManager.processAs(part.instruction, data)
         appender += ")"
         appender += " "
-        codeProcessor.processAs<BodyHolder>(part, data)
+        processorManager.processAs<BodyHolder>(part, data)
         appender += "\n"
     }
 

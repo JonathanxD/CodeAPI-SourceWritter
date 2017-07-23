@@ -32,7 +32,7 @@ import com.github.jonathanxd.codeapi.CodeSource
 import com.github.jonathanxd.codeapi.base.BodyHolder
 import com.github.jonathanxd.codeapi.base.SwitchStatement
 import com.github.jonathanxd.codeapi.base.comment.Comments
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.codeapi.util.safeForComparison
@@ -40,14 +40,14 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object CodeSourceProcessor : AppendingProcessor<CodeSource> {
 
-    override fun process(part: CodeSource, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: CodeSource, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender += "{"
         appender += "\n"
         appender.addIndent()
 
         part.forEachIndexed { index, it ->
             try {
-                codeProcessor.process(it::class.java, it, data)
+                processorManager.process(it::class.java, it, data)
             } catch (t: Throwable) {
                 t.addSuppressed(IllegalStateException("Failed to process part '$it' inside CodeSource[index=$index]!"))
                 throw t

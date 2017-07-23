@@ -29,22 +29,19 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.ArgumentsHolder
 import com.github.jonathanxd.codeapi.base.ArrayConstructor
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
-import com.github.jonathanxd.codeapi.processor.Processor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
-import com.github.jonathanxd.codeapi.source.process.APPENDER
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.codeapi.util.arrayBaseComponent
-import com.github.jonathanxd.codeapi.util.require
 import com.github.jonathanxd.iutils.data.TypedData
 
 object ArrayConstructorProcessor : AppendingProcessor<ArrayConstructor> {
 
-    override fun process(part: ArrayConstructor, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: ArrayConstructor, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender += "new"
         appender += " "
-        codeProcessor.processAs(part.arrayType.arrayBaseComponent, data)
+        processorManager.processAs(part.arrayType.arrayBaseComponent, data)
 
         val generateSizes = part.arguments.isEmpty()
 
@@ -55,11 +52,11 @@ object ArrayConstructorProcessor : AppendingProcessor<ArrayConstructor> {
 
             appender += collect
 
-            codeProcessor.processAs<ArgumentsHolder>(part, data)
+            processorManager.processAs<ArgumentsHolder>(part, data)
         } else {
             for (i in part.dimensions) {
                 appender += "["
-                codeProcessor.processAs(i, data)
+                processorManager.processAs(i, data)
                 appender += "]"
             }
 

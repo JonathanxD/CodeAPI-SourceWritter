@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.ImplementationHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -36,7 +36,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object ImplementationHolderProcessor : AppendingProcessor<ImplementationHolder> {
 
-    override fun process(part: ImplementationHolder, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: ImplementationHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         if (part.implementations.isEmpty())
             return
 
@@ -48,7 +48,7 @@ object ImplementationHolderProcessor : AppendingProcessor<ImplementationHolder> 
         while (iter.hasNext()) {
             val codeType = iter.next()
 
-            codeProcessor.processAs(codeType, data)
+            processorManager.processAs(codeType, data)
 
             if (iter.hasNext())
                 appender += " "

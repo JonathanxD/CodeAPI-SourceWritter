@@ -28,14 +28,14 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.operator.Operator
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.iutils.data.TypedData
 
 object OperatorProcessor : AppendingProcessor<Operator> {
 
-    override fun process(part: Operator, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Operator, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender += " "
         appender += part.name
         appender += " "

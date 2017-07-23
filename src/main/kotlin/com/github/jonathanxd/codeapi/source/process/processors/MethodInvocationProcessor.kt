@@ -29,7 +29,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.ArgumentsHolder
 import com.github.jonathanxd.codeapi.base.MethodInvocation
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -39,7 +39,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object MethodInvocationProcessor : AppendingProcessor<MethodInvocation> {
 
-    override fun process(part: MethodInvocation, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: MethodInvocation, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
 
         val spec = part.spec
 
@@ -58,7 +58,7 @@ object MethodInvocationProcessor : AppendingProcessor<MethodInvocation> {
         }
 
         if (!isSuper) {
-            AccessorProcessor.process(part, !isCtr, data, codeProcessor, appender)
+            AccessorProcessor.process(part, !isCtr, data, processorManager, appender)
 
             val methodName = part.spec.methodName
 
@@ -71,7 +71,7 @@ object MethodInvocationProcessor : AppendingProcessor<MethodInvocation> {
             values.add(TargetValue.create(CodeType::class.java, inp.localization, parents))
         }*/
 
-        codeProcessor.processAs<ArgumentsHolder>(part, data)
+        processorManager.processAs<ArgumentsHolder>(part, data)
 
 
         /*

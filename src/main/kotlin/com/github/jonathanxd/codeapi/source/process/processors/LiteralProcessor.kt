@@ -29,7 +29,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.Types
 import com.github.jonathanxd.codeapi.literal.Literal
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.CodeTypeHelper
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -40,7 +40,7 @@ import java.lang.reflect.Type
 
 object LiteralProcessor : AppendingProcessor<Literal> {
 
-    override fun process(part: Literal, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Literal, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         if (part.type.`is`(Types.LONG)) {
             appender += "${part.name}L"
         } else if (part.type.`is`(Types.DOUBLE)) {

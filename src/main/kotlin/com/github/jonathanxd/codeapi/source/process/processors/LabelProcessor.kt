@@ -29,18 +29,18 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.BodyHolder
 import com.github.jonathanxd.codeapi.base.Label
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.*
 import com.github.jonathanxd.iutils.data.TypedData
 
 object LabelProcessor : AppendingProcessor<Label> {
 
-    override fun process(part: Label, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Label, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender += part.name
         appender += ": "
         VARIABLE_INDEXER.requireIndexer(data).tempFrame {
-            codeProcessor.processAs<BodyHolder>(part, data)
+            processorManager.processAs<BodyHolder>(part, data)
         }
         appender += "\n"
     }

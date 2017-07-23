@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.generic.GenericSignature
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -36,7 +36,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object GenericSignatureProcessor : AppendingProcessor<GenericSignature> {
 
-    override fun process(part: GenericSignature, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: GenericSignature, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val types = part.types
 
         for (i in types.indices) {
@@ -44,7 +44,7 @@ object GenericSignatureProcessor : AppendingProcessor<GenericSignature> {
 
             val genericType = types[i]
 
-            codeProcessor.processAs(genericType, data)
+            processorManager.processAs(genericType, data)
 
             if (hasNext)
                 appender += ","

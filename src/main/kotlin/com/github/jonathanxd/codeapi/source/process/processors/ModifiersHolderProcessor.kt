@@ -31,7 +31,7 @@ import com.github.jonathanxd.codeapi.base.CodeModifier
 import com.github.jonathanxd.codeapi.base.CodeParameter
 import com.github.jonathanxd.codeapi.base.ModifierType
 import com.github.jonathanxd.codeapi.base.ModifiersHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.codeapi.util.toString
@@ -39,11 +39,11 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object ModifiersHolderProcessor : AppendingProcessor<ModifiersHolder> {
 
-    override fun process(part: ModifiersHolder, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: ModifiersHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
 
         val mutableModifiers = part.modifiers.toMutableSet()
 
-        if(!part.modifiers.any { it.modifierType == ModifierType.VISIBILITY }
+        if (!part.modifiers.any { it.modifierType == ModifierType.VISIBILITY }
                 && part !is CodeParameter)
             mutableModifiers += CodeModifier.PUBLIC
 

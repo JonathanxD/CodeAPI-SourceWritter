@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.ArrayLoad
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -36,11 +36,11 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object ArrayLoadProcessor : AppendingProcessor<ArrayLoad> {
 
-    override fun process(part: ArrayLoad, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
-        codeProcessor.processAs(part.target, data)
+    override fun process(part: ArrayLoad, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+        processorManager.processAs(part.target, data)
 
         appender += "["
-        codeProcessor.processAs(part.index, data)
+        processorManager.processAs(part.index, data)
         appender += "]"
     }
 }

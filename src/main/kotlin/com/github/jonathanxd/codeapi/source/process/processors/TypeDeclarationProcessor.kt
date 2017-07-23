@@ -30,8 +30,8 @@ package com.github.jonathanxd.codeapi.source.process.processors
 import com.github.jonathanxd.codeapi.Types
 import com.github.jonathanxd.codeapi.base.*
 import com.github.jonathanxd.codeapi.base.comment.CommentHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
 import com.github.jonathanxd.codeapi.processor.Processor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.APPENDER
 import com.github.jonathanxd.codeapi.source.process.DECLARATION
@@ -41,7 +41,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object TypeDeclarationProcessor : Processor<TypeDeclaration> {
 
-    override fun process(part: TypeDeclaration, data: TypedData, codeProcessor: CodeProcessor<*>) {
+    override fun process(part: TypeDeclaration, data: TypedData, processorManager: ProcessorManager<*>) {
         val appender = APPENDER.require(data)
         @Suppress("NAME_SHADOWING")
         val data = TypedData(data)
@@ -53,10 +53,10 @@ object TypeDeclarationProcessor : Processor<TypeDeclaration> {
 
         appender.addDeclaration(part)
 
-        codeProcessor.processAs<CommentHolder>(part, data)
-        codeProcessor.processAs<Annotable>(part, data)
+        processorManager.processAs<CommentHolder>(part, data)
+        processorManager.processAs<Annotable>(part, data)
 
-        codeProcessor.processAs<ModifiersHolder>(part, data)
+        processorManager.processAs<ModifiersHolder>(part, data)
 
         appender += when (part) {
             is InterfaceDeclaration -> "interface "
@@ -66,9 +66,9 @@ object TypeDeclarationProcessor : Processor<TypeDeclaration> {
             else -> ""
         }
 
-        codeProcessor.processAs<Named>(part, data)
+        processorManager.processAs<Named>(part, data)
 
-        codeProcessor.processAs<GenericSignatureHolder>(part, data)
+        processorManager.processAs<GenericSignatureHolder>(part, data)
 
         appender += " "
 
@@ -80,14 +80,14 @@ object TypeDeclarationProcessor : Processor<TypeDeclaration> {
 
         if (part is SuperClassHolder) {
             if (!part.superClass.`is`(Types.OBJECT)) {
-                codeProcessor.processAs<SuperClassHolder>(part, data)
+                processorManager.processAs<SuperClassHolder>(part, data)
                 superOrItfs = true
             }
         }
 
         if (part is ImplementationHolder) {
             if (part.implementations.isNotEmpty()) {
-                codeProcessor.processAs<ImplementationHolder>(part, data)
+                processorManager.processAs<ImplementationHolder>(part, data)
                 superOrItfs = true
             }
         }
@@ -95,7 +95,7 @@ object TypeDeclarationProcessor : Processor<TypeDeclaration> {
         if (superOrItfs)
             appender += " "
 
-        codeProcessor.processAs<ElementsHolder>(part, data)
+        processorManager.processAs<ElementsHolder>(part, data)
 
         appender += "\n"
 

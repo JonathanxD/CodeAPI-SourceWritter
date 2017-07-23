@@ -31,8 +31,7 @@ import com.github.jonathanxd.codeapi.base.IfExpr
 import com.github.jonathanxd.codeapi.base.IfExpressionHolder
 import com.github.jonathanxd.codeapi.base.IfGroup
 import com.github.jonathanxd.codeapi.operator.Operator
-import com.github.jonathanxd.codeapi.operator.Operators
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -41,7 +40,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object IfExpressionHolderProcessor : AppendingProcessor<IfExpressionHolder> {
 
-    override fun process(part: IfExpressionHolder, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: IfExpressionHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender += "("
 
         val expressions = part.expressions
@@ -49,9 +48,9 @@ object IfExpressionHolderProcessor : AppendingProcessor<IfExpressionHolder> {
         expressions.forEach { codePart ->
             val safe = codePart.safeForComparison
             when (safe) {
-                is IfExpr -> codeProcessor.processAs(codePart, data) // No problem, no safe cast expected
+                is IfExpr -> processorManager.processAs(codePart, data) // No problem, no safe cast expected
                 is Operator -> appender += " ${safe.name} "
-                is IfGroup -> codeProcessor.processAs(codePart, data) // No problem
+                is IfGroup -> processorManager.processAs(codePart, data) // No problem
                 else -> appender.simpleAppend("/* Skipped $safe in if translation */")
             }
         }

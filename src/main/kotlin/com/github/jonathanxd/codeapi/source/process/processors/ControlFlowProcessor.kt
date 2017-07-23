@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.ControlFlow
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.iutils.data.TypedData
@@ -38,7 +38,7 @@ import com.github.jonathanxd.iutils.data.TypedData
  */
 object ControlFlowProcessor : AppendingProcessor<ControlFlow> {
 
-    override fun process(part: ControlFlow, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: ControlFlow, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         when (part.type) {
             ControlFlow.Type.BREAK -> appender += "break"
             ControlFlow.Type.CONTINUE -> appender += "continue"

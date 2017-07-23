@@ -5,7 +5,7 @@ public class InnerClass {
     protected String field = "XSD";
 
     public InnerClass() {
-        new Inner(this).call();
+        new Inner().call();
     }
 
     protected InnerClass(String str) {
@@ -18,16 +18,11 @@ public class InnerClass {
 
     public class Inner {
 
-        private final InnerClass outer;
         public InnerClass a = new InnerClass("Hello");
 
-        public Inner(InnerClass outer) {
-            this.outer = outer;
-        }
-
         protected String call() {
-            System.out.println(this.outer.field);
-            this.outer.mm();
+            System.out.println(InnerClass.this.field);
+            InnerClass.this.mm();
             return "A";
         }
     }

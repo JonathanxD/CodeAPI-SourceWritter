@@ -28,15 +28,15 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.Line
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.iutils.data.TypedData
 
 object LineProcessor : AppendingProcessor<Line> {
-    override fun process(part: Line, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Line, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender += "/* ${part.line} */ "
-        codeProcessor.processAs(part.value, data)
+        processorManager.processAs(part.value, data)
     }
 }

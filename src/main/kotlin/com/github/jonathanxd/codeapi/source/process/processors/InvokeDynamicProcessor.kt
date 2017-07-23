@@ -30,7 +30,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 import com.github.jonathanxd.codeapi.Types
 import com.github.jonathanxd.codeapi.base.InvokeDynamicBase
 import com.github.jonathanxd.codeapi.base.Return
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -38,7 +38,7 @@ import com.github.jonathanxd.codeapi.util.`is`
 import com.github.jonathanxd.iutils.data.TypedData
 
 object InvokeDynamicProcessor : AppendingProcessor<InvokeDynamicBase> {
-    override fun process(part: InvokeDynamicBase, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: InvokeDynamicBase, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
 
         when (part) {
             is InvokeDynamicBase.LambdaLocalCodeBase -> {
@@ -58,20 +58,20 @@ object InvokeDynamicProcessor : AppendingProcessor<InvokeDynamicBase> {
 
                     if (shouldSingle) {
                         if (single is Return) {
-                            codeProcessor.processAs(single.value, data)
+                            processorManager.processAs(single.value, data)
                         } else {
-                            codeProcessor.processAs(single, data)
+                            processorManager.processAs(single, data)
                         }
                     } else {
-                        codeProcessor.processAs(part.localCode.body, data)
+                        processorManager.processAs(part.localCode.body, data)
                     }
                 } else
-                    codeProcessor.processAs(part.localCode.body, data)
+                    processorManager.processAs(part.localCode.body, data)
             }
             is InvokeDynamicBase.LambdaMethodRefBase -> {
                 val target = part.invocation.target
                 val name = part.invocation.spec.methodName
-                codeProcessor.processAs(target, data)
+                processorManager.processAs(target, data)
 
                 appender += "::"
                 appender += name

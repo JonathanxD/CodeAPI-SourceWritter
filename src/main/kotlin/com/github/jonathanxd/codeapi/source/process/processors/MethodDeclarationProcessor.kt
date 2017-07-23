@@ -29,7 +29,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.*
 import com.github.jonathanxd.codeapi.base.comment.CommentHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.DECLARATION
@@ -39,28 +39,28 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object MethodDeclarationProcessor : AppendingProcessor<MethodDeclarationBase> {
 
-    override fun process(part: MethodDeclarationBase, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
-        codeProcessor.processAs<CommentHolder>(part, data)
-        codeProcessor.processAs<Annotable>(part, data)
-        codeProcessor.processAs<ModifiersHolder>(part, data)
+    override fun process(part: MethodDeclarationBase, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+        processorManager.processAs<CommentHolder>(part, data)
+        processorManager.processAs<Annotable>(part, data)
+        processorManager.processAs<ModifiersHolder>(part, data)
 
         if (part.genericSignature.isNotEmpty) {
-            codeProcessor.processAs<GenericSignatureHolder>(part, data)
+            processorManager.processAs<GenericSignatureHolder>(part, data)
             appender += " "
         }
 
         if (part !is ConstructorDeclaration) {
-            codeProcessor.processAs<ReturnTypeHolder>(part, data)
+            processorManager.processAs<ReturnTypeHolder>(part, data)
             appender += " "
         }
 
         if (part is ConstructorDeclaration) {
             appender += DECLARATION.require(data).simpleName
         } else {
-            codeProcessor.processAs<Named>(part, data)
+            processorManager.processAs<Named>(part, data)
         }
 
-        codeProcessor.processAs<ParametersHolder>(part, data)
+        processorManager.processAs<ParametersHolder>(part, data)
 
         if (part.body.isEmpty &&
                 (part.modifiers.contains(CodeModifier.ABSTRACT)
@@ -69,7 +69,7 @@ object MethodDeclarationProcessor : AppendingProcessor<MethodDeclarationBase> {
             appender += "\n"
         } else {
             appender += " "
-            codeProcessor.processAs<BodyHolder>(part, data)
+            processorManager.processAs<BodyHolder>(part, data)
             appender += "\n"
         }
     }

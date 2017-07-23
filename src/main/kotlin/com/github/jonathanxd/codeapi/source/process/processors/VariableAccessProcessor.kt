@@ -28,14 +28,14 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.VariableAccess
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.iutils.data.TypedData
 
 object VariableAccessProcessor : AppendingProcessor<VariableAccess> {
 
-    override fun process(part: VariableAccess, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: VariableAccess, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender += part.name
         /*
 

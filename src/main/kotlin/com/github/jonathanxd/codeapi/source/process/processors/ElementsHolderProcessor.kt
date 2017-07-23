@@ -27,11 +27,8 @@
  */
 package com.github.jonathanxd.codeapi.source.process.processors
 
-import com.github.jonathanxd.codeapi.base.AnnotationDeclaration
-import com.github.jonathanxd.codeapi.base.ElementsHolder
-import com.github.jonathanxd.codeapi.base.EnumDeclaration
-import com.github.jonathanxd.codeapi.base.InnerTypesHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.base.*
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -39,7 +36,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object ElementsHolderProcessor : AppendingProcessor<ElementsHolder> {
 
-    override fun process(part: ElementsHolder, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: ElementsHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
 
         appender += "{"
         appender += "\n"
@@ -47,7 +44,7 @@ object ElementsHolderProcessor : AppendingProcessor<ElementsHolder> {
 
         if (part is AnnotationDeclaration) {
             part.properties.forEach {
-                codeProcessor.processAs(it, data)
+                processorManager.processAs(it, data)
             }
         }
 
@@ -55,12 +52,12 @@ object ElementsHolderProcessor : AppendingProcessor<ElementsHolder> {
             appender += "\n"
             val iter = part.entries.iterator()
 
-            while(iter.hasNext()) {
+            while (iter.hasNext()) {
                 val entry = iter.next()
 
-                codeProcessor.processAs(entry, data)
+                processorManager.processAs(entry, data)
 
-                if(iter.hasNext()) {
+                if (iter.hasNext()) {
                     appender += ","
                 } else {
                     appender += ";"
@@ -72,37 +69,48 @@ object ElementsHolderProcessor : AppendingProcessor<ElementsHolder> {
         }
 
 
-        if(part.staticBlock.body.isNotEmpty) {
+        if (part.staticBlock.body.isNotEmpty) {
             appender += "\n"
-            codeProcessor.processAs(part.staticBlock, data)
+            processorManager.processAs(part.staticBlock, data)
         }
 
-        if(part.fields.isNotEmpty()) {
+        if (part.fields.isNotEmpty()) {
             appender += "\n"
             part.fields.forEach {
-                codeProcessor.processAs(it, data)
+                processorManager.processAs(it, data)
                 appender += "\n"
             }
         }
 
-        if(part.constructors.isNotEmpty()) {
+        if (part is ConstructorsHolder) {
             part.constructors.forEach {
                 appender += "\n"
-                codeProcessor.processAs(it, data)
+                processorManager.processAs(it, data)
             }
         }
 
-        if(part.methods.isNotEmpty()) {
+        if (part.methods.isNotEmpty()) {
             part.methods.forEach {
                 appender += "\n"
-                codeProcessor.processAs(it, data)
+                processorManager.processAs(it, data)
             }
         }
 
-        codeProcessor.processAs<InnerTypesHolder>(part, data)
+        processorManager.processAs<InnerTypesHolder>(part, data)
 
         appender.removeIndent()
         appender += "}"
+    }
+
+}
+
+object ConstructorsHolderProcessor : AppendingProcessor<ConstructorsHolder> {
+
+    override fun process(part: ConstructorsHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+        part.constructors.forEach {
+            appender += "\n"
+            processorManager.processAs(it, data)
+        }
     }
 
 }

@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.SwitchStatement
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -36,20 +36,20 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object SwitchProcessor : AppendingProcessor<SwitchStatement> {
 
-    override fun process(part: SwitchStatement, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: SwitchStatement, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
 
         val value = part.value
 
         appender += "switch"
         appender += " "
         appender += "("
-        codeProcessor.processAs(value, data)
+        processorManager.processAs(value, data)
         appender += ")"
         appender += " "
         appender += "{"
         appender += "\n"
         appender.addIndent()
-        part.cases.forEach { codeProcessor.processAs(it, data) }
+        part.cases.forEach { processorManager.processAs(it, data) }
         appender.removeIndent()
         appender += "}"
         appender += "\n"

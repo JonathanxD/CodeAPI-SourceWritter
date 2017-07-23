@@ -31,7 +31,7 @@ import com.github.jonathanxd.codeapi.base.BodyHolder
 import com.github.jonathanxd.codeapi.base.ForStatement
 import com.github.jonathanxd.codeapi.base.IfExpressionHolder
 import com.github.jonathanxd.codeapi.common.CodeNothing
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.*
 import com.github.jonathanxd.codeapi.util.safeForComparison
@@ -39,11 +39,11 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object ForStatementProcessor : AppendingProcessor<ForStatement> {
 
-    override fun process(part: ForStatement, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: ForStatement, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender += "for "
         appender += "("
 
-        if (part.forInit.safeForComparison != CodeNothing) codeProcessor.processAs(part.forInit, data)
+        if (part.forInit.safeForComparison != CodeNothing) processorManager.processAs(part.forInit, data)
 
         appender += ";"
 
@@ -51,21 +51,21 @@ object ForStatementProcessor : AppendingProcessor<ForStatement> {
 
         if (!forExpressionOpt.isEmpty()) {
             appender += " "
-            codeProcessor.processAs<IfExpressionHolder>(part, data)
+            processorManager.processAs<IfExpressionHolder>(part, data)
         }
 
         appender += ";"
 
         if (part.forUpdate.safeForComparison != CodeNothing) {
             appender += " "
-            codeProcessor.processAs(part.forUpdate, data)
+            processorManager.processAs(part.forUpdate, data)
         }
 
         appender += ")"
         appender += " "
 
         VARIABLE_INDEXER.requireIndexer(data).tempFrame {
-            codeProcessor.processAs<BodyHolder>(part, data)
+            processorManager.processAs<BodyHolder>(part, data)
         }
 
         appender += "\n"

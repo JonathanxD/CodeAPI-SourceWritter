@@ -28,17 +28,17 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.ValueHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
 import com.github.jonathanxd.codeapi.processor.Processor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.iutils.data.TypedData
 
 object ValueHolderProcessor : Processor<ValueHolder> {
 
-    override fun process(part: ValueHolder, data: TypedData, codeProcessor: CodeProcessor<*>) {
+    override fun process(part: ValueHolder, data: TypedData, processorManager: ProcessorManager<*>) {
         val value = part.value
 
-        codeProcessor.processAs(value, data)
+        processorManager.processAs(value, data)
     }
 
 

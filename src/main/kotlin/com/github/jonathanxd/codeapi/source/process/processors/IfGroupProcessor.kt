@@ -29,7 +29,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.IfExpressionHolder
 import com.github.jonathanxd.codeapi.base.IfGroup
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -37,8 +37,8 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object IfGroupProcessor : AppendingProcessor<IfGroup> {
 
-    override fun process(part: IfGroup, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
-        codeProcessor.processAs<IfExpressionHolder>(part, data) // Already append ( and )
+    override fun process(part: IfGroup, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+        processorManager.processAs<IfExpressionHolder>(part, data) // Already append ( and )
     }
 
 }

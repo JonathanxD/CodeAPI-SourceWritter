@@ -31,7 +31,7 @@ import com.github.jonathanxd.codeapi.base.ArgumentsHolder
 import com.github.jonathanxd.codeapi.base.ElementsHolder
 import com.github.jonathanxd.codeapi.base.EnumEntry
 import com.github.jonathanxd.codeapi.base.hasDeclarations
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -39,19 +39,19 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object EntryProcessor : AppendingProcessor<EnumEntry> {
 
-    override fun process(part: EnumEntry, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: EnumEntry, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
 
-        appender += part.name // Or codeProcessor.processAs<Named>(part, data) but I want to avoid the overhead.
+        appender += part.name // Or processorManager.processAs<Named>(part, data) but I want to avoid the overhead.
 
         val constructorSpec = part.constructorSpec
 
         if (constructorSpec != null) {
-            codeProcessor.processAs<ArgumentsHolder>(part, data)
+            processorManager.processAs<ArgumentsHolder>(part, data)
         }
 
         if (part.hasDeclarations) {
             appender += " "
-            codeProcessor.processAs<ElementsHolder>(part, data)
+            processorManager.processAs<ElementsHolder>(part, data)
         }
 
     }

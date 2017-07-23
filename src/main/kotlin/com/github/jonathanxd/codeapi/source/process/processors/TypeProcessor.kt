@@ -27,7 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.process.processors
 
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.CodeTypeHelper
@@ -39,14 +39,14 @@ import java.lang.reflect.Type
 
 object TypeProcessor : AppendingProcessor<Type> {
 
-    override fun process(part: Type, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Type, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
 
         val codeType = Util.localizationResolve(part, data)
 
         appender.appendImport(codeType.concreteType)
 
         if (codeType is GenericType) {
-            codeProcessor.processAs(codeType, data)
+            processorManager.processAs(codeType, data)
         } else {
             CodeTypeHelper.appendName(codeType.concreteType, appender)
         }

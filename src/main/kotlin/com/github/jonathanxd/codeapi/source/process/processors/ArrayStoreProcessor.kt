@@ -29,27 +29,24 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.ArrayStore
 import com.github.jonathanxd.codeapi.base.ValueHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
-import com.github.jonathanxd.codeapi.processor.Processor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
-import com.github.jonathanxd.codeapi.source.process.APPENDER
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
-import com.github.jonathanxd.codeapi.util.require
 import com.github.jonathanxd.iutils.data.TypedData
 
 object ArrayStoreProcessor : AppendingProcessor<ArrayStore> {
 
-    override fun process(part: ArrayStore, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
-        codeProcessor.processAs(part.target, data)
+    override fun process(part: ArrayStore, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+        processorManager.processAs(part.target, data)
 
         appender += "["
-        codeProcessor.processAs(part.index, data)
+        processorManager.processAs(part.index, data)
         appender += "]"
 
         appender += " = "
 
-        codeProcessor.processAs<ValueHolder>(part, data)
+        processorManager.processAs<ValueHolder>(part, data)
 
     }
 

@@ -28,8 +28,8 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.comment.*
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
 import com.github.jonathanxd.codeapi.processor.Processor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.CodeTypeHelper
@@ -41,15 +41,15 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object CommentHolderProcessor : Processor<CommentHolder> {
 
-    override fun process(part: CommentHolder, data: TypedData, codeProcessor: CodeProcessor<*>) {
-        codeProcessor.processAs(part.comments, data)
+    override fun process(part: CommentHolder, data: TypedData, processorManager: ProcessorManager<*>) {
+        processorManager.processAs(part.comments, data)
     }
 
 }
 
 object CommentsProcessor : AppendingProcessor<Comments> {
 
-    override fun process(part: Comments, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Comments, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         if (part.isAbsent())
             return
 
@@ -79,7 +79,7 @@ object CommentsProcessor : AppendingProcessor<Comments> {
         appender.setPrefix("$prefix ")
 
         commentList.forEach {
-            codeProcessor.process(it, data)
+            processorManager.process(it, data)
         }
 
         appender.setPrefix("")
@@ -104,7 +104,7 @@ object CommentsProcessor : AppendingProcessor<Comments> {
 
 object PlainCommentProcessor : AppendingProcessor<Plain> {
 
-    override fun process(part: Plain, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Plain, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender.simpleAppend(part.text)
     }
 
@@ -112,7 +112,7 @@ object PlainCommentProcessor : AppendingProcessor<Plain> {
 
 object LinkCommentProcessor : AppendingProcessor<Link> {
 
-    override fun process(part: Link, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Link, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val name = part.name
 
         val target = part.target
@@ -186,13 +186,13 @@ object LinkCommentProcessor : AppendingProcessor<Link> {
 
 object CodeCommentProcessor : AppendingProcessor<Code> {
 
-    override fun process(part: Code, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Code, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val codeNode = part.code
 
         appender.simpleAppend("<pre>"); appender.simpleAppend("\n")
         appender.simpleAppend("{@code"); appender.simpleAppend("\n")
 
-        codeProcessor.process(codeNode, data)
+        processorManager.process(codeNode, data)
 
         appender.simpleAppend("\n")
         appender.simpleAppend("}")
@@ -204,7 +204,7 @@ object CodeCommentProcessor : AppendingProcessor<Code> {
 
 object PlainCodeNodeProcessor : AppendingProcessor<Code.CodeNode.Plain> {
 
-    override fun process(part: Code.CodeNode.Plain, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Code.CodeNode.Plain, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender.simpleAppend(part.plain)
     }
 
@@ -213,8 +213,8 @@ object PlainCodeNodeProcessor : AppendingProcessor<Code.CodeNode.Plain> {
 
 object RepCodeNodeProcessor : Processor<Code.CodeNode.CodeRepresentation> {
 
-    override fun process(part: Code.CodeNode.CodeRepresentation, data: TypedData, codeProcessor: CodeProcessor<*>) {
-        codeProcessor.process(part.representation, data)
+    override fun process(part: Code.CodeNode.CodeRepresentation, data: TypedData, processorManager: ProcessorManager<*>) {
+        processorManager.process(part.representation, data)
     }
 
 }

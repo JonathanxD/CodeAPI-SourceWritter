@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.InnerTypesHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -36,12 +36,12 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object InnerTypesHolderProcessor : AppendingProcessor<InnerTypesHolder> {
 
-    override fun process(part: InnerTypesHolder, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: InnerTypesHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
 
         if (part.innerTypes.isNotEmpty()) {
             part.innerTypes.forEach {
                 appender += "\n"
-                codeProcessor.processAs(it, data)
+                processorManager.processAs(it, data)
             }
         }
     }

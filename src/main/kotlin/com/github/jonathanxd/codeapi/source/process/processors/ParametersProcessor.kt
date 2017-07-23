@@ -29,7 +29,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.Annotable
 import com.github.jonathanxd.codeapi.base.ParametersHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -37,7 +37,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object ParametersProcessor : AppendingProcessor<ParametersHolder> {
 
-    override fun process(part: ParametersHolder, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: ParametersHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         appender += "("
 
         val parameters = part.parameters
@@ -48,11 +48,11 @@ object ParametersProcessor : AppendingProcessor<ParametersHolder> {
             val next = iterator.next()
 
             if (next.annotations.isNotEmpty()) {
-                codeProcessor.processAs<Annotable>(next, data)
+                processorManager.processAs<Annotable>(next, data)
                 appender += " "
             }
 
-            codeProcessor.processAs(next, data)
+            processorManager.processAs(next, data)
 
             if (iterator.hasNext())
                 appender += ", "

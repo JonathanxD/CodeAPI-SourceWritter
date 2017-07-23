@@ -29,7 +29,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.Accessor
 import com.github.jonathanxd.codeapi.base.FieldAccess
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -37,14 +37,14 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object FieldAccessProcessor : AppendingProcessor<FieldAccess> {
 
-    override fun process(part: FieldAccess, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: FieldAccess, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val localization = Util.localizationResolve(part.localization, data)
 
         val accessor = if (part.localization != localization) {
             part.builder().localization(localization).build()
         } else part
 
-        codeProcessor.processAs<Accessor>(accessor, data)
+        processorManager.processAs<Accessor>(accessor, data)
 
         appender += part.name
 

@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.EnumValue
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -36,8 +36,8 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object EnumValueProcessor : AppendingProcessor<EnumValue> {
 
-    override fun process(part: EnumValue, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
-        codeProcessor.processAs(part.enumType, data)
+    override fun process(part: EnumValue, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+        processorManager.processAs(part.enumType, data)
         appender += "."
         appender += part.enumEntry
     }

@@ -30,7 +30,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 import com.github.jonathanxd.codeapi.base.BodyHolder
 import com.github.jonathanxd.codeapi.base.TryStatementBase
 import com.github.jonathanxd.codeapi.base.TryWithResources
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -38,21 +38,21 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object TryStatementProcessor : AppendingProcessor<TryStatementBase> {
 
-    override fun process(part: TryStatementBase, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: TryStatementBase, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
 
-        if(part !is TryWithResources)
+        if (part !is TryWithResources)
             appender += "try "
 
         val finallyStatement = part.finallyStatement
-        codeProcessor.processAs<BodyHolder>(part, data)
+        processorManager.processAs<BodyHolder>(part, data)
 
         part.catchStatements.forEach {
-            codeProcessor.processAs(it, data)
+            processorManager.processAs(it, data)
         }
 
         if (finallyStatement.isNotEmpty) {
             appender += " finally "
-            codeProcessor.processAs(finallyStatement, data)
+            processorManager.processAs(finallyStatement, data)
         }
 
         appender += "\n"

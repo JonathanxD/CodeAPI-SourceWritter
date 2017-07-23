@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.ReturnTypeHolder
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -36,8 +36,8 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object ReturnTypeHolderProcessor : AppendingProcessor<ReturnTypeHolder> {
 
-    override fun process(part: ReturnTypeHolder, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
-        codeProcessor.processAs(part.returnType, data)
+    override fun process(part: ReturnTypeHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+        processorManager.processAs(part.returnType, data)
     }
 
 }

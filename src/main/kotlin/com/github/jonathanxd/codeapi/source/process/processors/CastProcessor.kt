@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.Cast
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -37,17 +37,17 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object CastProcessor : AppendingProcessor<Cast> {
 
-    override fun process(part: Cast, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Cast, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val origin = part.originalType
         val target = part.targetType
 
         if (origin == null || !origin.`is`(target)) {
             appender += "("
-            codeProcessor.processAs(target, data)
+            processorManager.processAs(target, data)
             appender += ")"
         }
 
-        codeProcessor.processAs(part.castedPart, data)
+        processorManager.processAs(part.castedPart, data)
     }
 
 }

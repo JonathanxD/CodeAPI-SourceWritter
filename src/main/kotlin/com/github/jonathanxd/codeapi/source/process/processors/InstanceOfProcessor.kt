@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.InstanceOfCheck
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -36,13 +36,13 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object InstanceOfProcessor : AppendingProcessor<InstanceOfCheck> {
 
-    override fun process(part: InstanceOfCheck, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: InstanceOfCheck, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val checkPart = part.part
         val type = part.checkType
 
-        codeProcessor.processAs(checkPart, data)
+        processorManager.processAs(checkPart, data)
         appender += " instanceof "
-        codeProcessor.processAs(type, data)
+        processorManager.processAs(type, data)
 
     }
 

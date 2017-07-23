@@ -30,14 +30,14 @@ package com.github.jonathanxd.codeapi.source.process.processors
 import com.github.jonathanxd.codeapi.base.BodyHolder
 import com.github.jonathanxd.codeapi.base.IfExpressionHolder
 import com.github.jonathanxd.codeapi.base.WhileStatement
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.*
 import com.github.jonathanxd.iutils.data.TypedData
 
 object WhileBlockProcessor : AppendingProcessor<WhileStatement> {
 
-    override fun process(part: WhileStatement, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: WhileStatement, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
 
         if (part.type == WhileStatement.Type.DO_WHILE) {
             appender += "do"
@@ -55,7 +55,7 @@ object WhileBlockProcessor : AppendingProcessor<WhileStatement> {
                 appender += "true"
                 appender += ")"
             } else {
-                codeProcessor.processAs<IfExpressionHolder>(part, data)
+                processorManager.processAs<IfExpressionHolder>(part, data)
             }
 
         }
@@ -66,7 +66,7 @@ object WhileBlockProcessor : AppendingProcessor<WhileStatement> {
         }
 
         VARIABLE_INDEXER.requireIndexer(data).tempFrame {
-            codeProcessor.processAs<BodyHolder>(part, data)
+            processorManager.processAs<BodyHolder>(part, data)
         }
 
         if (part.type == WhileStatement.Type.WHILE) {

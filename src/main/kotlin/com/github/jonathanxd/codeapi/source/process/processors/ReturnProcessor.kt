@@ -30,7 +30,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 import com.github.jonathanxd.codeapi.base.Return
 import com.github.jonathanxd.codeapi.base.ValueHolder
 import com.github.jonathanxd.codeapi.common.Void
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -41,7 +41,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object ReturnProcessor : AppendingProcessor<Return> {
 
-    override fun process(part: Return, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Return, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val type = part.type
 
         if (type.type == "void" || type.javaSpecName == "V" || part.value.safeForComparison is Void) {
@@ -49,7 +49,7 @@ object ReturnProcessor : AppendingProcessor<Return> {
         } else {
             appender += "return"
             appender += " "
-            codeProcessor.processAs<ValueHolder>(part, data)
+            processorManager.processAs<ValueHolder>(part, data)
         }
 
 

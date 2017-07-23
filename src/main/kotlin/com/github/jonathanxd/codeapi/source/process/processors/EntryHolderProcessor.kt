@@ -29,7 +29,7 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.EntryHolder
 import com.github.jonathanxd.codeapi.base.hasDeclarations
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -37,7 +37,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object EntryHolderProcessor : AppendingProcessor<EntryHolder> {
 
-    override fun process(part: EntryHolder, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: EntryHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val entries = part.entries
 
         val iterator = entries.listIterator()
@@ -45,7 +45,7 @@ object EntryHolderProcessor : AppendingProcessor<EntryHolder> {
         while (iterator.hasNext()) {
             val enumEntry = iterator.next()
 
-            codeProcessor.processAs(enumEntry, data)
+            processorManager.processAs(enumEntry, data)
 
             if (iterator.hasNext()) {
                 appender += ", "

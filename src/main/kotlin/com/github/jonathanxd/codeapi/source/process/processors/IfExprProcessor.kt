@@ -32,7 +32,7 @@ import com.github.jonathanxd.codeapi.base.IfExpr
 import com.github.jonathanxd.codeapi.base.InstanceOfCheck
 import com.github.jonathanxd.codeapi.literal.Literals
 import com.github.jonathanxd.codeapi.operator.Operators
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -41,7 +41,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object IfExprProcessor : AppendingProcessor<IfExpr> {
 
-    override fun process(part: IfExpr, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: IfExpr, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val expr1 = part.expr1
         val expr2 = part.expr2
         val safeExpr1 = expr1.safeForComparison
@@ -56,7 +56,7 @@ object IfExprProcessor : AppendingProcessor<IfExpr> {
             if (codePart.safeForComparison is InstanceOfCheck)
                 appender += "("
 
-            codeProcessor.processAs(codePart, data)
+            processorManager.processAs(codePart, data)
 
             if (codePart.safeForComparison is InstanceOfCheck)
                 appender += ")"
@@ -72,15 +72,15 @@ object IfExprProcessor : AppendingProcessor<IfExpr> {
 
         if ((boolValue1 == null && boolValue2 == null)
                 || (boolValue1 != null && boolValue2 != null)) {
-            codeProcessor.processAs(expr1, data)
-            codeProcessor.process(operation, data)
-            codeProcessor.processAs(expr2, data)
+            processorManager.processAs(expr1, data)
+            processorManager.process(operation, data)
+            processorManager.processAs(expr2, data)
         } else if (boolValue1 == true && boolValue2 == null) {
-            codeProcessor.processAs(expr2, data)
+            processorManager.processAs(expr2, data)
         } else if (boolValue1 == false && boolValue2 == null) {
             processNegate(expr2)
         } else if (boolValue1 == null && boolValue2 == true) {
-            codeProcessor.processAs(expr1, data)
+            processorManager.processAs(expr1, data)
         } else if (boolValue1 == null && boolValue2 == false) {
             processNegate(expr1)
         }

@@ -28,7 +28,7 @@
 package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.base.Concat
-import com.github.jonathanxd.codeapi.processor.CodeProcessor
+import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
@@ -36,7 +36,7 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object ConcatProcessor : AppendingProcessor<Concat> {
 
-    override fun process(part: Concat, data: TypedData, codeProcessor: CodeProcessor<*>, appender: JavaSourceAppender) {
+    override fun process(part: Concat, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
         val concatenations = part.concatenations
 
         if (concatenations.isEmpty()) {
@@ -48,7 +48,7 @@ object ConcatProcessor : AppendingProcessor<Concat> {
                 val nextPart = iterator.next()
                 val hasNext = iterator.hasNext()
 
-                codeProcessor.processAs(nextPart, data)
+                processorManager.processAs(nextPart, data)
 
                 if (hasNext) {
                     appender += " + "
