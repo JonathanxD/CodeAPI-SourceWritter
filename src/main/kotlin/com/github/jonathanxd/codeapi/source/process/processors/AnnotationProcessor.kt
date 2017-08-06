@@ -80,7 +80,21 @@ object AnnotationProcessor : AppendingProcessor<Annotation> {
             }
             value is EnumValue -> processorManager.processAs(value, data)
             value is Annotation -> processorManager.processAs(value, data)
-            value::class.java.isArray -> {
+            value is List<*> -> {
+                appender += "{"
+
+                value.filterNotNull().iterator().let {
+                    while (it.hasNext()) {
+                        AnnotationProcessor.addType(it.next(), data, processorManager)
+
+                        if (it.hasNext())
+                            appender += ", "
+                    }
+                }
+
+                appender += "}"
+            }
+            value::class.java.isArray -> { // compatibility, keep until CodeAPI-JavaValidator is not ready
                 val valuesObj = ArrayUtils.toObjectArray(value)
 
                 appender += "{"

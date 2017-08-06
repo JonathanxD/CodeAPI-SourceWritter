@@ -37,7 +37,7 @@ public class InnerTest {
     @Test
     public void innerTest() {
         TypeDeclaration $ = InnerClassTest_.$();
-        // WILL FAIL
+
         SourceTest test = CommonSourceTest.test(this.getClass(), $);
         test.expect("package test;\n" +
                 "\n" +
