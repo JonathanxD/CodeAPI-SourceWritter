@@ -55,7 +55,8 @@ public class AnnotatedTest2 {
                                 MapUtils.mapOf("value", new Object[]{
                                         enumValue(AnnotatedTest_.MyEnum.class, "A"), enumValue(AnnotatedTest_.MyEnum.class, "B"), enumValue(AnnotatedTest_.MyEnum.class, "C")
                                 }, "myEnum", enumValue(AnnotatedTest_.MyEnum.class, "B"))
-                        ))
+                        ),
+                        visibleAnnotation(Override.class))
                 )
                 .qualifiedName("test.AnnotatedTestClass")
                 .build();
@@ -73,6 +74,7 @@ public class AnnotatedTest2 {
                 "import com.github.jonathanxd.codeapi.test.AnnotatedTest_.MyEnum;\n" +
                 "\n" +
                 "@Simple(myEnum = MyEnum.B, value = {MyEnum.A, MyEnum.B, MyEnum.C})\n" +
+                "@Override()\n" +
                 "public class AnnotatedTestClass {\n" +
                 "}\n");
     }

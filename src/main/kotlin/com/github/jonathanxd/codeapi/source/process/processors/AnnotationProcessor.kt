@@ -68,7 +68,6 @@ object AnnotationProcessor : AppendingProcessor<Annotation> {
         }
 
         appender += ")"
-        appender += "\n"
     }
 
     fun addType(value: Any, data: TypedData, processorManager: ProcessorManager<*>) {

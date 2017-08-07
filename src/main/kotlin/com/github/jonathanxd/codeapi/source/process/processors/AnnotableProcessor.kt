@@ -48,8 +48,7 @@ object AnnotableProcessor : AppendingProcessor<Annotable> {
             val annotation = iterator.next()
             processorManager.processAs(annotation, data)
 
-            if (iterator.hasNext())
-                appender.append("\n")
+            appender.append("\n")
         }
     }
 }
