@@ -28,10 +28,10 @@
 package com.github.jonathanxd.codeapi.source.process
 
 import com.github.jonathanxd.codeapi.base.TypeDeclaration
-import com.github.jonathanxd.codeapi.util.require
-import com.github.jonathanxd.codeapi.util.typedKeyOf
 import com.github.jonathanxd.iutils.`object`.TypedKey
 import com.github.jonathanxd.iutils.data.TypedData
+import com.github.jonathanxd.jwiutils.kt.require
+import com.github.jonathanxd.jwiutils.kt.typedKeyOf
 
 val APPENDER = typedKeyOf<JavaSourceAppender>("APPENDER")
 

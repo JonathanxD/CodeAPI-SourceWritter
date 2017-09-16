@@ -36,7 +36,7 @@ import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.APPENDER
 import com.github.jonathanxd.codeapi.source.process.DECLARATION
 import com.github.jonathanxd.codeapi.util.`is`
-import com.github.jonathanxd.codeapi.util.require
+import com.github.jonathanxd.jwiutils.kt.require
 import com.github.jonathanxd.iutils.data.TypedData
 
 object TypeDeclarationProcessor : Processor<TypeDeclaration> {

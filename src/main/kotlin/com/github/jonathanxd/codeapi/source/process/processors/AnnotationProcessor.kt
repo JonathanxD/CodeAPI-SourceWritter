@@ -35,7 +35,7 @@ import com.github.jonathanxd.codeapi.source.process.APPENDER
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.codeapi.type.CodeType
-import com.github.jonathanxd.codeapi.util.require
+import com.github.jonathanxd.jwiutils.kt.require
 import com.github.jonathanxd.iutils.array.ArrayUtils
 import com.github.jonathanxd.iutils.data.TypedData
 

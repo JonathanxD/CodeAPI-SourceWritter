@@ -43,7 +43,7 @@ import com.github.jonathanxd.codeapi.processor.Processor
 import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.source.process.*
 import com.github.jonathanxd.codeapi.util.`is`
-import com.github.jonathanxd.codeapi.util.require
+import com.github.jonathanxd.jwiutils.kt.require
 import com.github.jonathanxd.codeapi.util.safeForComparison
 import com.github.jonathanxd.codeapi.util.typeOrNull
 import com.github.jonathanxd.iutils.data.TypedData

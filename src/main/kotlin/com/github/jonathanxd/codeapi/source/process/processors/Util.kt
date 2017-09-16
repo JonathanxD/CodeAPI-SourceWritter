@@ -31,7 +31,7 @@ import com.github.jonathanxd.codeapi.CodeInstruction
 import com.github.jonathanxd.codeapi.base.*
 import com.github.jonathanxd.codeapi.source.process.DECLARATION
 import com.github.jonathanxd.codeapi.util.Alias
-import com.github.jonathanxd.codeapi.util.require
+import com.github.jonathanxd.jwiutils.kt.require
 import com.github.jonathanxd.codeapi.util.safeForComparison
 import com.github.jonathanxd.iutils.data.TypedData
 import java.lang.reflect.Type

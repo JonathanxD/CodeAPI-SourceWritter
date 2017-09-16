@@ -43,7 +43,7 @@ import com.github.jonathanxd.codeapi.type.CodeType
 import com.github.jonathanxd.codeapi.type.GenericType
 import com.github.jonathanxd.codeapi.type.JavaType
 import com.github.jonathanxd.codeapi.type.LoadedCodeType
-import com.github.jonathanxd.codeapi.util.require
+import com.github.jonathanxd.jwiutils.kt.require
 import com.github.jonathanxd.iutils.data.TypedData
 import com.github.jonathanxd.iutils.option.Options
 import java.lang.reflect.Type

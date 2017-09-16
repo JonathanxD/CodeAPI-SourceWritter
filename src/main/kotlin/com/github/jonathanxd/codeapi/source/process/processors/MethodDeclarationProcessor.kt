@@ -34,7 +34,7 @@ import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.DECLARATION
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
-import com.github.jonathanxd.codeapi.util.require
+import com.github.jonathanxd.jwiutils.kt.require
 import com.github.jonathanxd.iutils.data.TypedData
 
 object MethodDeclarationProcessor : AppendingProcessor<MethodDeclarationBase> {
