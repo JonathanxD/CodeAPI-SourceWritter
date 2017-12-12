@@ -27,7 +27,9 @@
  */
 package com.github.jonathanxd.codeapi.source.process.processors
 
+import com.github.jonathanxd.codeapi.CodeInstruction
 import com.github.jonathanxd.codeapi.Types
+import com.github.jonathanxd.codeapi.base.Access
 import com.github.jonathanxd.codeapi.base.InvokeDynamicBase
 import com.github.jonathanxd.codeapi.base.Return
 import com.github.jonathanxd.codeapi.processor.ProcessorManager
@@ -35,6 +37,7 @@ import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.codeapi.util.`is`
+import com.github.jonathanxd.codeapi.util.simpleName
 import com.github.jonathanxd.iutils.data.TypedData
 
 object InvokeDynamicProcessor : AppendingProcessor<InvokeDynamicBase> {
@@ -69,10 +72,13 @@ object InvokeDynamicProcessor : AppendingProcessor<InvokeDynamicBase> {
                     processorManager.processAs(part.localCode.body, data)
             }
             is InvokeDynamicBase.LambdaMethodRefBase -> {
-                val target = part.invocation.target
-                val name = part.invocation.spec.methodName
-                processorManager.processAs(target, data)
+                val name = part.methodRef.methodTypeSpec.methodName
 
+                if (part.methodRef.invokeType.isStatic()) {
+                    processorManager.processAs(Util.localizationResolve(part.methodRef.methodTypeSpec.localization, data), data)
+                } else {
+                    processorManager.processAs(part.arguments.first(), data)
+                }
                 appender += "::"
                 appender += name
             }

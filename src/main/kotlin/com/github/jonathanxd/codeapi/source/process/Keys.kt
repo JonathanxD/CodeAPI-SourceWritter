@@ -41,6 +41,8 @@ val DECLARATION = typedKeyOf<TypeDeclaration>("TYPE_DECLARATION")
 
 val ELVIS = typedKeyOf<Unit>("IS_ELVIS")
 
+val FOR_INIT = typedKeyOf<Unit>("FOR_INIT")
+
 fun TypedKey<VariableIndexer>.requireIndexer(data: TypedData): VariableIndexer {
     if(!this.contains(data))
         this.set(data, VariableIndexer())

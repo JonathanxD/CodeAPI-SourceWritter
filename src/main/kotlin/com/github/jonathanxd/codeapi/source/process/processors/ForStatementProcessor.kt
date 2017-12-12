@@ -43,7 +43,18 @@ object ForStatementProcessor : AppendingProcessor<ForStatement> {
         appender += "for "
         appender += "("
 
-        if (part.forInit.safeForComparison != CodeNothing) processorManager.processAs(part.forInit, data)
+        val inits = part.forInit.filter { it.safeForComparison != CodeNothing }
+
+        inits.forEachIndexed { index, it ->
+            if (index > 0) {
+                appender += ", "
+                FOR_INIT.set(data, Unit)
+            }
+            processorManager.processAs(it, data)
+            if (index > 0) {
+                FOR_INIT.remove(data)
+            }
+        }
 
         appender += ";"
 
@@ -56,9 +67,15 @@ object ForStatementProcessor : AppendingProcessor<ForStatement> {
 
         appender += ";"
 
-        if (part.forUpdate.safeForComparison != CodeNothing) {
+        val iter2 = part.forUpdate.filter { it.safeForComparison != CodeNothing }.iterator()
+        if (iter2.hasNext())
             appender += " "
-            processorManager.processAs(part.forUpdate, data)
+
+        while (iter2.hasNext()) {
+            val elem = iter2.next()
+            processorManager.processAs(elem, data)
+            if (iter2.hasNext())
+                appender += ", "
         }
 
         appender += ")"

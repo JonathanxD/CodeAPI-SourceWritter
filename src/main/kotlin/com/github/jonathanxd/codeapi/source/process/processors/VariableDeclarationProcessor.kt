@@ -32,21 +32,23 @@ import com.github.jonathanxd.codeapi.base.VariableDeclaration
 import com.github.jonathanxd.codeapi.common.CodeNothing
 import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
-import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
-import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
-import com.github.jonathanxd.codeapi.source.process.VARIABLE_INDEXER
-import com.github.jonathanxd.codeapi.source.process.requireIndexer
+import com.github.jonathanxd.codeapi.source.process.*
 import com.github.jonathanxd.codeapi.util.safeForComparison
 import com.github.jonathanxd.iutils.data.TypedData
 
 object VariableDeclarationProcessor : AppendingProcessor<VariableDeclaration> {
 
     override fun process(part: VariableDeclaration, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
-        processorManager.processAs(part.type, data)
+        if (!FOR_INIT.contains(data)) {
+            processorManager.processAs(part.type, data)
+        }
 
         VARIABLE_INDEXER.requireIndexer(data).addVariable(part.name)
 
-        appender += " "
+        if (!FOR_INIT.contains(data)) {
+            appender += " "
+        }
+
         appender += part.name
 
         if (part.value.safeForComparison != CodeNothing) {

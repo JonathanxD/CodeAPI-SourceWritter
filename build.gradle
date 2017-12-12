@@ -17,13 +17,13 @@ buildscript {
 }
 
 group 'com.github.jonathanxd'
-version '4.0.0.1-beta-source'
+version '4.0.0.10-beta-source'
 
 apply from: project(":CodeAPI").file("gradle/common.gradle")
 
 dependencies {
     compileOnly project(":CodeAPI")
-    runtime "com.github.JonathanxD:CodeAPI:4.0.0.1-beta"
+    runtime "com.github.JonathanxD:CodeAPI:4.0.0.11-beta"
     testCompile project(path: ':CodeAPI', configuration: 'tests')
 }
 
