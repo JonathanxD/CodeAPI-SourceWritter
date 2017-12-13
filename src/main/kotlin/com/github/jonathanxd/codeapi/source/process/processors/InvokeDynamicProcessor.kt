@@ -77,7 +77,7 @@ object InvokeDynamicProcessor : AppendingProcessor<InvokeDynamicBase> {
                 if (part.methodRef.invokeType.isStatic()) {
                     processorManager.processAs(Util.localizationResolve(part.methodRef.methodTypeSpec.localization, data), data)
                 } else {
-                    processorManager.processAs(part.arguments.first(), data)
+                    processorManager.processAs(part.dynamicMethod.arguments.first(), data)
                 }
                 appender += "::"
                 appender += name
