@@ -1,0 +1,40 @@
+package test;
+
+public class BitwiseIf {
+
+    public BitwiseIf(boolean h, boolean x) {
+        if (h & x) {
+            System.out.println("BITWISE_AND: true");
+        } else {
+            System.out.println("BITWISE_AND: false");
+        }
+        if (h | x) {
+            System.out.println("BITWISE_INCLUSIVE_OR: true");
+        } else {
+            System.out.println("BITWISE_INCLUSIVE_OR: false");
+        }
+        if (h ^ x) {
+            System.out.println("BITWISE_EXCLUSIVE_OR: true");
+        } else {
+            System.out.println("BITWISE_EXCLUSIVE_OR: false");
+        }
+        if (!h ^ x) {
+            System.out.println("NEGATE_FIRST BITWISE_EXCLUSIVE_OR: true");
+        } else {
+            System.out.println("NEGATE_FIRST BITWISE_EXCLUSIVE_OR: false");
+        }
+        if (!h ^ !x) {
+            System.out.println("NEGATE_ALL BITWISE_EXCLUSIVE_OR: true");
+        } else {
+            System.out.println("NEGATE_ALL BITWISE_EXCLUSIVE_OR: false");
+        }
+    }
+
+    public void test(int a, int b) {
+        if (a < 100 & b > 100) {
+            System.out.println("a < 100 & b > 100");
+        } else {
+            System.out.println("false");
+        }
+    }
+}
