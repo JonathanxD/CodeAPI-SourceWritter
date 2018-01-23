@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -36,7 +36,12 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object ImplementationHolderProcessor : AppendingProcessor<ImplementationHolder> {
 
-    override fun process(part: ImplementationHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+    override fun process(
+        part: ImplementationHolder,
+        data: TypedData,
+        processorManager: ProcessorManager<*>,
+        appender: JavaSourceAppender
+    ) {
         if (part.implementations.isEmpty())
             return
 

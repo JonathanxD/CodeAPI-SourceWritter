@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -35,7 +35,11 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object ValueHolderProcessor : Processor<ValueHolder> {
 
-    override fun process(part: ValueHolder, data: TypedData, processorManager: ProcessorManager<*>) {
+    override fun process(
+        part: ValueHolder,
+        data: TypedData,
+        processorManager: ProcessorManager<*>
+    ) {
         val value = part.value
 
         processorManager.processAs(value, data)

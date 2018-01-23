@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -34,25 +34,31 @@ import com.github.jonathanxd.codeapi.base.ModifiersHolder
 import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
-import com.github.jonathanxd.codeapi.util.toString
 import com.github.jonathanxd.iutils.data.TypedData
 
 object ModifiersHolderProcessor : AppendingProcessor<ModifiersHolder> {
 
-    override fun process(part: ModifiersHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+    override fun process(
+        part: ModifiersHolder,
+        data: TypedData,
+        processorManager: ProcessorManager<*>,
+        appender: JavaSourceAppender
+    ) {
 
-        val mutableModifiers = part.modifiers.toMutableSet()
+        val mutableModifiers = part.modifiers.sorted().toMutableSet()
 
         if (!part.modifiers.any { it.modifierType == ModifierType.VISIBILITY }
                 && part !is CodeParameter)
             mutableModifiers += CodeModifier.PUBLIC
 
-
         if (mutableModifiers.isEmpty())
             return
 
-        appender += "${toString(mutableModifiers)} "
-    }
+        val modifierStr = CodeModifier.toString(mutableModifiers)
 
+        if (modifierStr.isNotEmpty()) {
+            appender += "$modifierStr "
+        }
+    }
 
 }

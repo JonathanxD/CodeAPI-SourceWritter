@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -41,7 +41,12 @@ import com.github.jonathanxd.iutils.data.TypedData
 
 object ForEachProcessor : AppendingProcessor<ForEachStatement> {
 
-    override fun process(part: ForEachStatement, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+    override fun process(
+        part: ForEachStatement,
+        data: TypedData,
+        processorManager: ProcessorManager<*>,
+        appender: JavaSourceAppender
+    ) {
         val variableDeclaration = part.variable
         val iterableElement = part.iterableElement
         val iterationType = part.iterationType
@@ -65,50 +70,56 @@ object ForEachProcessor : AppendingProcessor<ForEachStatement> {
             val name = VARIABLE_INDEXER.requireIndexer(data).createUniqueName("_iterable")
 
             val iteratorVariable = variable(
-                    type = iteratorType,
-                    name = name,
-                    value = invoke(
-                            invokeType = InvokeType.get(iterableType),
-                            localization = iterableType,
-                            name = iteratorGetterName,
-                            target = part.iterableElement,
-                            spec = iterationType.iteratorMethodSpec.typeSpec,
-                            arguments = emptyList()
-                    ))
+                type = iteratorType,
+                name = name,
+                value = invoke(
+                    invokeType = InvokeType.get(iterableType),
+                    localization = iterableType,
+                    name = iteratorGetterName,
+                    target = part.iterableElement,
+                    spec = iterationType.iteratorMethodSpec.typeSpec,
+                    arguments = emptyList()
+                )
+            )
 
             val stm = ForStatement.Builder.builder()
-                    .forInit(iteratorVariable)
-                    .forExpression(check(
-                            invoke(
+                .forInit(iteratorVariable)
+                .forExpression(
+                    check(
+                        invoke(
+                            invokeType = InvokeType.get(iteratorType),
+                            localization = iteratorType,
+                            name = iterationType.hasNextName,
+                            target = accessVariable(iteratorVariable),
+                            spec = TypeSpec(Types.BOOLEAN),
+                            arguments = emptyList()
+                        ),
+                        Operators.EQUAL_TO,
+                        Literals.TRUE
+                    )
+                )
+                .forUpdate(CodeNothing)
+                .body(
+                    CodeSource.fromPart(
+                        variable(
+                            name = part.variable.name,
+                            type = part.variable.type,
+                            value = cast(
+                                from = iterationType.nextMethodSpec.typeSpec.returnType,
+                                to = part.variable.type,
+                                part = invoke(
                                     invokeType = InvokeType.get(iteratorType),
                                     localization = iteratorType,
-                                    name = iterationType.hasNextName,
+                                    name = iterationType.nextMethodSpec.methodName,
                                     target = accessVariable(iteratorVariable),
-                                    spec = TypeSpec(Types.BOOLEAN),
+                                    spec = iterationType.nextMethodSpec.typeSpec,
                                     arguments = emptyList()
-                            ),
-                            Operators.EQUAL_TO,
-                            Literals.TRUE
-                    ))
-                    .forUpdate(CodeNothing)
-                    .body(
-                            CodeSource.fromPart(variable(
-                                    name = part.variable.name,
-                                    type = part.variable.type,
-                                    value = cast(from = iterationType.nextMethodSpec.typeSpec.returnType,
-                                            to = part.variable.type,
-                                            part = invoke(
-                                                    invokeType = InvokeType.get(iteratorType),
-                                                    localization = iteratorType,
-                                                    name = iterationType.nextMethodSpec.methodName,
-                                                    target = accessVariable(iteratorVariable),
-                                                    spec = iterationType.nextMethodSpec.typeSpec,
-                                                    arguments = emptyList()
-                                            )
-                                    )
-                            )) + part.body
-                    )
-                    .build()
+                                )
+                            )
+                        )
+                    ) + part.body
+                )
+                .build()
 
             processorManager.process(stm, data)
         }

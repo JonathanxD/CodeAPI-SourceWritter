@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -35,13 +35,17 @@ import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.CodeTypeHelper
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.codeapi.type.PlainCodeType
-import com.github.jonathanxd.codeapi.util.canonicalName
-import com.github.jonathanxd.codeapi.util.concreteType
+import com.github.jonathanxd.codeapi.type.canonicalName
+import com.github.jonathanxd.codeapi.type.concreteType
 import com.github.jonathanxd.iutils.data.TypedData
 
 object CommentHolderProcessor : Processor<CommentHolder> {
 
-    override fun process(part: CommentHolder, data: TypedData, processorManager: ProcessorManager<*>) {
+    override fun process(
+        part: CommentHolder,
+        data: TypedData,
+        processorManager: ProcessorManager<*>
+    ) {
         processorManager.processAs(part.comments, data)
     }
 
@@ -49,7 +53,12 @@ object CommentHolderProcessor : Processor<CommentHolder> {
 
 object CommentsProcessor : AppendingProcessor<Comments> {
 
-    override fun process(part: Comments, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+    override fun process(
+        part: Comments,
+        data: TypedData,
+        processorManager: ProcessorManager<*>,
+        appender: JavaSourceAppender
+    ) {
         if (part.isAbsent())
             return
 
@@ -104,7 +113,12 @@ object CommentsProcessor : AppendingProcessor<Comments> {
 
 object PlainCommentProcessor : AppendingProcessor<Plain> {
 
-    override fun process(part: Plain, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+    override fun process(
+        part: Plain,
+        data: TypedData,
+        processorManager: ProcessorManager<*>,
+        appender: JavaSourceAppender
+    ) {
         appender.simpleAppend(part.text)
     }
 
@@ -112,13 +126,20 @@ object PlainCommentProcessor : AppendingProcessor<Plain> {
 
 object LinkCommentProcessor : AppendingProcessor<Link> {
 
-    override fun process(part: Link, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+    override fun process(
+        part: Link,
+        data: TypedData,
+        processorManager: ProcessorManager<*>,
+        appender: JavaSourceAppender
+    ) {
         val name = part.name
 
         val target = part.target
 
         when (target) {
-            is Link.LinkTarget.URL -> appender.simpleAppend("""<a href="${target.url}">${name ?: target.url}</a>""")
+            is Link.LinkTarget.URL -> appender.simpleAppend(
+                """<a href="${target.url}">${name ?: target.url}</a>"""
+            )
             is Link.LinkTarget.Element -> {
 
                 appender += "{@link "
@@ -186,7 +207,12 @@ object LinkCommentProcessor : AppendingProcessor<Link> {
 
 object CodeCommentProcessor : AppendingProcessor<Code> {
 
-    override fun process(part: Code, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+    override fun process(
+        part: Code,
+        data: TypedData,
+        processorManager: ProcessorManager<*>,
+        appender: JavaSourceAppender
+    ) {
         val codeNode = part.code
 
         appender.simpleAppend("<pre>"); appender.simpleAppend("\n")
@@ -204,7 +230,12 @@ object CodeCommentProcessor : AppendingProcessor<Code> {
 
 object PlainCodeNodeProcessor : AppendingProcessor<Code.CodeNode.Plain> {
 
-    override fun process(part: Code.CodeNode.Plain, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+    override fun process(
+        part: Code.CodeNode.Plain,
+        data: TypedData,
+        processorManager: ProcessorManager<*>,
+        appender: JavaSourceAppender
+    ) {
         appender.simpleAppend(part.plain)
     }
 
@@ -213,7 +244,11 @@ object PlainCodeNodeProcessor : AppendingProcessor<Code.CodeNode.Plain> {
 
 object RepCodeNodeProcessor : Processor<Code.CodeNode.CodeRepresentation> {
 
-    override fun process(part: Code.CodeNode.CodeRepresentation, data: TypedData, processorManager: ProcessorManager<*>) {
+    override fun process(
+        part: Code.CodeNode.CodeRepresentation,
+        data: TypedData,
+        processorManager: ProcessorManager<*>
+    ) {
         processorManager.process(part.representation, data)
     }
 

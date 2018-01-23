@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,26 +27,29 @@
  */
 package com.github.jonathanxd.codeapi.source.process.processors
 
-import com.github.jonathanxd.codeapi.CodeInstruction
 import com.github.jonathanxd.codeapi.Types
-import com.github.jonathanxd.codeapi.base.Access
 import com.github.jonathanxd.codeapi.base.InvokeDynamicBase
 import com.github.jonathanxd.codeapi.base.Return
 import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
-import com.github.jonathanxd.codeapi.util.`is`
-import com.github.jonathanxd.codeapi.util.simpleName
+import com.github.jonathanxd.codeapi.type.`is`
 import com.github.jonathanxd.iutils.data.TypedData
 
 object InvokeDynamicProcessor : AppendingProcessor<InvokeDynamicBase> {
-    override fun process(part: InvokeDynamicBase, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+    override fun process(
+        part: InvokeDynamicBase,
+        data: TypedData,
+        processorManager: ProcessorManager<*>,
+        appender: JavaSourceAppender
+    ) {
 
         when (part) {
             is InvokeDynamicBase.LambdaLocalCodeBase -> {
                 val size = part.baseSam.typeSpec.parameterTypes.size
-                val args = part.localCode.parameters.subList(0, size).joinToString(separator = ", ", prefix = "(", postfix = ")") { it.name }
+                val args = part.localCode.parameters.subList(0, size)
+                    .joinToString(separator = ", ", prefix = "(", postfix = ")") { it.name }
 
                 appender += args
                 appender += " -> "
@@ -56,8 +59,9 @@ object InvokeDynamicProcessor : AppendingProcessor<InvokeDynamicBase> {
 
                 if (single != null) {
 
-                    val shouldSingle = (part.baseSam.typeSpec.returnType.`is`(Types.VOID) && single !is Return)
-                            || (!part.baseSam.typeSpec.returnType.`is`(Types.VOID) && single is Return)
+                    val shouldSingle =
+                        (part.baseSam.typeSpec.returnType.`is`(Types.VOID) && single !is Return)
+                                || (!part.baseSam.typeSpec.returnType.`is`(Types.VOID) && single is Return)
 
                     if (shouldSingle) {
                         if (single is Return) {
@@ -75,7 +79,12 @@ object InvokeDynamicProcessor : AppendingProcessor<InvokeDynamicBase> {
                 val name = part.methodRef.methodTypeSpec.methodName
 
                 if (part.methodRef.invokeType.isStatic()) {
-                    processorManager.processAs(Util.localizationResolve(part.methodRef.methodTypeSpec.localization, data), data)
+                    processorManager.processAs(
+                        Util.localizationResolve(
+                            part.methodRef.methodTypeSpec.localization,
+                            data
+                        ), data
+                    )
                 } else {
                     processorManager.processAs(part.dynamicMethod.arguments.first(), data)
                 }

@@ -6,14 +6,14 @@ public enum MyEnum implements MyItf {
 
     A {
 
-        @Override()
+        @Override
         public void v() {
             System.out.println("A");
         }
     },
     B {
 
-        @Override()
+        @Override
         public void v() {
             System.out.println("B");
         }

@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -47,14 +47,14 @@ public class EnumTest {
                 "\n" +
                 "    A {\n" +
                 "\n" +
-                "        @Override()\n" +
+                "        @Override\n" +
                 "        public void v() {\n" +
                 "            System.out.println(\"A\");\n" +
                 "        }\n" +
                 "    },\n" +
                 "    B {\n" +
                 "\n" +
-                "        @Override()\n" +
+                "        @Override\n" +
                 "        public void v() {\n" +
                 "            System.out.println(\"B\");\n" +
                 "        }\n" +

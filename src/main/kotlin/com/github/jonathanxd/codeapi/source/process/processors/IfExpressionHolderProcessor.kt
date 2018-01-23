@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -33,14 +33,19 @@ import com.github.jonathanxd.codeapi.base.IfGroup
 import com.github.jonathanxd.codeapi.operator.Operator
 import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
+import com.github.jonathanxd.codeapi.safeForComparison
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
-import com.github.jonathanxd.codeapi.util.safeForComparison
 import com.github.jonathanxd.iutils.data.TypedData
 
 object IfExpressionHolderProcessor : AppendingProcessor<IfExpressionHolder> {
 
-    override fun process(part: IfExpressionHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+    override fun process(
+        part: IfExpressionHolder,
+        data: TypedData,
+        processorManager: ProcessorManager<*>,
+        appender: JavaSourceAppender
+    ) {
         appender += "("
 
         val expressions = part.expressions
@@ -48,7 +53,10 @@ object IfExpressionHolderProcessor : AppendingProcessor<IfExpressionHolder> {
         expressions.forEach { codePart ->
             val safe = codePart.safeForComparison
             when (safe) {
-                is IfExpr -> processorManager.processAs(codePart, data) // No problem, no safe cast expected
+                is IfExpr -> processorManager.processAs(
+                    codePart,
+                    data
+                ) // No problem, no safe cast expected
                 is Operator -> appender += " ${safe.name} "
                 is IfGroup -> processorManager.processAs(codePart, data) // No problem
                 else -> appender.simpleAppend("/* Skipped $safe in if translation */")

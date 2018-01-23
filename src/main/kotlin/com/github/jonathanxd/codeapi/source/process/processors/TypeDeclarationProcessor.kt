@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -35,13 +35,17 @@ import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.APPENDER
 import com.github.jonathanxd.codeapi.source.process.DECLARATION
-import com.github.jonathanxd.codeapi.util.`is`
-import com.github.jonathanxd.jwiutils.kt.require
+import com.github.jonathanxd.codeapi.type.`is`
 import com.github.jonathanxd.iutils.data.TypedData
+import com.github.jonathanxd.iutils.kt.require
 
 object TypeDeclarationProcessor : Processor<TypeDeclaration> {
 
-    override fun process(part: TypeDeclaration, data: TypedData, processorManager: ProcessorManager<*>) {
+    override fun process(
+        part: TypeDeclaration,
+        data: TypedData,
+        processorManager: ProcessorManager<*>
+    ) {
         val appender = APPENDER.require(data)
         @Suppress("NAME_SHADOWING")
         val data = TypedData(data)
@@ -99,7 +103,7 @@ object TypeDeclarationProcessor : Processor<TypeDeclaration> {
 
         appender += "\n"
 
-        if (part.outerClass != null)
+        if (part.outerType != null)
             appender += "\n"
 
     }

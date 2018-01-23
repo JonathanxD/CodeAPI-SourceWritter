@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -42,7 +42,12 @@ object ArgumentsHolderProcessor : AppendingProcessor<ArgumentsHolder> {
     private const val ARRAY_OPEN_TAG = "{"
     private const val ARRAY_CLOSE_TAG = "}"
 
-    override fun process(part: ArgumentsHolder, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+    override fun process(
+        part: ArgumentsHolder,
+        data: TypedData,
+        processorManager: ProcessorManager<*>,
+        appender: JavaSourceAppender
+    ) {
         val OPEN_TOKEN = if (part.array) ARRAY_OPEN_TAG else NORMAL_OPEN_TAG
         val CLOSE_TOKEN = if (part.array) ARRAY_CLOSE_TAG else NORMAL_CLOSE_TAG
 

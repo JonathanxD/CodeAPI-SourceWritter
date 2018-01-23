@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -29,27 +29,26 @@ package com.github.jonathanxd.codeapi.source.process.processors
 
 import com.github.jonathanxd.codeapi.CodeInstruction
 import com.github.jonathanxd.codeapi.base.*
+import com.github.jonathanxd.codeapi.safeForComparison
 import com.github.jonathanxd.codeapi.source.process.DECLARATION
-import com.github.jonathanxd.codeapi.util.Alias
-import com.github.jonathanxd.jwiutils.kt.require
-import com.github.jonathanxd.codeapi.util.safeForComparison
 import com.github.jonathanxd.iutils.data.TypedData
+import com.github.jonathanxd.iutils.kt.require
 import java.lang.reflect.Type
 
 object Util {
 
     fun localizationResolve(type: Type, data: TypedData): Type {
-        if (type is Alias) {
+        return if (type is Alias) {
             val decl = DECLARATION.require(data)
 
-            return when (type) {
-                is Alias.THIS -> decl
-                is Alias.SUPER -> (decl as SuperClassHolder).superClass
+            when (type) {
+                Alias.THIS -> decl
+                Alias.SUPER -> (decl as SuperClassHolder).superClass
                 is Alias.INTERFACE -> (decl as ImplementationHolder).implementations[type.n]
             }
 
         } else {
-            return type
+            type
         }
     }
 
@@ -57,14 +56,14 @@ object Util {
 }
 
 fun CodeInstruction.isExit() =
-        this.safeForComparison.let {
-            it is Return
-                    || it is ThrowException
-        }
+    this.safeForComparison.let {
+        it is Return
+                || it is ThrowException
+    }
 
 fun CodeInstruction.isFlow() =
-        this.safeForComparison.let {
-            it is ControlFlow
-        }
+    this.safeForComparison.let {
+        it is ControlFlow
+    }
 
 fun CodeInstruction.isExitOrFlow() = this.isExit() || this.isFlow()

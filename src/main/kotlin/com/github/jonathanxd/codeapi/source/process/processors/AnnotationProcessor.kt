@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -35,39 +35,46 @@ import com.github.jonathanxd.codeapi.source.process.APPENDER
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.codeapi.type.CodeType
-import com.github.jonathanxd.jwiutils.kt.require
 import com.github.jonathanxd.iutils.array.ArrayUtils
 import com.github.jonathanxd.iutils.data.TypedData
+import com.github.jonathanxd.iutils.kt.require
 
 object AnnotationProcessor : AppendingProcessor<Annotation> {
 
-    override fun process(part: Annotation, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+    override fun process(
+        part: Annotation,
+        data: TypedData,
+        processorManager: ProcessorManager<*>,
+        appender: JavaSourceAppender
+    ) {
         appender += "@"
         processorManager.processAs(part.type, data)
 
         val valuesMap = part.values
 
-        appender += "("
+        if (valuesMap.isNotEmpty()) {
+            appender += "("
 
-        if (valuesMap.size == 1 && valuesMap.containsKey("value")) {
-            val value = valuesMap["value"]!!
-
-            AnnotationProcessor.addType(value, data, processorManager)
-        } else {
-            val entries = valuesMap.entries
-
-            entries.forEachIndexed { index, (key, value) ->
-                appender += key
-                appender += " = "
+            if (valuesMap.size == 1 && valuesMap.containsKey("value")) {
+                val value = valuesMap["value"]!!
 
                 AnnotationProcessor.addType(value, data, processorManager)
+            } else {
+                val entries = valuesMap.entries
 
-                if (index + 1 < entries.size)
-                    appender += ", "
+                entries.forEachIndexed { index, (key, value) ->
+                    appender += key
+                    appender += " = "
+
+                    AnnotationProcessor.addType(value, data, processorManager)
+
+                    if (index + 1 < entries.size)
+                        appender += ", "
+                }
             }
-        }
 
-        appender += ")"
+            appender += ")"
+        }
     }
 
     fun addType(value: Any, data: TypedData, processorManager: ProcessorManager<*>) {

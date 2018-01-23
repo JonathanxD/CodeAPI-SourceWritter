@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -31,8 +31,8 @@ import com.github.jonathanxd.codeapi.base.TypeDeclaration
 import com.github.jonathanxd.codeapi.source.util.Indent
 import com.github.jonathanxd.codeapi.source.util.MultiString
 import com.github.jonathanxd.codeapi.type.CodeType
-import com.github.jonathanxd.codeapi.util.`is`
-import com.github.jonathanxd.codeapi.util.codeType
+import com.github.jonathanxd.codeapi.type.`is`
+import com.github.jonathanxd.codeapi.type.codeType
 import java.lang.reflect.Type
 
 class JavaSourceAppender internal constructor(delimiter: String) {
@@ -47,7 +47,8 @@ class JavaSourceAppender internal constructor(delimiter: String) {
     private var prefix = ""
 
     init {
-        this.multiString = MultiString(delimiter) { s -> if(s == "\n") s else indentation.identString + s }
+        this.multiString =
+                MultiString(delimiter) { s -> if (s == "\n") s else indentation.identString + s }
     }
 
     fun setPackageIfNotDefined(packageName: String) {
@@ -62,10 +63,10 @@ class JavaSourceAppender internal constructor(delimiter: String) {
     }
 
     private fun TypeDeclaration.outerIs(type: CodeType): Boolean {
-        var outer = this.outerClass
+        var outer = this.outerType
 
-        while (outer != null && outer is TypeDeclaration && outer.outerClass != null)
-            outer = outer.outerClass
+        while (outer != null && outer is TypeDeclaration && outer.outerType != null)
+            outer = outer.outerType
 
         return outer?.`is`(type) ?: false
     }
@@ -199,7 +200,8 @@ class JavaSourceAppender internal constructor(delimiter: String) {
                     && !it.canonicalName.startsWith("java.lang.invoke")
                     && !it.canonicalName.startsWith("java.lang.management")
                     && !it.canonicalName.startsWith("java.lang.ref")
-                    && !it.canonicalName.startsWith("java.lang.reflect"))
+                    && !it.canonicalName.startsWith("java.lang.reflect")
+            )
                 return@filter false
             if (this.declarations.isEmpty())
                 return@filter true

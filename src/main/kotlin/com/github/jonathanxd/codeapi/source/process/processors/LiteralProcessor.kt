@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -34,13 +34,18 @@ import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.CodeTypeHelper
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
 import com.github.jonathanxd.codeapi.type.CodeType
-import com.github.jonathanxd.codeapi.util.codeType
+import com.github.jonathanxd.codeapi.type.codeType
 import com.github.jonathanxd.iutils.data.TypedData
 import java.lang.reflect.Type
 
 object LiteralProcessor : AppendingProcessor<Literal> {
 
-    override fun process(part: Literal, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+    override fun process(
+        part: Literal,
+        data: TypedData,
+        processorManager: ProcessorManager<*>,
+        appender: JavaSourceAppender
+    ) {
         if (part.type.`is`(Types.LONG)) {
             appender += "${part.name}L"
         } else if (part.type.`is`(Types.DOUBLE)) {

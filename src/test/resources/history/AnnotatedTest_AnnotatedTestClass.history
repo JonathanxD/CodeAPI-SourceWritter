@@ -11,8 +11,8 @@ public class AnnotatedTestClass {
     @Simple({MyEnum.A})
     public static String field = null;
 
-    @PolymorphicSignature()
-    public static Object polymorphic(@Deprecated() Object first) {
+    @PolymorphicSignature
+    public static Object polymorphic(@Deprecated Object first) {
         return null;
     }
 }

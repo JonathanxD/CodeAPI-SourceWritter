@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -27,10 +27,7 @@
  */
 package com.github.jonathanxd.codeapi.source.process.processors
 
-import com.github.jonathanxd.codeapi.CodeInstruction
-import com.github.jonathanxd.codeapi.CodeSource
-import com.github.jonathanxd.codeapi.MutableCodeSource
-import com.github.jonathanxd.codeapi.Types
+import com.github.jonathanxd.codeapi.*
 import com.github.jonathanxd.codeapi.base.IfStatement
 import com.github.jonathanxd.codeapi.base.Line
 import com.github.jonathanxd.codeapi.base.VariableAccess
@@ -42,21 +39,26 @@ import com.github.jonathanxd.codeapi.literal.Literals
 import com.github.jonathanxd.codeapi.processor.Processor
 import com.github.jonathanxd.codeapi.processor.ProcessorManager
 import com.github.jonathanxd.codeapi.source.process.*
-import com.github.jonathanxd.codeapi.util.`is`
-import com.github.jonathanxd.jwiutils.kt.require
-import com.github.jonathanxd.codeapi.util.safeForComparison
-import com.github.jonathanxd.codeapi.util.typeOrNull
+import com.github.jonathanxd.codeapi.type.`is`
 import com.github.jonathanxd.iutils.data.TypedData
+import com.github.jonathanxd.iutils.kt.require
 import java.lang.reflect.Type
 
 object ValueProcessor : Processor<CodeInstruction> {
 
-    override fun process(part: CodeInstruction, data: TypedData, processorManager: ProcessorManager<*>) {
+    override fun process(
+        part: CodeInstruction,
+        data: TypedData,
+        processorManager: ProcessorManager<*>
+    ) {
         val safePart = part.safeForComparison
 
         if (safePart != CodeNothing) {
             if (safePart is IfStatement) {
-                if (processorManager.options[EXPAND_ELVIS] && !IfStatementProcessor.isValidElvis(safePart)) {
+                if (processorManager.options[EXPAND_ELVIS] && !IfStatementProcessor.isValidElvis(
+                            safePart
+                        )
+                ) {
                     val origin = APPENDER.require(data)
 
                     val newAppender = origin.createNew()
@@ -64,7 +66,11 @@ object ValueProcessor : Processor<CodeInstruction> {
                     APPENDER.set(data, newAppender)
 
                     if (part is Line)
-                        processorManager.process(Line::class.java, part.builder().value(CodeNothing).build(), data)
+                        processorManager.process(
+                            Line::class.java,
+                            part.builder().value(CodeNothing).build(),
+                            data
+                        )
 
                     // Expand
 
@@ -72,15 +78,15 @@ object ValueProcessor : Processor<CodeInstruction> {
 
                     val indexer = VARIABLE_INDEXER.requireIndexer(data)
                     val name = indexer
-                            .createUniqueName("stack_var$")
+                        .createUniqueName("stack_var$")
 
                     var inferredType: Type = Types.OBJECT
 
                     val declaration = VariableDeclaration.Builder.builder()
-                            .name(name)
-                            .type(Types.OBJECT)
-                            .value(Literals.NULL)
-                            .build()
+                        .name(name)
+                        .type(Types.OBJECT)
+                        .value(Literals.NULL)
+                        .build()
 
                     fun expand(source: CodeSource): CodeSource {
 
@@ -113,13 +119,15 @@ object ValueProcessor : Processor<CodeInstruction> {
                     }
 
                     val newStm = stm.builder()
-                            .body(expand(stm.body))
-                            .elseStatement(expand(stm.elseStatement))
-                            .build()
+                        .body(expand(stm.body))
+                        .elseStatement(expand(stm.elseStatement))
+                        .build()
 
-                    processorManager.process(VariableDeclaration::class.java,
-                            declaration.builder().type(inferredType).build(),
-                            data)
+                    processorManager.process(
+                        VariableDeclaration::class.java,
+                        declaration.builder().type(inferredType).build(),
+                        data
+                    )
 
                     newAppender.append(";")
                     newAppender.append("\n")
@@ -132,9 +140,10 @@ object ValueProcessor : Processor<CodeInstruction> {
 
                     APPENDER.set(data, origin)
 
-                    processorManager.process(VariableAccess::class.java,
-                            accessVariable(inferredType, name),
-                            data
+                    processorManager.process(
+                        VariableAccess::class.java,
+                        accessVariable(inferredType, name),
+                        data
                     )
 
                     return

@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -43,12 +43,12 @@ class VariableIndexer {
     fun containsVariable(name: String): Boolean {
         var frame = currentFrame
 
-        while(true) {
+        while (true) {
 
-            if(frame.variables.contains(name))
+            if (frame.variables.contains(name))
                 return true
 
-            if(frame.parent == null)
+            if (frame.parent == null)
                 return false
             else
                 frame = frame.parent!!
@@ -57,22 +57,23 @@ class VariableIndexer {
     }
 
     fun createUniqueName(base: String): String {
-        if(!this.containsVariable(base))
+        if (!this.containsVariable(base))
             return base
 
         var x = 0
 
-        while(true) {
-            x+=1
+        while (true) {
+            x += 1
             val name = "$base$x"
 
-            if(!this.containsVariable(name))
+            if (!this.containsVariable(name))
                 return name
         }
     }
 
     fun exitFrame() {
-        val parent = currentFrame.parent ?: throw IllegalStateException("Attempted to exit main frame!")
+        val parent =
+            currentFrame.parent ?: throw IllegalStateException("Attempted to exit main frame!")
         currentFrame = parent
     }
 

@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -39,17 +39,17 @@ public class TestForeachClass {
         TypeDeclaration $ = ForEach_.$();
         CommonSourceTest.test(this.getClass(), $)
                 .expect("package com;\n" +
-                "\n" +
-                "import java.util.List;\n" +
-                "\n" +
-                "public class ForEach {\n" +
-                "\n" +
-                "    public ForEach(List<String> strList) {\n" +
-                "        for (String str : strList){\n" +
-                "            System.out.println(str);\n" +
-                "        }\n" +
-                "    }\n" +
-                "}\n");
+                        "\n" +
+                        "import java.util.List;\n" +
+                        "\n" +
+                        "public class ForEach {\n" +
+                        "\n" +
+                        "    public ForEach(List<String> strList) {\n" +
+                        "        for (String str : strList){\n" +
+                        "            System.out.println(str);\n" +
+                        "        }\n" +
+                        "    }\n" +
+                        "}\n");
     }
 
 }

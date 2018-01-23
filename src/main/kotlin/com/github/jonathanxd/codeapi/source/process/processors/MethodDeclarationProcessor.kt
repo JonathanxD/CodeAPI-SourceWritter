@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -34,12 +34,17 @@ import com.github.jonathanxd.codeapi.processor.processAs
 import com.github.jonathanxd.codeapi.source.process.AppendingProcessor
 import com.github.jonathanxd.codeapi.source.process.DECLARATION
 import com.github.jonathanxd.codeapi.source.process.JavaSourceAppender
-import com.github.jonathanxd.jwiutils.kt.require
 import com.github.jonathanxd.iutils.data.TypedData
+import com.github.jonathanxd.iutils.kt.require
 
 object MethodDeclarationProcessor : AppendingProcessor<MethodDeclarationBase> {
 
-    override fun process(part: MethodDeclarationBase, data: TypedData, processorManager: ProcessorManager<*>, appender: JavaSourceAppender) {
+    override fun process(
+        part: MethodDeclarationBase,
+        data: TypedData,
+        processorManager: ProcessorManager<*>,
+        appender: JavaSourceAppender
+    ) {
         processorManager.processAs<CommentHolder>(part, data)
         processorManager.processAs<Annotable>(part, data)
         processorManager.processAs<ModifiersHolder>(part, data)
@@ -64,7 +69,10 @@ object MethodDeclarationProcessor : AppendingProcessor<MethodDeclarationBase> {
 
         if (part.body.isEmpty &&
                 (part.modifiers.contains(CodeModifier.ABSTRACT)
-                        || (DECLARATION.require(data).isInterface && !part.modifiers.contains(CodeModifier.DEFAULT)))) {
+                        || (DECLARATION.require(data).isInterface && !part.modifiers.contains(
+                    CodeModifier.DEFAULT
+                )))
+        ) {
             appender += ";"
             appender += "\n"
         } else {

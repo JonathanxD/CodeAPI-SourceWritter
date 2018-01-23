@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -43,8 +43,8 @@ import com.github.jonathanxd.codeapi.type.CodeType
 import com.github.jonathanxd.codeapi.type.GenericType
 import com.github.jonathanxd.codeapi.type.JavaType
 import com.github.jonathanxd.codeapi.type.LoadedCodeType
-import com.github.jonathanxd.jwiutils.kt.require
 import com.github.jonathanxd.iutils.data.TypedData
+import com.github.jonathanxd.iutils.kt.require
 import com.github.jonathanxd.iutils.option.Options
 import java.lang.reflect.Type
 
@@ -99,7 +99,8 @@ class PlainSourceGenerator : AbstractProcessorManager<String>() {
         registerProcessor(InnerTypesHolderProcessor, InnerTypesHolder::class.java)
         registerProcessor(InstanceOfProcessor, InstanceOfCheck::class.java)
 
-        registerProcessorOfTypes(InvokeDynamicProcessor, arrayOf(
+        registerProcessorOfTypes(
+            InvokeDynamicProcessor, arrayOf(
                 InvokeDynamicBase::class.java,
                 InvokeDynamicBase.LambdaMethodRefBase::class.java,
                 InvokeDynamicBase.LambdaLocalCodeBase::class.java,
@@ -107,23 +108,28 @@ class PlainSourceGenerator : AbstractProcessorManager<String>() {
                 InvokeDynamic::class.java,
                 InvokeDynamic.LambdaMethodRef::class.java,
                 InvokeDynamic.LambdaLocalCode::class.java
-        ))
+            )
+        )
 
         registerProcessor(LabelProcessor, Label::class.java)
 
-        registerProcessorOfTypes(LineProcessor, arrayOf(
+        registerProcessorOfTypes(
+            LineProcessor, arrayOf(
                 Line::class.java,
                 Line.TypedLine::class.java,
                 Line.NormalLine::class.java
-        ))
+            )
+        )
 
         registerProcessor(LinkCommentProcessor, Link::class.java)
         registerProcessor(LiteralProcessor, Literal::class.java)
 
-        registerProcessorOfTypes(MethodDeclarationProcessor, arrayOf(
+        registerProcessorOfTypes(
+            MethodDeclarationProcessor, arrayOf(
                 MethodDeclaration::class.java,
                 ConstructorDeclaration::class.java
-        ))
+            )
+        )
 
         registerProcessor(MethodInvocationProcessor, MethodInvocation::class.java)
         registerProcessor(ModifiersHolderProcessor, ModifiersHolder::class.java)
@@ -144,27 +150,33 @@ class PlainSourceGenerator : AbstractProcessorManager<String>() {
         registerProcessor(SynchronizedProcessor, Synchronized::class.java)
         registerProcessor(ThrowProcessor, ThrowException::class.java)
 
-        registerProcessorOfTypes(TryStatementProcessor, arrayOf(
+        registerProcessorOfTypes(
+            TryStatementProcessor, arrayOf(
                 TryStatement::class.java,
                 TryStatementBase::class.java
-        ))
+            )
+        )
 
         registerProcessor(TryWithResourcesProcessor, TryWithResources::class.java)
 
-        registerProcessorOfTypes(TypeDeclarationProcessor, arrayOf(
+        registerProcessorOfTypes(
+            TypeDeclarationProcessor, arrayOf(
                 TypeDeclaration::class.java,
                 AnnotationDeclaration::class.java,
                 EnumDeclaration::class.java,
                 ClassDeclaration::class.java,
                 InterfaceDeclaration::class.java
-        ))
+            )
+        )
 
-        registerProcessorOfTypes(TypeProcessor, arrayOf(
+        registerProcessorOfTypes(
+            TypeProcessor, arrayOf(
                 Type::class.java,
                 CodeType::class.java,
                 JavaType::class.java,
                 LoadedCodeType::class.java
-        ))
+            )
+        )
 
         registerProcessor(ValueHolderProcessor, ValueHolder::class.java)
         registerProcessor(ValueProcessor, CodeInstruction::class.java)

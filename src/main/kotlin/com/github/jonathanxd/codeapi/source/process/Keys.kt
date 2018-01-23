@@ -1,9 +1,9 @@
 /*
- *      CodeAPI-SourceWriter - Framework to generate Java code and Bytecode code. <https://github.com/JonathanxD/CodeAPI-SourceWriter>
+ *      CodeAPI-SourceWriter - Translates CodeAPI Structure to Java Source <https://github.com/JonathanxD/CodeAPI-SourceWriter>
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2017 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/ & https://github.com/TheRealBuggy/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -30,8 +30,8 @@ package com.github.jonathanxd.codeapi.source.process
 import com.github.jonathanxd.codeapi.base.TypeDeclaration
 import com.github.jonathanxd.iutils.`object`.TypedKey
 import com.github.jonathanxd.iutils.data.TypedData
-import com.github.jonathanxd.jwiutils.kt.require
-import com.github.jonathanxd.jwiutils.kt.typedKeyOf
+import com.github.jonathanxd.iutils.kt.require
+import com.github.jonathanxd.iutils.kt.typedKeyOf
 
 val APPENDER = typedKeyOf<JavaSourceAppender>("APPENDER")
 
@@ -44,7 +44,7 @@ val ELVIS = typedKeyOf<Unit>("IS_ELVIS")
 val FOR_INIT = typedKeyOf<Unit>("FOR_INIT")
 
 fun TypedKey<VariableIndexer>.requireIndexer(data: TypedData): VariableIndexer {
-    if(!this.contains(data))
+    if (!this.contains(data))
         this.set(data, VariableIndexer())
 
     return this.require(data)
