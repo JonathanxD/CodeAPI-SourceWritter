@@ -1,6 +1,6 @@
 package test;
 
-import com.github.jonathanxd.codeapi.test.TryWithResourcesTest_.Trm;
+import com.github.jonathanxd.kores.test.TryWithResourcesTest_.Trm;
 
 public class TryWithResourcesTestClass {
 

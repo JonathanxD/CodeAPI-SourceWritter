@@ -1,6 +1,6 @@
 package com;
 
-import com.github.jonathanxd.codeapi.test.SwitchTest_.TestEnum;
+import com.github.jonathanxd.kores.test.SwitchTest_.TestEnum;
 
 public class SwitchTestClass {
 

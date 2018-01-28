@@ -1,8 +1,8 @@
 package fullName;
 
-import com.github.jonathanxd.codeapi.test.InvocationsTest_;
-import com.github.jonathanxd.codeapi.test.Greeter;
-import com.github.jonathanxd.codeapi.test.WorldGreeter;
+import com.github.jonathanxd.kores.test.InvocationsTest_;
+import com.github.jonathanxd.kores.test.Greeter;
+import com.github.jonathanxd.kores.test.WorldGreeter;
 import java.util.function.Supplier;
 
 public class InvocationsTest__Generated {
@@ -39,7 +39,7 @@ public class InvocationsTest__Generated {
         System.out.println(str);
         System.out.println("Invoke Dynamic <-");
         System.out.println("Invoke Dynamic Bootstrap ->");
-        // Unsupported: InvokeDynamic(bootstrap=MethodInvokeSpec(invokeType=INVOKE_STATIC, methodTypeSpec=MethodTypeSpec(localization=JavaType[Lcom/github/jonathanxd/codeapi/test/InvocationsTest_;], methodName=myBootstrap, typeSpec=TypeSpec(returnType=class java.lang.invoke.CallSite, parameterTypes=[class java.lang.invoke.MethodHandles$Lookup, class java.lang.String, class java.lang.invoke.MethodType, class [Ljava.lang.Object;]))), dynamicMethod=DynamicMethodSpec(name=helloWorld, typeSpec=TypeSpec(returnType=PredefinedType[V], parameterTypes=[PredefinedType[Ljava/lang/String;]]), arguments=[StringLiteral[name="World", type=JavaType[Ljava/lang/String;]]]), bootstrapArgs=[]);
+        // Unsupported: InvokeDynamic(bootstrap=MethodInvokeSpec(invokeType=INVOKE_STATIC, methodTypeSpec=MethodTypeSpec(localization=JavaType[Lcom/github/jonathanxd/kores/test/InvocationsTest_;], methodName=myBootstrap, typeSpec=TypeSpec(returnType=class java.lang.invoke.CallSite, parameterTypes=[class java.lang.invoke.MethodHandles$Lookup, class java.lang.String, class java.lang.invoke.MethodType, class [Ljava.lang.Object;]))), dynamicMethod=DynamicMethodSpec(name=helloWorld, typeSpec=TypeSpec(returnType=PredefinedType[V], parameterTypes=[PredefinedType[Ljava/lang/String;]]), arguments=[StringLiteral[name="World", type=JavaType[Ljava/lang/String;]]]), bootstrapArgs=[]);
         System.out.println("Invoke Dynamic Bootstrap <-");
         if (x == 9 || x == 7) {
             return 0;

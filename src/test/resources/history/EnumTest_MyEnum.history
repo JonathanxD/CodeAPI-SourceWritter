@@ -1,6 +1,6 @@
 package com;
 
-import com.github.jonathanxd.codeapi.test.EnumTest_.MyItf;
+import com.github.jonathanxd.kores.test.EnumTest_.MyItf;
 
 public enum MyEnum implements MyItf {
 

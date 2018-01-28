@@ -1,7 +1,7 @@
 package test;
 
-import com.github.jonathanxd.codeapi.test.AnnotatedTest_.Simple;
-import com.github.jonathanxd.codeapi.test.AnnotatedTest_.MyEnum;
+import com.github.jonathanxd.kores.test.AnnotatedTest_.Simple;
+import com.github.jonathanxd.kores.test.AnnotatedTest_.MyEnum;
 
 @Simple(myEnum = MyEnum.B, value = {MyEnum.A, MyEnum.B, MyEnum.C})
 @Override
