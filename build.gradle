@@ -17,7 +17,7 @@ buildscript {
 }
 
 group 'com.github.jonathanxd'
-version '4.0.0.21-beta-source'
+version '4.0.0.22-beta-source'
 
 apply from: project(":Kores").file("gradle/common.gradle")
 

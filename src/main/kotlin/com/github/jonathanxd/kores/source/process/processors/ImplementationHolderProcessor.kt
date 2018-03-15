@@ -56,7 +56,7 @@ object ImplementationHolderProcessor :
             processorManager.processAs(koresType, data)
 
             if (iter.hasNext())
-                appender += " "
+                appender += ", "
         }
     }
 

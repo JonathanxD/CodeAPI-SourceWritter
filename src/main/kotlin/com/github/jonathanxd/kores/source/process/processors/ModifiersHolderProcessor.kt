@@ -54,7 +54,17 @@ object ModifiersHolderProcessor :
         if (mutableModifiers.isEmpty())
             return
 
-        val modifierStr = KoresModifier.toString(mutableModifiers)
+        val modifierStr = mutableModifiers
+            .filter { it.expr.isNotEmpty() }
+            .sorted()
+            .joinToString(" ") {
+                when (it) {
+                    KoresModifier.SYNTHETIC,
+                    KoresModifier.BRIDGE,
+                    KoresModifier.MANDATED -> "/* ${it.expr} */"
+                    else -> it.expr
+                }
+            }
 
         if (modifierStr.isNotEmpty()) {
             appender += "$modifierStr "
