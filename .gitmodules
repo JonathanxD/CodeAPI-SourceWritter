@@ -1,4 +1,4 @@
 [submodule "Kores"]
 	path = Kores
-	url = https://github.com/JonathanxD/Kores/
+	url = https://github.com/koresframework/Kores/
         branch = version/4.0.0
