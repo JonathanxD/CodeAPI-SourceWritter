@@ -27,56 +27,52 @@
  */
 package com.github.jonathanxd.kores.source.test;
 
-import com.github.jonathanxd.kores.base.Annotation;
+import com.github.jonathanxd.kores.Instructions;
+import com.github.jonathanxd.kores.Types;
 import com.github.jonathanxd.kores.base.ClassDeclaration;
 import com.github.jonathanxd.kores.base.KoresModifier;
+import com.github.jonathanxd.kores.base.MethodDeclaration;
 import com.github.jonathanxd.kores.base.TypeDeclaration;
 import com.github.jonathanxd.kores.generic.GenericSignature;
-import com.github.jonathanxd.kores.test.AnnotatedTest_;
-import com.github.jonathanxd.iutils.map.MapUtils;
+import com.github.jonathanxd.kores.literal.Literals;
 
 import org.junit.Test;
 
 import java.lang.reflect.Modifier;
-import java.util.List;
 
 import kotlin.collections.CollectionsKt;
 
-import static com.github.jonathanxd.kores.factory.Factories.enumValue;
-import static com.github.jonathanxd.kores.factory.Factories.runtimeAnnotation;
+import static com.github.jonathanxd.kores.factory.Factories.returnValue;
 
-public class AnnotatedTest2 {
-
-    public static TypeDeclaration $() {
-        List<Annotation> annotations = CollectionsKt.listOf(
-                runtimeAnnotation(AnnotatedTest_.Simple.class,
-                        MapUtils.mapOf("value", new Object[]{
-                                enumValue(AnnotatedTest_.MyEnum.class, "A"), enumValue(AnnotatedTest_.MyEnum.class, "B"), enumValue(AnnotatedTest_.MyEnum.class, "C")
-                        }, "myEnum", enumValue(AnnotatedTest_.MyEnum.class, "B"))
-                ),
-                runtimeAnnotation(Override.class));
-        TypeDeclaration typeDeclaration = ClassDeclaration.Builder.builder()
-                .modifiers(KoresModifier.fromJavaModifiers(Modifier.PUBLIC))
-                .genericSignature(GenericSignature.empty())
-                .annotations(annotations)
-                .qualifiedName("test.AnnotatedTestClass")
-                .build();
-
-        return typeDeclaration;
-    }
+public class StringTest {
 
     @Test
-    public void annotatedTest() {
-        TypeDeclaration $ = AnnotatedTest2.$();
+    public void operateTest() {
+        TypeDeclaration $ = ClassDeclaration.Builder.builder()
+                .modifiers(KoresModifier.fromJavaModifiers(Modifier.PUBLIC))
+                .genericSignature(GenericSignature.empty())
+                .qualifiedName("test.StringClass")
+                .methods(MethodDeclaration.Builder.builder()
+                        .publicModifier()
+                        .name("aaa")
+                        .returnType(Types.STRING)
+                        .body(Instructions.fromIterable(CollectionsKt.listOf(
+                                returnValue(Literals.STRING("\"hello\\\" \\"))
+                        )))
+                        .build())
+                .build();
+
+
         SourceTest test = CommonSourceTest.test(this.getClass(), $);
+
         test.expect("package test;\n" +
                 "\n" +
-                "import com.github.jonathanxd.kores.test.AnnotatedTest_.Simple;\n" +
-                "import com.github.jonathanxd.kores.test.AnnotatedTest_.MyEnum;\n" +
+                "public class StringClass {\n" +
                 "\n" +
-                "@Simple(myEnum = MyEnum.B, value = {MyEnum.A, MyEnum.B, MyEnum.C})\n" +
-                "@Override\n" +
-                "public class AnnotatedTestClass {\n" +
+                "    public String aaa() {\n" +
+                "        return \"\\\"hello\\\\\\\" \\\\\";\n" +
+                "    }\n" +
                 "}\n");
     }
+
 }

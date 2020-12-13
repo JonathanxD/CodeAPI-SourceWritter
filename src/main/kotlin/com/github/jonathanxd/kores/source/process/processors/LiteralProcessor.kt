@@ -44,19 +44,33 @@ object LiteralProcessor : AppendingProcessor<Literal> {
         processorManager: ProcessorManager<*>,
         appender: com.github.jonathanxd.kores.source.process.JavaSourceAppender
     ) {
-        if (part.type.`is`(Types.LONG)) {
-            appender += "${part.name}L"
-        } else if (part.type.`is`(Types.DOUBLE)) {
-            appender += "${part.name}D"
-        } else if (part.type.`is`(Types.FLOAT)) {
-            appender += "${part.name}F"
-        } else if (part.type.`is`(KoresType::class.koresType)) {
-            val type = part.value as Type
-            appender.appendImport(type)
-            com.github.jonathanxd.kores.source.process.KoresTypeHelper.appendName(type, appender)
-            appender += ".class"
-        } else {
-            appender += part.name
+        when {
+            part.type.`is`(Types.LONG) -> {
+                appender += "${part.value}L"
+            }
+            part.type.`is`(Types.DOUBLE) -> {
+                appender += "${part.value}D"
+            }
+            part.type.`is`(Types.FLOAT) -> {
+                appender += "${part.value}F"
+            }
+            part.type.`is`(KoresType::class.koresType) -> {
+                val type = part.value as Type
+                appender.appendImport(type)
+                com.github.jonathanxd.kores.source.process.KoresTypeHelper.appendName(type, appender)
+                appender += ".class"
+            }
+            part.type.`is`(String::class.koresType) -> {
+                val valueString = part.value.toString()
+                val valueWithoutQuotes = valueString.substring(1, valueString.length - 1)
+                val escapedValue = valueWithoutQuotes
+                        .replace("\\", "\\\\")
+                        .replace("\"","\\\"")
+                appender += "\"$escapedValue\""
+            }
+            else -> {
+                appender += part.value.toString()
+            }
         }
 
         /*if (Util.isBody(parents)) {

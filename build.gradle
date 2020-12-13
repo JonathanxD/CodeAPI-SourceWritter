@@ -17,16 +17,16 @@ buildscript {
 }
 
 group 'com.github.jonathanxd'
-version '4.0.0.25-beta-source'
+version '4.0.0.source'
 
 apply from: project(":Kores").file("gradle/common.gradle")
 
 dependencies {
     compileOnly project(":Kores")
-    runtime "com.github.koresframework:Kores:4.0.0.54-beta"
+    runtime "com.github.koresframework:Kores:4.0.0.base"
     testCompile project(path: ':Kores', configuration: 'tests')
 }
 
-dokka {
-    enabled = false
+tasks.dokkaGfm.configure {
+    enabled = true
 }
