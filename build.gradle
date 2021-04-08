@@ -17,13 +17,13 @@ buildscript {
 }
 
 group 'com.github.jonathanxd'
-version '4.0.0.source'
+version '4.0.1.source'
 
 apply from: project(":Kores").file("gradle/common.gradle")
 
 dependencies {
     compileOnly project(":Kores")
-    runtime "com.github.koresframework:Kores:4.0.0.base"
+    runtime "com.github.koresframework:Kores:4.0.1.base"
     testCompile project(path: ':Kores', configuration: 'tests')
 }
 
