@@ -25,45 +25,44 @@
  *      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *      THE SOFTWARE.
  */
-package com.github.jonathanxd.kores.source.process.processors
+package com.github.jonathanxd.kores.source.test;
 
-import com.github.jonathanxd.iutils.data.TypedData
-import com.github.jonathanxd.kores.base.ImplementationHolder
-import com.github.jonathanxd.kores.base.InterfaceDeclaration
-import com.github.jonathanxd.kores.processor.ProcessorManager
-import com.github.jonathanxd.kores.processor.processAs
-import com.github.jonathanxd.kores.source.process.AppendingProcessor
+import com.github.jonathanxd.kores.Instructions;
+import com.github.jonathanxd.kores.Types;
+import com.github.jonathanxd.kores.base.*;
+import com.github.jonathanxd.kores.factory.InvocationFactory;
+import com.github.jonathanxd.kores.generic.GenericSignature;
+import com.github.jonathanxd.kores.literal.Literals;
+import com.github.jonathanxd.kores.type.Generic;
+import kotlin.collections.CollectionsKt;
+import org.junit.Test;
 
-object ImplementationHolderProcessor :
-    AppendingProcessor<ImplementationHolder> {
+import java.lang.reflect.Modifier;
+import java.util.Collections;
+import java.util.function.Function;
 
-    override fun process(
-        part: ImplementationHolder,
-        data: TypedData,
-        processorManager: ProcessorManager<*>,
-        appender: com.github.jonathanxd.kores.source.process.JavaSourceAppender
-    ) {
-        if (part.implementations.isEmpty())
-            return
+import static com.github.jonathanxd.kores.factory.Factories.returnValue;
 
-        if (part is InterfaceDeclaration) {
-            appender += "extends"
-        } else {
-            appender += "implements"
-        }
+public class InterfaceImplementsTest {
 
-        appender += " "
+    @Test
+    public void interfaceTest() {
+        TypeDeclaration $ = InterfaceDeclaration.Builder.builder()
+                .modifiers(KoresModifier.fromJavaModifiers(Modifier.PUBLIC))
+                .genericSignature(GenericSignature.empty())
+                .qualifiedName("test.InterfaceClass")
+                .implementations(Generic.type(Function.class).of(String.class, Integer.class))
+                .build();
 
-        val iter = part.implementations.iterator()
 
-        while (iter.hasNext()) {
-            val koresType = iter.next()
+        SourceTest test = CommonSourceTest.test(this.getClass(), $);
 
-            processorManager.processAs(koresType, data)
-
-            if (iter.hasNext())
-                appender += ", "
-        }
+        test.expect("package test;\n" +
+                "\n" +
+                "import java.util.function.Function;\n" +
+                "\n" +
+                "public interface InterfaceClass extends Function<String, Integer> {\n" +
+                "}\n");
     }
 
 }
