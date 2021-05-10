@@ -138,6 +138,7 @@ class PlainSourceGenerator : AbstractProcessorManager<String>() {
         registerProcessor(OperateProcessor, Operate::class.java)
         registerProcessor(OperatorProcessor, Operator::class.java)
         registerProcessor(ParametersProcessor, ParametersHolder::class.java)
+        registerProcessor(ThrowsHolderProcessor, ThrowsHolder::class.java)
         registerProcessor(PlainCodeNodeProcessor, Code.CodeNode.Plain::class.java)
         registerProcessor(PlainCommentProcessor, Plain::class.java)
         registerProcessor(RepCodeNodeProcessor, Code.CodeNode.CodeRepresentation::class.java)

@@ -28,58 +28,39 @@
 package com.github.jonathanxd.kores.source.process.processors
 
 import com.github.jonathanxd.iutils.data.TypedData
-import com.github.jonathanxd.iutils.kt.require
-import com.github.jonathanxd.kores.base.*
-import com.github.jonathanxd.kores.base.comment.CommentHolder
+import com.github.jonathanxd.kores.base.Annotable
+import com.github.jonathanxd.kores.base.ThrowsHolder
 import com.github.jonathanxd.kores.processor.ProcessorManager
 import com.github.jonathanxd.kores.processor.processAs
 import com.github.jonathanxd.kores.source.process.AppendingProcessor
-import com.github.jonathanxd.kores.source.process.DECLARATION
 
-object MethodDeclarationProcessor :
-    AppendingProcessor<MethodDeclarationBase> {
+object ThrowsHolderProcessor :
+    AppendingProcessor<ThrowsHolder> {
 
     override fun process(
-        part: MethodDeclarationBase,
+        part: ThrowsHolder,
         data: TypedData,
         processorManager: ProcessorManager<*>,
         appender: com.github.jonathanxd.kores.source.process.JavaSourceAppender
     ) {
-        processorManager.processAs<CommentHolder>(part, data)
-        processorManager.processAs<Annotable>(part, data)
-        processorManager.processAs<ModifiersHolder>(part, data)
 
-        if (part.genericSignature.isNotEmpty) {
-            processorManager.processAs<GenericSignatureHolder>(part, data)
-            appender += " "
+        val throwsClause = part.throwsClause
+
+        val iterator = throwsClause.iterator()
+
+        if (iterator.hasNext()) {
+            appender += " throws "
         }
 
-        if (part !is ConstructorDeclaration) {
-            processorManager.processAs<ReturnTypeHolder>(part, data)
-            appender += " "
-        }
+        while (iterator.hasNext()) {
+            val next = iterator.next()
 
-        if (part is ConstructorDeclaration) {
-            appender += DECLARATION.require(data).simpleName
-        } else {
-            processorManager.processAs<Named>(part, data)
-        }
+            processorManager.processAs(next, data)
 
-        processorManager.processAs<ParametersHolder>(part, data)
-        processorManager.processAs<ThrowsHolder>(part, data)
+            if (iterator.hasNext())
+                appender += ", "
 
-        if (part.body.isEmpty &&
-                (part.modifiers.contains(KoresModifier.ABSTRACT)
-                        || (DECLARATION.require(data).isInterface && !part.modifiers.contains(
-                    KoresModifier.DEFAULT
-                )))
-        ) {
-            appender += ";"
-            appender += "\n"
-        } else {
-            appender += " "
-            processorManager.processAs<BodyHolder>(part, data)
-            appender += "\n"
         }
     }
+
 }
