@@ -214,7 +214,11 @@ class JavaSourceAppender internal constructor(delimiter: String) {
         }
 
     val packageStr
-        get() = if (packageName == null) "" else "package $packageName;\n\n"
+        get() =
+            packageName.let {
+                if (it == null || it.isEmpty() || it.isBlank()) ""
+                else "package $it;\n\n"
+            }
 
     override fun toString(): String = "$packageStr$importsStr$multiString"
 }
