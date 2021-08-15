@@ -3,7 +3,8 @@
 [![jitpack](https://jitpack.io/v/JonathanxD/Kores-SourceWriter.svg)](https://jitpack.io/#JonathanxD/Kores-SourceWriter)
 [![Discord](https://img.shields.io/discord/291407467286364164.svg)](https://discord.gg/3cQWmtj)
 [![Actions](https://img.shields.io/github/workflow/status/koresframework/Kores-SourceWriter/Gradle%20Package)](https://github.com/koresframework/Kores-SourceWriter/actions)
-[![Packages](https://img.shields.io/github/v/tag/koresframework/Kores-SourceWriter)](https://github.com/orgs/koresframework/packages?repo_name=Kores-BytecodeSource)
+[![Packages](https://img.shields.io/github/v/tag/koresframework/Kores-SourceWriter)](https://github.com/orgs/koresframework/packages?repo_name=Kores-SourceWriter)
+[![Gradle Package](https://github.com/koresframework/Kores-SourceWriter/actions/workflows/gradle-publish.yml/badge.svg)](https://github.com/koresframework/Kores-SourceWriter/actions/workflows/gradle-publish.yml)
 
 ## How to use Kores-SourceWriter
 
