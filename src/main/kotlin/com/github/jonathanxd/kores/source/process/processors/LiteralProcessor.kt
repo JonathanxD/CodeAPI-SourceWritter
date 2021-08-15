@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2021 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -33,6 +33,7 @@ import com.github.jonathanxd.kores.literal.Literal
 import com.github.jonathanxd.kores.processor.ProcessorManager
 import com.github.jonathanxd.kores.source.process.AppendingProcessor
 import com.github.jonathanxd.kores.type.KoresType
+import com.github.jonathanxd.kores.type.`is`
 import com.github.jonathanxd.kores.type.koresType
 import java.lang.reflect.Type
 

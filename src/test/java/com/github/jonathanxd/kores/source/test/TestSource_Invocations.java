@@ -3,7 +3,7 @@
  *
  *         The MIT License (MIT)
  *
- *      Copyright (c) 2018 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
+ *      Copyright (c) 2021 TheRealBuggy/JonathanxD (https://github.com/JonathanxD/) <jonathan.scripter@programmer.net>
  *      Copyright (c) contributors
  *
  *
@@ -78,7 +78,7 @@ public class TestSource_Invocations {
                 "        System.out.println(str);\n" +
                 "        System.out.println(\"Invoke Dynamic <-\");\n" +
                 "        System.out.println(\"Invoke Dynamic Bootstrap ->\");\n" +
-                "        // Unsupported: InvokeDynamic(bootstrap=MethodInvokeSpec(invokeType=INVOKE_STATIC, methodTypeSpec=MethodTypeSpec(localization=JavaType[Lcom/github/jonathanxd/kores/test/InvocationsTest_;], methodName=myBootstrap, typeSpec=TypeSpec(returnType=class java.lang.invoke.CallSite, parameterTypes=[class java.lang.invoke.MethodHandles$Lookup, class java.lang.String, class java.lang.invoke.MethodType, class [Ljava.lang.Object;]))), dynamicMethod=DynamicMethodSpec(name=helloWorld, typeSpec=TypeSpec(returnType=PredefinedType[V], parameterTypes=[PredefinedType[Ljava/lang/String;]]), arguments=[StringLiteral[name=\"World\", type=JavaType[Ljava/lang/String;]]]), bootstrapArgs=[]);\n" +
+                "        // Unsupported: InvokeDynamic(bootstrap=MethodInvokeHandleSpec(invokeType=INVOKE_STATIC, methodTypeSpec=MethodTypeSpec(localization=JavaType[Lcom/github/jonathanxd/kores/test/InvocationsTest_;], methodSpec=MethodSpec(methodName=myBootstrap, typeSpec=TypeSpec(returnType=class java.lang.invoke.CallSite, parameterTypes=[class java.lang.invoke.MethodHandles$Lookup, class java.lang.String, class java.lang.invoke.MethodType, class [Ljava.lang.Object;])))), dynamicMethod=DynamicMethodSpec(name=helloWorld, typeSpec=TypeSpec(returnType=PredefinedType[V], parameterTypes=[PredefinedType[Ljava/lang/String;]]), arguments=[StringLiteral[name=World, value=\"World\", type=JavaType[Ljava/lang/String;]]]), bootstrapArgs=[]);\n" +
                 "        System.out.println(\"Invoke Dynamic Bootstrap <-\");\n" +
                 "        if (x == 9 || x == 7) {\n" +
                 "            return 0;\n" +
