@@ -1,6 +1,6 @@
 package com;
 
-import com.github.jonathanxd.kores.test.FakeElvisTest_.TestClass;
+import com.koresframework.kores.test.FakeElvisTest_.TestClass;
 
 public class FakeElvisTest {
 

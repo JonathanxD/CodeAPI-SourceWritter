@@ -17,8 +17,8 @@ buildscript {
 
 }
 
-group 'com.github.koresframework'
-version '4.1.11.source.2'
+group 'com.koresframework'
+version '4.2.1.source'
 
 apply from: project(":Kores").file("gradle/common.gradle")
 
@@ -55,8 +55,8 @@ repositories {
 
 dependencies {
     compileOnly project(":Kores")
-    implementation "com.github.koresframework:kores:4.1.11.base"
-    testImplementation "com.github.koresframework:kores:4.1.11.base"
+    implementation "com.koresframework:kores:4.2.1.base"
+    testImplementation "com.koresframework:kores:4.2.1.base"
     testImplementation project(path: ':Kores', configuration: 'tests')
 }
 

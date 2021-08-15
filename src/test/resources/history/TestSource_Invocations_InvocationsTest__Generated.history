@@ -1,8 +1,8 @@
 package fullName;
 
-import com.github.jonathanxd.kores.test.InvocationsTest_;
-import com.github.jonathanxd.kores.test.Greeter;
-import com.github.jonathanxd.kores.test.WorldGreeter;
+import com.koresframework.kores.test.InvocationsTest_;
+import com.koresframework.kores.test.Greeter;
+import com.koresframework.kores.test.WorldGreeter;
 import java.util.function.Supplier;
 
 public class InvocationsTest__Generated {
