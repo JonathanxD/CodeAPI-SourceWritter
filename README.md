@@ -49,7 +49,7 @@ repositories {
 
 dependencies {
     implementation("com.github.koresframework:kores:4.1.9.base") // Replace 4.1.9.base with the preferred version
-    implementation("com.github.koresframework:kores-sourcewriter:4.1.11.source") // Replace 4.1.11.source with the preferred version
+    implementation("com.github.koresframework:kores-sourcewriter:4.1.11.source.1") // Replace 4.1.11.source.1 with the preferred version
 }
 ```
 
