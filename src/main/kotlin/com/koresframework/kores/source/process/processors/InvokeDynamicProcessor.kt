@@ -86,7 +86,7 @@ object InvokeDynamicProcessor :
                         ), data
                     )
                 } else {
-                    processorManager.processAs(part.dynamicMethod.arguments.first(), data)
+                    processorManager.processAs(part.dynamicDescriptor.arguments.first(), data)
                 }
                 appender += "::"
                 appender += name

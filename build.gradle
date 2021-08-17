@@ -1,5 +1,5 @@
 buildscript {
-    apply from: project(":Kores").file('gradle/versions.gradle')
+    apply from: file('commons/versions.gradle')
 
     repositories {
         mavenCentral()
@@ -20,48 +20,31 @@ buildscript {
 group 'com.koresframework'
 version '4.2.1.source'
 
-apply from: project(":Kores").file("gradle/common.gradle")
+apply from: file("commons/common.gradle")
 
 // Publish
 apply plugin: 'maven-publish'
 
-def GITHUB_USERNAME = project.findProperty("USERNAME") ?: System.getenv("USERNAME")
-def GITHUB_PAT = project.findProperty("TOKEN") ?: System.getenv("TOKEN")
-
 repositories {
     mavenCentral()
+    // JwIUtils
     maven {
-        url "https://maven.pkg.github.com/jonathanxd/jwiutils"
-        credentials {
-            username = GITHUB_USERNAME
-            password = GITHUB_PAT
-        }
+        url "https://gitlab.com/api/v4/projects/28895078/packages/maven"
     }
+    // Kores
     maven {
-        url "https://maven.pkg.github.com/jonathanxd/bytecodedisassembler"
-        credentials {
-            username = GITHUB_USERNAME
-            password = GITHUB_PAT
-        }
-    }
-    maven {
-        url "https://maven.pkg.github.com/koresframework/kores"
-        credentials {
-            username = GITHUB_USERNAME
-            password = GITHUB_PAT
-        }
+        url 'https://gitlab.com/api/v4/projects/28894889/packages/maven'
     }
 }
 
 dependencies {
-    compileOnly project(":Kores")
-    implementation "com.koresframework:kores:4.2.1.base"
+    implementation "com.koresframework:kores:4.2.4.base"
     testImplementation "com.koresframework:kores:4.2.1.base"
-    testImplementation project(path: ':Kores', configuration: 'tests')
+    testImplementation "com.koresframework:kores-test:4.2.4.base"
 }
 
 tasks.dokkaGfm.configure {
-    enabled = true
+    enabled = false
 }
 
 publishing {
@@ -77,6 +60,23 @@ publishing {
             credentials {
                 username = System.getenv("USERNAME")
                 password = System.getenv("TOKEN")
+            }
+        }
+        maven {
+            name = "GitLab"
+            url "https://gitlab.com/api/v4/projects/28905428/packages/maven"
+            credentials(HttpHeaderCredentials) {
+                def ciToken = System.getenv("CI_JOB_TOKEN")
+                if (ciToken != null && !ciToken.isEmpty()) {
+                    name = "Job-Token"
+                    value = System.getenv("CI_JOB_TOKEN")
+                } else {
+                    name = "Private-Token"
+                    value = project.findProperty("GITLAB_TOKEN") ?: System.getenv("GITLAB_TOKEN")
+                }
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
             }
         }
     }
