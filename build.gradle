@@ -18,7 +18,7 @@ buildscript {
 }
 
 group 'com.koresframework'
-version '4.2.5.source'
+version '4.2.16.source'
 
 apply from: file("commons/common.gradle")
 
@@ -27,20 +27,16 @@ apply plugin: 'maven-publish'
 
 repositories {
     mavenCentral()
-    // JwIUtils
     maven {
-        url "https://gitlab.com/api/v4/projects/28895078/packages/maven"
-    }
-    // Kores
-    maven {
-        url 'https://gitlab.com/api/v4/projects/28894889/packages/maven'
+        name = "JGang"
+        url "https://gitlab.com/api/v4/projects/30392813/packages/maven"
     }
 }
 
 dependencies {
-    implementation "com.koresframework:kores:4.2.4.base"
-    testImplementation "com.koresframework:kores:4.2.1.base"
-    testImplementation "com.koresframework:kores-test:4.2.4.base"
+    implementation "com.koresframework:kores:4.2.16.base"
+    testImplementation "com.koresframework:kores:4.2.16.base"
+    testImplementation "com.koresframework:kores-test:4.2.16.base"
 }
 
 tasks.dokkaGfm.configure {
